@@ -8,6 +8,17 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'TutorNest - Find Your Perfect Tutor',
   description: 'Connect with verified, experienced tutors across India. Find the perfect tutor for school subjects, competitive exams, and skill development.',
+  manifest: '/manifest.json',
+  themeColor: '#0d9488',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'TutorNest',
+  },
+  icons: {
+    icon: '/icon-192.png',
+    apple: '/icon-192.png',
+  },
   openGraph: {
     title: 'TutorNest - Find Your Perfect Tutor',
     description: 'Connect with verified, experienced tutors across India.',
@@ -39,6 +50,22 @@ export default function RootLayout({
         {children}
         {/* Required by lib/api.ts openRazorpay() — provides window.Razorpay */}
         <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
+        {/* Register lightweight PWA Service Worker */}
+        <Script
+          id="pwa-service-worker"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').catch(function(err) {
+                    console.log('SW registration failed:', err);
+                  });
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );

@@ -1,0 +1,11 @@
+**/.git
+**/.vs
+**/.vscode
+**/bin
+**/obj
+appsettings.json
+appsettings.*.json
+!appsettings.Example.json
+*.dump
+*.backup
+wwwroot/uploads/**
