@@ -1,0 +1,85 @@
+# ==========================================
+# TutorNest Root .gitignore
+# ==========================================
+
+# ── Dependencies ──────────────────────────
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Next.js / Frontend Build Outputs ──────
+.next/
+**/.next/
+out/
+**/out/
+build/
+**/build/
+dist/
+**/dist/
+.DS_Store
+*.pem
+
+# ── TypeScript & Build Cache ──────────────
+*.tsbuildinfo
+next-env.d.ts
+.eslintcache
+
+# ── .NET / Backend Build Outputs ──────────
+bin/
+**/bin/
+obj/
+**/obj/
+publish/
+**/publish/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+.vs/
+**/.vs/
+.idea/
+**/.idea/
+.vscode/
+
+# ── Sensitive Environment & Config Files ──
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Backend sensitive configuration (local secrets)
+BackEnd/**/appsettings.json
+BackEnd/**/appsettings.*.json
+!BackEnd/**/appsettings.Example.json
+!BackEnd/**/appsettings.template.json
+
+# Docker overrides and local docker configs
+docker-compose.override.yml
+BackEnd/**/docker-compose.yml
+!BackEnd/**/docker-compose.example.yml
+
+# ── Database Dumps & Backups ──────────────
+*.dump
+*.backup
+*.sql.gz
+*.bak
+hometutor_db_backup*
+
+# ── Archives & Handoff Packages ───────────
+*.zip
+*.tar
+*.gz
+*.7z
+*.rar
+files (7)/
+tutor-verification-v2/
+
+# ── Agent Brain & Local Metadata ──────────
+.agents/
+
+# ── Logs & Temporary Files ────────────────
+*.log
+logs/
+**/logs/

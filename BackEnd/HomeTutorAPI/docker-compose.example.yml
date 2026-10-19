@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: hometutor_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       hometutor_db
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: YOUR_POSTGRES_PASSWORD
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hometutor_api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5000
+      ConnectionStrings__DefaultConnection: >
+        Host=db;Port=5432;Database=hometutor_db;Username=postgres;Password=YOUR_POSTGRES_PASSWORD
+      Jwt__SecretKey: YOUR_MINIMUM_32_CHARACTER_RANDOM_SECRET
+      Jwt__Issuer:    HomeTutorAPI
+      Jwt__Audience:  HomeTutorClient
+      Razorpay__KeyId:     rzp_test_YOUR_KEY_ID
+      Razorpay__KeySecret: YOUR_RAZORPAY_SECRET
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    volumes:
+      - uploads:/app/wwwroot/uploads
+
+volumes:
+  pgdata:
+  uploads:

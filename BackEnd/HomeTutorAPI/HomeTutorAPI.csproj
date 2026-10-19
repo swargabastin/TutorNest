@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>HomeTutorAPI</RootNamespace>
+    <AssemblyName>HomeTutorAPI</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- EF Core + PostgreSQL -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore"                         Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design"                  Version="9.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"                 Version="9.0.0" />
+
+    <!-- Auth -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"        Version="9.0.0" />
+    <PackageReference Include="BCrypt.Net-Next"                                       Version="4.0.3" />
+
+    <!-- Swagger -->
+    <PackageReference Include="Swashbuckle.AspNetCore"                               Version="6.9.0" />
+
+    <!-- Mapping -->
+    <PackageReference Include="AutoMapper"                                            Version="13.0.1" />
+  
+    <!-- Validation -->
+    <PackageReference Include="FluentValidation.AspNetCore"                          Version="11.3.0" />
+
+    <!-- Cloudinary (profile image upload) -->
+    <PackageReference Include="CloudinaryDotNet"                                      Version="1.25.1" />
+
+    <!-- Email (password reset) -->
+    <PackageReference Include="MailKit"                                               Version="4.7.1" />
+
+    <!-- Razorpay -->
+    <PackageReference Include="Razorpay"                                              Version="1.2.2" />
+  </ItemGroup>
+</Project>
