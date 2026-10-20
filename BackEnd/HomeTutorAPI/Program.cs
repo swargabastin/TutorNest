@@ -75,8 +75,27 @@ using (var scope = app.Services.CreateScope())
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     try
     {
-        var migrationConnStr = ServiceExtensions.GetDatabaseConnectionString(app.Configuration, forMigration: true);
-        var runtimeConnStr   = ServiceExtensions.GetDatabaseConnectionString(app.Configuration, forMigration: false);
+        var (migrationConnStr, migSource, migConverted) = ServiceExtensions.ResolveDatabaseConnection(app.Configuration, forMigration: true);
+        var (runtimeConnStr, runSource, runConverted)   = ServiceExtensions.ResolveDatabaseConnection(app.Configuration, forMigration: false);
+
+        if (!string.IsNullOrEmpty(runtimeConnStr))
+        {
+            try
+            {
+                var csb = new Npgsql.NpgsqlConnectionStringBuilder(runtimeConnStr);
+                var host = csb.Host ?? string.Empty;
+                var hostType = host.Contains(".neon.tech", StringComparison.OrdinalIgnoreCase)
+                    ? (host.Contains("-pooler") ? "Neon Pooled" : "Neon Direct")
+                    : (host == "localhost" || host == "127.0.0.1" ? "Localhost" : "Remote Server");
+
+                logger.LogInformation("Database configured from {Source}. URI conversion applied: {Converted}. Target: {Target}, Port: {Port}, SSL: {SslMode}",
+                    runSource, runConverted, hostType, csb.Port, csb.SslMode);
+            }
+            catch
+            {
+                logger.LogInformation("Database configured from {Source}. URI conversion applied: {Converted}.", runSource, runConverted);
+            }
+        }
 
         if (!string.IsNullOrEmpty(migrationConnStr) && migrationConnStr != db.Database.GetConnectionString())
         {

@@ -15,27 +15,96 @@ namespace HomeTutorAPI.Extensions;
 
 public static class ServiceExtensions
 {
+    private static readonly char[] InvisibleAndWhitespaceChars =
+    [
+        ' ', '\t', '\r', '\n', '\v', '\f',
+        '\uFEFF', // Byte Order Mark
+        '\u200B', // Zero-Width Space
+        '\u200C', // Zero-Width Non-Joiner
+        '\u200D', // Zero-Width Joiner
+        '\u00A0'  // Non-Breaking Space
+    ];
+
     // ── Helper: Safe Connection String Resolver ──────────────────────────────
-    public static string? CleanConnectionString(string? raw)
+    public static (string? Cleaned, bool IsConverted) CleanConnectionStringWithStatus(string? raw)
     {
-        if (string.IsNullOrWhiteSpace(raw)) return null;
-        raw = raw.Trim();
-        if ((raw.StartsWith('"') && raw.EndsWith('"')) || (raw.StartsWith('\'') && raw.EndsWith('\'')))
+        if (string.IsNullOrWhiteSpace(raw)) return (null, false);
+
+        raw = raw.Trim(InvisibleAndWhitespaceChars);
+
+        // Remove matching outer single quotes, double quotes, or backticks iteratively
+        while (raw.Length > 1)
         {
-            raw = raw[1..^1].Trim();
+            if ((raw.StartsWith('"') && raw.EndsWith('"')) ||
+                (raw.StartsWith('\'') && raw.EndsWith('\'')) ||
+                (raw.StartsWith('`') && raw.EndsWith('`')))
+            {
+                raw = raw[1..^1].Trim(InvisibleAndWhitespaceChars);
+            }
+            else
+            {
+                break;
+            }
         }
 
-        if (string.IsNullOrWhiteSpace(raw)) return null;
+        if (string.IsNullOrWhiteSpace(raw)) return (null, false);
+
+        // Strip leading "psql " command only if the remainder is a valid postgres URI
+        if (raw.StartsWith("psql ", StringComparison.OrdinalIgnoreCase))
+        {
+            var afterPsql = raw[5..].Trim(InvisibleAndWhitespaceChars);
+            if ((afterPsql.StartsWith('\'') && afterPsql.EndsWith('\'')) ||
+                (afterPsql.StartsWith('"') && afterPsql.EndsWith('"')) ||
+                (afterPsql.StartsWith('`') && afterPsql.EndsWith('`')))
+            {
+                afterPsql = afterPsql[1..^1].Trim(InvisibleAndWhitespaceChars);
+            }
+
+            if (afterPsql.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
+                afterPsql.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+            {
+                raw = afterPsql;
+            }
+        }
+
+        // Recognize known variable assignment prefixes if present
+        string[] knownPrefixes = ["DATABASE_URL=", "DATABASE_URL_UNPOOLED=", "ConnectionStrings__DefaultConnection=", "DefaultConnection="];
+        foreach (var prefix in knownPrefixes)
+        {
+            if (raw.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+            {
+                var afterPrefix = raw[prefix.Length..].Trim(InvisibleAndWhitespaceChars);
+                if ((afterPrefix.StartsWith('\'') && afterPrefix.EndsWith('\'')) ||
+                    (afterPrefix.StartsWith('"') && afterPrefix.EndsWith('"')) ||
+                    (afterPrefix.StartsWith('`') && afterPrefix.EndsWith('`')))
+                {
+                    afterPrefix = afterPrefix[1..^1].Trim(InvisibleAndWhitespaceChars);
+                }
+                raw = afterPrefix;
+                break;
+            }
+        }
 
         // If it starts with postgresql:// or postgres://, convert to standard Npgsql key-value format
         if (raw.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
             raw.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
         {
-            return ConvertPostgreSqlUriToConnectionString(raw);
+            return (ConvertPostgreSqlUriToConnectionString(raw), true);
         }
 
-        // Otherwise preserve standard semicolon-separated connection strings (e.g. Host=localhost;...)
-        return raw;
+        // If it's a standard semicolon-separated format, ensure it has '=' key-value structure
+        if (raw.Contains('='))
+        {
+            return (raw, false);
+        }
+
+        // Reject unrecognized or malformed input with a clear, non-sensitive exception
+        throw new FormatException("The database connection string format is not recognized or is malformed.");
+    }
+
+    public static string? CleanConnectionString(string? raw)
+    {
+        return CleanConnectionStringWithStatus(raw).Cleaned;
     }
 
     public static string ConvertPostgreSqlUriToConnectionString(string uriString)
@@ -154,28 +223,75 @@ public static class ServiceExtensions
         return builder.ConnectionString;
     }
 
-    public static string? GetDatabaseConnectionString(IConfiguration cfg, bool forMigration = false)
+    public static (string? ConnectionString, string SourceName, bool IsConverted) ResolveDatabaseConnection(IConfiguration cfg, bool forMigration = false)
     {
+        string? raw = null;
+        string sourceName = "None";
+
         if (forMigration)
         {
-            // For migrations/schema operations, prefer direct/unpooled connection to avoid PgBouncer transaction pooling limitations
-            return CleanConnectionString(
-                cfg["DATABASE_URL_UNPOOLED"]
-                ?? Environment.GetEnvironmentVariable("DATABASE_URL_UNPOOLED")
-                ?? cfg["DATABASE_URL"]
-                ?? Environment.GetEnvironmentVariable("DATABASE_URL")
-                ?? cfg.GetConnectionString("DefaultConnection")
-            );
+            if (!string.IsNullOrWhiteSpace(cfg["DATABASE_URL_UNPOOLED"]))
+            {
+                raw = cfg["DATABASE_URL_UNPOOLED"];
+                sourceName = "DATABASE_URL_UNPOOLED (cfg)";
+            }
+            else if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DATABASE_URL_UNPOOLED")))
+            {
+                raw = Environment.GetEnvironmentVariable("DATABASE_URL_UNPOOLED");
+                sourceName = "DATABASE_URL_UNPOOLED (env)";
+            }
+            else if (!string.IsNullOrWhiteSpace(cfg["DATABASE_URL"]))
+            {
+                raw = cfg["DATABASE_URL"];
+                sourceName = "DATABASE_URL (cfg)";
+            }
+            else if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DATABASE_URL")))
+            {
+                raw = Environment.GetEnvironmentVariable("DATABASE_URL");
+                sourceName = "DATABASE_URL (env)";
+            }
+            else
+            {
+                raw = cfg.GetConnectionString("DefaultConnection");
+                sourceName = "DefaultConnection";
+            }
+        }
+        else
+        {
+            if (!string.IsNullOrWhiteSpace(cfg["DATABASE_URL"]))
+            {
+                raw = cfg["DATABASE_URL"];
+                sourceName = "DATABASE_URL (cfg)";
+            }
+            else if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DATABASE_URL")))
+            {
+                raw = Environment.GetEnvironmentVariable("DATABASE_URL");
+                sourceName = "DATABASE_URL (env)";
+            }
+            else if (!string.IsNullOrWhiteSpace(cfg["DATABASE_URL_UNPOOLED"]))
+            {
+                raw = cfg["DATABASE_URL_UNPOOLED"];
+                sourceName = "DATABASE_URL_UNPOOLED (cfg)";
+            }
+            else if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DATABASE_URL_UNPOOLED")))
+            {
+                raw = Environment.GetEnvironmentVariable("DATABASE_URL_UNPOOLED");
+                sourceName = "DATABASE_URL_UNPOOLED (env)";
+            }
+            else
+            {
+                raw = cfg.GetConnectionString("DefaultConnection");
+                sourceName = "DefaultConnection";
+            }
         }
 
-        // For ordinary runtime queries, resolve cloud environment variable before falling back to local DefaultConnection
-        return CleanConnectionString(
-            cfg["DATABASE_URL"]
-            ?? Environment.GetEnvironmentVariable("DATABASE_URL")
-            ?? cfg["DATABASE_URL_UNPOOLED"]
-            ?? Environment.GetEnvironmentVariable("DATABASE_URL_UNPOOLED")
-            ?? cfg.GetConnectionString("DefaultConnection")
-        );
+        var (cleaned, isConverted) = CleanConnectionStringWithStatus(raw);
+        return (cleaned, sourceName, isConverted);
+    }
+
+    public static string? GetDatabaseConnectionString(IConfiguration cfg, bool forMigration = false)
+    {
+        return ResolveDatabaseConnection(cfg, forMigration).ConnectionString;
     }
 
     // ── Database ──────────────────────────────────────────────────────────────
