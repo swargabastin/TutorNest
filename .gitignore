@@ -83,3 +83,6 @@ tutor-verification-v2/
 *.log
 logs/
 **/logs/
+
+# ── Neon Database Local State ─────────────
+.neon

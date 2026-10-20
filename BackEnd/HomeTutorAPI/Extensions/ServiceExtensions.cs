@@ -14,13 +14,51 @@ namespace HomeTutorAPI.Extensions;
 
 public static class ServiceExtensions
 {
+    // ── Helper: Safe Connection String Resolver ──────────────────────────────
+    public static string? CleanConnectionString(string? raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw)) return null;
+        raw = raw.Trim();
+        if ((raw.StartsWith('"') && raw.EndsWith('"')) || (raw.StartsWith('\'') && raw.EndsWith('\'')))
+        {
+            raw = raw[1..^1].Trim();
+        }
+        return string.IsNullOrWhiteSpace(raw) ? null : raw;
+    }
+
+    public static string? GetDatabaseConnectionString(IConfiguration cfg, bool forMigration = false)
+    {
+        if (forMigration)
+        {
+            // For migrations/schema operations, prefer direct/unpooled connection to avoid PgBouncer transaction pooling limitations
+            return CleanConnectionString(
+                cfg["DATABASE_URL_UNPOOLED"]
+                ?? Environment.GetEnvironmentVariable("DATABASE_URL_UNPOOLED")
+                ?? cfg["DATABASE_URL"]
+                ?? Environment.GetEnvironmentVariable("DATABASE_URL")
+                ?? cfg.GetConnectionString("DefaultConnection")
+            );
+        }
+
+        // For ordinary runtime queries, resolve cloud environment variable before falling back to local DefaultConnection
+        return CleanConnectionString(
+            cfg["DATABASE_URL"]
+            ?? Environment.GetEnvironmentVariable("DATABASE_URL")
+            ?? cfg["DATABASE_URL_UNPOOLED"]
+            ?? Environment.GetEnvironmentVariable("DATABASE_URL_UNPOOLED")
+            ?? cfg.GetConnectionString("DefaultConnection")
+        );
+    }
+
     // ── Database ──────────────────────────────────────────────────────────────
     public static IServiceCollection AddDatabase(
         this IServiceCollection services, IConfiguration cfg)
     {
+        var rawConnStr = GetDatabaseConnectionString(cfg, forMigration: false);
+
         services.AddDbContext<AppDbContext>(opt =>
             opt.UseNpgsql(
-                cfg.GetConnectionString("DefaultConnection"),
+                rawConnStr,
                 npg => npg.MigrationsAssembly("HomeTutorAPI"))
                .ConfigureWarnings(w => w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning)));
         return services;
@@ -100,8 +138,10 @@ public static class ServiceExtensions
     public static IServiceCollection AddCorsPolicy(
         this IServiceCollection services, IConfiguration cfg)
     {
-        var origins = cfg["Cors:AllowedOrigins"]?.Split(',')
-            ?? ["http://localhost:3000", "http://localhost:3001"];
+        var rawOrigins = cfg["Cors:AllowedOrigins"] ?? Environment.GetEnvironmentVariable("CORS_ALLOWED_ORIGINS");
+        var origins = !string.IsNullOrWhiteSpace(rawOrigins)
+            ? rawOrigins.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            : new[] { "http://localhost:3000", "http://localhost:3001" };
 
         services.AddCors(opt => opt.AddPolicy("Frontend", policy =>
             policy.WithOrigins(origins)

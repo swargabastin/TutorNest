@@ -11,11 +11,12 @@
 import axios, { AxiosError } from 'axios';
 import type { Tutor, Student, Transaction, TutorApplication } from './types';
 
-// In the browser, use same-origin relative '/api' so requests route through the Next.js proxy/tunnel.
-// On the server side (SSR / Node), fall back to process.env.NEXT_PUBLIC_API_URL or http://localhost:5000/api.
+// In the browser, use same-origin relative '/api' so requests route through Next.js rewrites,
+// unless NEXT_PUBLIC_API_URL is explicitly set for direct cross-origin backend communication.
+// On the server side (SSR / Node), resolve NEXT_PUBLIC_API_URL, then BACKEND_URL, then localhost.
 const BASE = typeof window !== 'undefined'
-  ? '/api'
-  : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+  ? (process.env.NEXT_PUBLIC_API_URL || '/api')
+  : (process.env.NEXT_PUBLIC_API_URL || (process.env.BACKEND_URL ? `${process.env.BACKEND_URL.replace(/\/+$/, '')}/api` : 'http://localhost:5000/api'));
 
 export const api = axios.create({ baseURL: BASE });
 

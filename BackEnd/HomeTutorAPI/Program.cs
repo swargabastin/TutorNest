@@ -7,6 +7,13 @@ using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ── Bind to cloud host port if PORT environment variable is set (Render, Railway, etc.)
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrWhiteSpace(port) && int.TryParse(port, out _))
+{
+    builder.WebHost.UseUrls($"http://+:{port}");
+}
+
 // ── Services ──────────────────────────────────────────────────────────────────
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
@@ -68,8 +75,21 @@ using (var scope = app.Services.CreateScope())
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     try
     {
+        var migrationConnStr = ServiceExtensions.GetDatabaseConnectionString(app.Configuration, forMigration: true);
+        var runtimeConnStr   = ServiceExtensions.GetDatabaseConnectionString(app.Configuration, forMigration: false);
+
+        if (!string.IsNullOrEmpty(migrationConnStr) && migrationConnStr != db.Database.GetConnectionString())
+        {
+            db.Database.SetConnectionString(migrationConnStr);
+        }
+
         await db.Database.MigrateAsync();
         logger.LogInformation("Database migrations applied.");
+
+        if (!string.IsNullOrEmpty(runtimeConnStr) && db.Database.GetConnectionString() != runtimeConnStr)
+        {
+            db.Database.SetConnectionString(runtimeConnStr);
+        }
 
         if (!await db.Users.AnyAsync(u => u.Role == HomeTutorAPI.Models.UserRole.Admin))
         {
