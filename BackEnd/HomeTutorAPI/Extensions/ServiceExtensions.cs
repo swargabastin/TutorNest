@@ -33,73 +33,56 @@ public static class ServiceExtensions
         raw = raw.Trim(InvisibleAndWhitespaceChars);
 
         // Remove matching outer single quotes, double quotes, or backticks iteratively
-        while (raw.Length > 1)
+        while (raw.Length > 1 && (
+            (raw.StartsWith('"') && raw.EndsWith('"')) ||
+            (raw.StartsWith('\'') && raw.EndsWith('\'')) ||
+            (raw.StartsWith('`') && raw.EndsWith('`'))))
         {
-            if ((raw.StartsWith('"') && raw.EndsWith('"')) ||
-                (raw.StartsWith('\'') && raw.EndsWith('\'')) ||
-                (raw.StartsWith('`') && raw.EndsWith('`')))
-            {
-                raw = raw[1..^1].Trim(InvisibleAndWhitespaceChars);
-            }
-            else
-            {
-                break;
-            }
+            raw = raw[1..^1].Trim(InvisibleAndWhitespaceChars);
         }
 
         if (string.IsNullOrWhiteSpace(raw)) return (null, false);
 
-        // Strip leading "psql " command only if the remainder is a valid postgres URI
+        // Strip leading "psql " command if present
         if (raw.StartsWith("psql ", StringComparison.OrdinalIgnoreCase))
         {
-            var afterPsql = raw[5..].Trim(InvisibleAndWhitespaceChars);
-            if ((afterPsql.StartsWith('\'') && afterPsql.EndsWith('\'')) ||
-                (afterPsql.StartsWith('"') && afterPsql.EndsWith('"')) ||
-                (afterPsql.StartsWith('`') && afterPsql.EndsWith('`')))
-            {
-                afterPsql = afterPsql[1..^1].Trim(InvisibleAndWhitespaceChars);
-            }
-
-            if (afterPsql.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
-                afterPsql.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
-            {
-                raw = afterPsql;
-            }
+            raw = raw[5..].Trim(InvisibleAndWhitespaceChars);
         }
 
-        // Recognize known variable assignment prefixes if present
+        // Strip known variable assignment prefixes if present
         string[] knownPrefixes = ["DATABASE_URL=", "DATABASE_URL_UNPOOLED=", "ConnectionStrings__DefaultConnection=", "DefaultConnection="];
         foreach (var prefix in knownPrefixes)
         {
             if (raw.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
             {
-                var afterPrefix = raw[prefix.Length..].Trim(InvisibleAndWhitespaceChars);
-                if ((afterPrefix.StartsWith('\'') && afterPrefix.EndsWith('\'')) ||
-                    (afterPrefix.StartsWith('"') && afterPrefix.EndsWith('"')) ||
-                    (afterPrefix.StartsWith('`') && afterPrefix.EndsWith('`')))
-                {
-                    afterPrefix = afterPrefix[1..^1].Trim(InvisibleAndWhitespaceChars);
-                }
-                raw = afterPrefix;
+                raw = raw[prefix.Length..].Trim(InvisibleAndWhitespaceChars);
                 break;
             }
         }
 
-        // If it starts with postgresql:// or postgres://, convert to standard Npgsql key-value format
-        if (raw.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
-            raw.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+        // Locate and extract postgresql:// or postgres:// URI anywhere in the string
+        var match = System.Text.RegularExpressions.Regex.Match(raw, @"(postgres(?:ql)?://[^\s'""]+)", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        if (match.Success)
         {
-            return (ConvertPostgreSqlUriToConnectionString(raw), true);
+            var uriString = match.Groups[1].Value.TrimEnd('\'', '"', '`', ';', ')');
+            try
+            {
+                return (ConvertPostgreSqlUriToConnectionString(uriString), true);
+            }
+            catch
+            {
+                // Fall through to return raw string if URI construction encounters an error
+            }
         }
 
-        // If it's a standard semicolon-separated format, ensure it has '=' key-value structure
+        // If it's a standard semicolon-separated format, return as-is
         if (raw.Contains('='))
         {
             return (raw, false);
         }
 
-        // Reject unrecognized or malformed input with a clear, non-sensitive exception
-        throw new FormatException("The database connection string format is not recognized or is malformed.");
+        // Return cleaned string rather than crashing the container at startup
+        return (raw, false);
     }
 
     public static string? CleanConnectionString(string? raw)
