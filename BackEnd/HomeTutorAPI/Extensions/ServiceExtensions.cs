@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 
 namespace HomeTutorAPI.Extensions;
 
@@ -23,7 +24,134 @@ public static class ServiceExtensions
         {
             raw = raw[1..^1].Trim();
         }
-        return string.IsNullOrWhiteSpace(raw) ? null : raw;
+
+        if (string.IsNullOrWhiteSpace(raw)) return null;
+
+        // If it starts with postgresql:// or postgres://, convert to standard Npgsql key-value format
+        if (raw.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
+            raw.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+        {
+            return ConvertPostgreSqlUriToConnectionString(raw);
+        }
+
+        // Otherwise preserve standard semicolon-separated connection strings (e.g. Host=localhost;...)
+        return raw;
+    }
+
+    public static string ConvertPostgreSqlUriToConnectionString(string uriString)
+    {
+        if (string.IsNullOrWhiteSpace(uriString))
+            throw new FormatException("The PostgreSQL connection URI cannot be empty.");
+
+        Uri uri;
+        try
+        {
+            uri = new Uri(uriString);
+        }
+        catch (Exception ex)
+        {
+            throw new FormatException("The provided PostgreSQL connection URI is invalid or malformed.", ex);
+        }
+
+        if (!uri.Scheme.Equals("postgres", StringComparison.OrdinalIgnoreCase) &&
+            !uri.Scheme.Equals("postgresql", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new FormatException("The provided connection URI does not use a supported PostgreSQL scheme (postgres:// or postgresql://).");
+        }
+
+        if (string.IsNullOrWhiteSpace(uri.Host))
+        {
+            throw new FormatException("The provided PostgreSQL connection URI is missing a valid host.");
+        }
+
+        var builder = new NpgsqlConnectionStringBuilder
+        {
+            Host = uri.Host,
+            Port = uri.Port > 0 ? uri.Port : 5432,
+            SslMode = SslMode.Require
+        };
+
+        var dbPath = uri.AbsolutePath.TrimStart('/');
+        if (!string.IsNullOrWhiteSpace(dbPath))
+        {
+            builder.Database = Uri.UnescapeDataString(dbPath);
+        }
+
+        if (!string.IsNullOrEmpty(uri.UserInfo))
+        {
+            var parts = uri.UserInfo.Split(':', 2);
+            if (parts.Length > 0 && !string.IsNullOrEmpty(parts[0]))
+            {
+                builder.Username = Uri.UnescapeDataString(parts[0]);
+            }
+            if (parts.Length > 1)
+            {
+                builder.Password = Uri.UnescapeDataString(parts[1]);
+            }
+        }
+
+        if (!string.IsNullOrEmpty(uri.Query))
+        {
+            var query = uri.Query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var param in query)
+            {
+                var kv = param.Split('=', 2);
+                if (kv.Length == 0 || string.IsNullOrWhiteSpace(kv[0])) continue;
+
+                var key = kv[0].Trim().ToLowerInvariant();
+                var val = kv.Length > 1 ? Uri.UnescapeDataString(kv[1].Trim()) : string.Empty;
+
+                switch (key)
+                {
+                    case "sslmode":
+                        if (Enum.TryParse<SslMode>(val, ignoreCase: true, out var ssl))
+                        {
+                            builder.SslMode = ssl;
+                        }
+                        break;
+
+                    case "pooling":
+                        if (bool.TryParse(val, out var pooling))
+                        {
+                            builder.Pooling = pooling;
+                        }
+                        break;
+
+                    case "channel_binding":
+                        if (Enum.TryParse<ChannelBinding>(val, ignoreCase: true, out var cb))
+                        {
+                            builder.ChannelBinding = cb;
+                        }
+                        break;
+
+                    case "timeout":
+                    case "connect_timeout":
+                        if (int.TryParse(val, out var timeout))
+                        {
+                            builder.Timeout = timeout;
+                        }
+                        break;
+
+                    case "command_timeout":
+                        if (int.TryParse(val, out var cmdTimeout))
+                        {
+                            builder.CommandTimeout = cmdTimeout;
+                        }
+                        break;
+
+                    case "application_name":
+                        builder.ApplicationName = val;
+                        break;
+
+                    case "search_path":
+                    case "searchpath":
+                        builder.SearchPath = val;
+                        break;
+                }
+            }
+        }
+
+        return builder.ConnectionString;
     }
 
     public static string? GetDatabaseConnectionString(IConfiguration cfg, bool forMigration = false)
