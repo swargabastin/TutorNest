@@ -80,7 +80,7 @@ export const tutors: Tutor[] = [
   {
     id: '5',
     name: 'Sneha Reddy',
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654959?w=150&h=150&fit=crop',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop',
     subjects: ['Spanish', 'French'],
     experience: 4,
     rating: 4.6,
@@ -99,7 +99,7 @@ export const tutors: Tutor[] = [
   {
     id: '6',
     name: 'Vikram Singh',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994da43?w=150&h=150&fit=crop',
+    avatar: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop',
     subjects: ['Physics', 'Mathematics'],
     experience: 10,
     rating: 4.8,
@@ -160,7 +160,7 @@ export const teachingLevels = [
 export const mockStudent: Student = {
   id: 'stu1',
   name: 'Ravi Kumar',
-  avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcabd9b?w=150&h=150&fit=crop',
+  avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop',
   email: 'ravi.kumar@email.com',
   phone: '+91 98765 43210',
   location: 'Mumbai',
