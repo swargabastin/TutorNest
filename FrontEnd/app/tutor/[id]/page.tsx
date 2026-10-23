@@ -139,22 +139,22 @@ export default function TutorProfilePage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6 md:py-8 flex-1">
-        <div className="grid lg:grid-cols-3 gap-6">
+      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-6 md:py-8 flex-1">
+        <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Profile Header */}
             <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs overflow-hidden">
-              <CardContent className="p-6 sm:p-8">
-                <div className="flex flex-col sm:flex-row gap-5 items-start">
+              <CardContent className="p-4 sm:p-8">
+                <div className="flex flex-row gap-3.5 sm:gap-5 items-start">
                   <img
                     src={tutor.avatar}
                     alt={tutor.name}
-                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-plum-200 shadow-xs shrink-0"
+                    className="w-16 h-16 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-plum-200 shadow-xs shrink-0"
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
-                      <h1 className="text-xl sm:text-2xl font-extrabold text-[#243238] tracking-tight mr-1">{tutor.name}</h1>
+                      <h1 className="text-lg sm:text-2xl font-extrabold text-[#243238] tracking-tight mr-1">{tutor.name}</h1>
                       {tutor.idVerified && (
                         <Badge className="bg-plum-50 text-plum-900 border border-plum-200 text-[10px] font-bold py-0.5 px-2 rounded-full">
                           <ShieldCheck className="h-3 w-3 mr-1 text-plum-700" />

@@ -184,7 +184,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-6 text-[#243238]">
+    <div className="space-y-4 sm:space-y-6 text-[#243238]">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div>

@@ -144,24 +144,24 @@ export default function SearchPage() {
       <Header />
       <div className="flex-1">
         {/* Search Header */}
-        <div className="bg-white/95 backdrop-blur-md border-b border-[#E2E5DF] sticky top-16 z-30 shadow-xs">
-        <div className="container mx-auto px-4 py-3.5">
-          <div className="flex flex-col lg:flex-row gap-3">
+        <div className="bg-white/95 backdrop-blur-md border-b border-[#E2E5DF] sticky top-16 z-30 shadow-2xs">
+        <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-3.5">
+          <div className="flex flex-col lg:flex-row gap-2 sm:gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
               <Input
                 type="text"
                 placeholder="Search subjects, tutors, or topics..."
-                className="pl-10 h-11 bg-[#F6F3EA] border-[#E2E5DF] rounded-xl focus-visible:ring-plum-600 focus-visible:border-plum-600"
+                className="pl-9 h-9 sm:h-11 text-xs sm:text-sm bg-[#F6F3EA] border-[#E2E5DF] rounded-xl focus-visible:ring-plum-600 focus-visible:border-plum-600"
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
               />
             </div>
 
-            <div className="flex gap-2.5">
+            <div className="flex gap-2">
               <Select value={filters.city || 'all'} onValueChange={(value) => setFilters({ ...filters, city: value === 'all' ? '' : value })}>
-                <SelectTrigger className="w-36 sm:w-44 h-11 bg-white border-[#E2E5DF] rounded-xl">
-                  <MapPin className="h-4 w-4 mr-2 text-plum-700 shrink-0" />
+                <SelectTrigger className="w-28 sm:w-44 h-9 sm:h-11 text-xs sm:text-sm bg-white border-[#E2E5DF] rounded-xl">
+                  <MapPin className="h-3.5 w-3.5 mr-1 text-plum-700 shrink-0" />
                   <SelectValue placeholder="Location" />
                 </SelectTrigger>
                 <SelectContent>
@@ -173,7 +173,7 @@ export default function SearchPage() {
               </Select>
 
               <Select value={filters.subject || 'all'} onValueChange={(value) => setFilters({ ...filters, subject: value === 'all' ? '' : value })}>
-                <SelectTrigger className="w-36 sm:w-44 h-11 bg-white border-[#E2E5DF] rounded-xl">
+                <SelectTrigger className="w-28 sm:w-44 h-9 sm:h-11 text-xs sm:text-sm bg-white border-[#E2E5DF] rounded-xl">
                   <SelectValue placeholder="Subject" />
                 </SelectTrigger>
                 <SelectContent>
@@ -186,21 +186,21 @@ export default function SearchPage() {
 
               <Button
                 variant="outline"
-                className="lg:hidden h-11 rounded-xl border-[#E2E5DF] text-[#243238]"
+                className="lg:hidden h-9 sm:h-11 rounded-xl border-[#E2E5DF] text-[#243238] text-xs px-2.5"
                 onClick={() => setShowFilters(!showFilters)}
               >
-                <Filter className="h-4 w-4 mr-1.5 text-plum-700" />
+                <Filter className="h-3.5 w-3.5 mr-1 text-plum-700" />
                 Filters
               </Button>
             </div>
           </div>
 
           {/* Quick Curriculum / Board Filter Chips */}
-          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pt-2.5 pb-0.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0 mr-1">Curriculum:</span>
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pt-1.5 pb-0.5">
+            <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0 mr-1">Board:</span>
             <button
               onClick={() => setFilters({ ...filters, boards: [] })}
-              className={`px-3 py-1 rounded-full text-xs font-semibold shrink-0 transition-colors ${
+              className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold shrink-0 transition-colors ${
                 filters.boards.length === 0
                   ? 'bg-plum-900 text-white'
                   : 'bg-[#F6F3EA] text-slate-600 hover:bg-[#F2ECE4] border border-[#E2E5DF]'
@@ -214,9 +214,9 @@ export default function SearchPage() {
                 <button
                   key={b}
                   onClick={() => toggleBoard(b)}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold shrink-0 transition-colors ${
+                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold shrink-0 transition-colors ${
                     active
-                      ? 'bg-plum-900 text-white shadow-xs'
+                      ? 'bg-plum-900 text-white shadow-2xs'
                       : 'bg-[#F6F3EA] text-slate-600 hover:bg-[#F2ECE4] border border-[#E2E5DF]'
                   }`}
                 >
@@ -228,7 +228,7 @@ export default function SearchPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-6">
         <div className="flex gap-6">
           {/* Sidebar Filters - Desktop */}
           <aside className="hidden lg:block w-72 flex-shrink-0">

@@ -130,13 +130,13 @@ export default function WalletPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6 md:py-8">
-        <div className="grid lg:grid-cols-3 gap-6">
+      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-6 md:py-8">
+        <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Balance Card */}
-          <div className="lg:col-span-1 space-y-4">
+          <div className="lg:col-span-1 space-y-3 sm:space-y-4">
             <Card className="bg-[#0E3342] text-white rounded-2xl shadow-xs border-0 overflow-hidden relative">
               <div className="absolute top-0 right-0 w-36 h-36 -mr-8 -mt-8 rounded-full bg-white/5 pointer-events-none" />
-              <CardContent className="relative p-6">
+              <CardContent className="relative p-4 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <div className="bg-white/10 rounded-xl p-2 text-white">
