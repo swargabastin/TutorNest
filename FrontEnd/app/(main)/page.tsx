@@ -275,8 +275,8 @@ export default function Home() {
             </div>
             <div className="flex-shrink-0">
               <img
-                src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop&q=80"
-                alt="Passionate Tutor Teaching"
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80"
+                alt="Professional Tutor"
                 className="w-80 h-80 object-cover rounded-xl shadow-2xl"
               />
             </div>
