@@ -160,7 +160,7 @@ export const teachingLevels = [
 export const mockStudent: Student = {
   id: 'stu1',
   name: 'Ravi Kumar',
-  avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop',
+  avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&auto=format&fit=crop&q=80',
   email: 'ravi.kumar@email.com',
   phone: '+91 98765 43210',
   location: 'Mumbai',

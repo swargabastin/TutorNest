@@ -275,8 +275,8 @@ export default function Home() {
             </div>
             <div className="flex-shrink-0">
               <img
-                src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=400"
-                alt="Teaching"
+                src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop&q=80"
+                alt="Passionate Tutor Teaching"
                 className="w-80 h-80 object-cover rounded-xl shadow-2xl"
               />
             </div>
@@ -312,7 +312,7 @@ export default function Home() {
                 name: 'Rohan Gupta',
                 role: 'NEET Aspirant',
                 content: 'The verification system gave me confidence that I was choosing a qualified tutor. Best decision for my preparation journey.',
-                avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100'
+                avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&auto=format&fit=crop&q=80'
               }
             ].map((testimonial, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">

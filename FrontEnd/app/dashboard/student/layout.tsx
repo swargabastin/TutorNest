@@ -49,7 +49,7 @@ export default function StudentLayout({
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-3">
                   <Avatar className="h-9 w-9">
-                    <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" />
+                    <AvatarImage src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&auto=format&fit=crop&q=80" />
                     <AvatarFallback>RK</AvatarFallback>
                   </Avatar>
                   <div className="hidden md:block text-left">
