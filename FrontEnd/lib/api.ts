@@ -93,6 +93,13 @@ interface TutorDtoRaw {
   travelRadiusKm?: number | null;
   boards?: string[];
   offersFreeDemo?: boolean;
+  idVerified?: boolean;
+  qualificationVerified?: boolean;
+  addressVerified?: boolean;
+  policeCheckVerified?: boolean;
+  introVideoUrl?: string | null;
+  whatsAppNotificationsEnabled?: boolean;
+  whatsAppPhoneNumber?: string | null;
   phone?: string | null;
   email?: string | null;
   reviews?: {
@@ -209,6 +216,13 @@ function mapTutor(dto: TutorDtoRaw): Tutor {
     travelRadiusKm: dto.travelRadiusKm ?? undefined,
     boards: dto.boards ?? [],
     offersFreeDemo: dto.offersFreeDemo ?? true,
+    idVerified: dto.idVerified ?? false,
+    qualificationVerified: dto.qualificationVerified ?? false,
+    addressVerified: dto.addressVerified ?? false,
+    policeCheckVerified: dto.policeCheckVerified ?? false,
+    introVideoUrl: dto.introVideoUrl ?? undefined,
+    whatsAppNotificationsEnabled: dto.whatsAppNotificationsEnabled ?? false,
+    whatsAppPhoneNumber: dto.whatsAppPhoneNumber ?? undefined,
   };
 }
 
@@ -369,6 +383,9 @@ export const tutorsApi = {
     teachingLevels?: string[]; languages?: string[]; responseTime?: string;
     locality?: string; pincode?: string; travelRadiusKm?: number;
     boards?: string[]; offersFreeDemo?: boolean;
+    introVideoUrl?: string;
+    whatsAppNotificationsEnabled?: boolean;
+    whatsAppPhoneNumber?: string;
   }) => api.put('/tutors/me', body).then(r => r.data),
 
   uploadProfileImage: (file: File) => {
@@ -609,10 +626,10 @@ export function openRazorpay(
       amount: order.amount * 100,
       currency: order.currency,
       order_id: order.orderId,
-      name: 'HomeTutor',
+      name: 'TutorNest',
       description: meta.type === 'subscription' ? 'Subscription Plan' : 'Coin Purchase',
       prefill: { name: user?.fullName ?? '', email: user?.email ?? '' },
-      theme: { color: '#0d9488' },
+      theme: { color: '#164E63' },
       handler: async (response: any) => {
         try {
           await paymentsApi.verifyPayment({
@@ -638,3 +655,42 @@ export function openRazorpay(
     rzp.open();
   });
 }
+
+// ════════════════════════════════════════════════════════════════════════════
+// PHASE 2 & 3: COIN REFUNDS & NOTIFICATIONS
+// ════════════════════════════════════════════════════════════════════════════
+
+export interface CoinRefundRequest {
+  id: string;
+  tutorProfileId: string;
+  tutorName: string;
+  coinTransactionId: string;
+  referenceId?: string;
+  coinsRequested: number;
+  reason: 'InvalidContact' | 'DuplicateLead' | 'RequirementWithdrawn' | 'ParentUnresponsive48h' | 'Other';
+  explanation: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  adminNotes?: string;
+  reviewedAt?: string;
+  createdAt: string;
+}
+
+export const coinRefundsApi = {
+  requestRefund: (body: {
+    coinTransactionId: string;
+    referenceId?: string;
+    coinsRequested: number;
+    reason: string;
+    explanation: string;
+  }): Promise<CoinRefundRequest> => api.post('/tutors/me/coin-refunds', body).then(r => r.data),
+
+  getMyRefunds: (): Promise<CoinRefundRequest[]> => api.get('/tutors/me/coin-refunds').then(r => r.data),
+
+  getAdminRefunds: (status?: string): Promise<CoinRefundRequest[]> =>
+    api.get('/admin/coin-refunds', { params: { status } }).then(r => r.data),
+
+  resolveRefund: (id: string, body: { approve: boolean; adminNotes?: string }) =>
+    api.put(`/admin/coin-refunds/${id}/resolve`, body).then(r => r.data),
+
+  unlockLead: (enquiryId: string) => api.post(`/tutors/me/unlock-lead/${enquiryId}`).then(r => r.data),
+};

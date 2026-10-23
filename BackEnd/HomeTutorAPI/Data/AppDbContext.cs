@@ -24,6 +24,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Booking>              Bookings            => Set<Booking>();
     public DbSet<Conversation>         Conversations       => Set<Conversation>();
     public DbSet<ChatMessage>          ChatMessages        => Set<ChatMessage>();
+    public DbSet<CoinRefundRequest>    CoinRefundRequests  => Set<CoinRefundRequest>();
+    public DbSet<WhatsAppNotificationLog> WhatsAppNotificationLogs => Set<WhatsAppNotificationLog>();
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
@@ -128,6 +130,23 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             e.HasIndex(m => m.ConversationId);
             e.HasIndex(m => m.SentAt);
             e.HasIndex(m => m.IsRead);
+        });
+
+        // ── CoinRefundRequest ────────────────────────────────────────────────
+        mb.Entity<CoinRefundRequest>(e =>
+        {
+            e.Property(r => r.Reason).HasConversion<string>();
+            e.Property(r => r.Status).HasConversion<string>();
+            e.HasIndex(r => r.TutorProfileId);
+            e.HasIndex(r => r.Status);
+        });
+
+        // ── WhatsAppNotificationLog ───────────────────────────────────────────
+        mb.Entity<WhatsAppNotificationLog>(e =>
+        {
+            e.Property(w => w.Status).HasConversion<string>();
+            e.HasIndex(w => w.TutorProfileId);
+            e.HasIndex(w => w.RequirementId);
         });
 
         // ── Seed Data ─────────────────────────────────────────────────────────

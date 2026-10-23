@@ -100,13 +100,13 @@ export default function PostRequirementPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center p-4">
-        <Card className="max-w-lg w-full text-center border-[#EADDD0] bg-white rounded-3xl shadow-sm">
+      <div className="min-h-screen bg-[#F6F3EA] flex items-center justify-center p-4">
+        <Card className="max-w-lg w-full text-center border-[#E2E5DF] bg-white rounded-3xl shadow-sm">
           <CardContent className="p-8 sm:p-12">
             <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-5 border border-emerald-100">
               <CheckCircle className="h-8 w-8" />
             </div>
-            <h2 className="text-2xl font-bold text-[#1F1924] mb-2">Requirement Posted!</h2>
+            <h2 className="text-2xl font-bold text-[#243238] mb-2">Requirement Posted!</h2>
             <p className="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
               Your tuition requirement has been broadcast to qualified tutors. Interested educators will reach out directly.
             </p>
@@ -119,7 +119,7 @@ export default function PostRequirementPage() {
               <Button
                 variant="outline"
                 onClick={() => setSubmitted(false)}
-                className="w-full sm:w-auto border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 rounded-xl px-5 h-10 text-xs font-semibold"
+                className="w-full sm:w-auto border-[#E2E5DF] text-[#243238] hover:bg-plum-50 rounded-xl px-5 h-10 text-xs font-semibold"
               >
                 Post Another Requirement
               </Button>
@@ -131,19 +131,19 @@ export default function PostRequirementPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] py-8 sm:py-12 px-4 text-[#1F1924]">
+    <div className="min-h-screen bg-[#F6F3EA] py-8 sm:py-12 px-4 text-[#243238]">
       <div className="container mx-auto max-w-2xl">
         <Link href="/" className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-plum-900 mb-6 transition-colors">
           <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
           Back to Home
         </Link>
 
-        <Card className="shadow-xs border border-[#EADDD0] bg-white rounded-3xl overflow-hidden">
-          <CardHeader className="text-center pb-4 pt-8 px-6 sm:px-10 border-b border-[#F0E6DB] bg-gradient-to-b from-plum-50/50 to-transparent">
+        <Card className="shadow-xs border border-[#E2E5DF] bg-white rounded-3xl overflow-hidden">
+          <CardHeader className="text-center pb-4 pt-8 px-6 sm:px-10 border-b border-[#E2E5DF] bg-gradient-to-b from-plum-50/50 to-transparent">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-plum-100 text-plum-900 mx-auto mb-3">
               <FileText className="h-6 w-6" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1F1924]">Post Tuition Requirement</h1>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#243238]">Post Tuition Requirement</h1>
             <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-md mx-auto">
               Describe your learning goals and let verified tutors send you proposals
             </p>
@@ -160,13 +160,13 @@ export default function PostRequirementPage() {
 
                 <div className="grid sm:grid-cols-3 gap-4">
                   <div className="space-y-1.5">
-                    <Label htmlFor="subject" className="text-xs font-bold text-[#1F1924]">Subject *</Label>
+                    <Label htmlFor="subject" className="text-xs font-bold text-[#243238]">Subject *</Label>
                     <Select
                       value={formData.subject}
                       onValueChange={(value) => setFormData({...formData, subject: value})}
                       required
                     >
-                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
+                      <SelectTrigger className="h-11 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm">
                         <SelectValue placeholder="Select subject" />
                       </SelectTrigger>
                       <SelectContent>
@@ -178,13 +178,13 @@ export default function PostRequirementPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="level" className="text-xs font-bold text-[#1F1924]">Class / Level *</Label>
+                    <Label htmlFor="level" className="text-xs font-bold text-[#243238]">Class / Level *</Label>
                     <Select
                       value={formData.level}
                       onValueChange={(value) => setFormData({...formData, level: value})}
                       required
                     >
-                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
+                      <SelectTrigger className="h-11 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm">
                         <SelectValue placeholder="Select level" />
                       </SelectTrigger>
                       <SelectContent>
@@ -196,12 +196,12 @@ export default function PostRequirementPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="board" className="text-xs font-bold text-[#1F1924]">Curriculum / Board</Label>
+                    <Label htmlFor="board" className="text-xs font-bold text-[#243238]">Curriculum / Board</Label>
                     <Select
                       value={formData.board}
                       onValueChange={(value) => setFormData({...formData, board: value})}
                     >
-                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
+                      <SelectTrigger className="h-11 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm">
                         <SelectValue placeholder="Select board" />
                       </SelectTrigger>
                       <SelectContent>
@@ -215,13 +215,13 @@ export default function PostRequirementPage() {
 
                 <div className="grid sm:grid-cols-2 gap-4 mt-4">
                   <div className="space-y-1.5">
-                    <Label htmlFor="city" className="text-xs font-bold text-[#1F1924]">Location / City *</Label>
+                    <Label htmlFor="city" className="text-xs font-bold text-[#243238]">Location / City *</Label>
                     <Select
                       value={formData.city}
                       onValueChange={(value) => setFormData({...formData, city: value})}
                       required
                     >
-                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
+                      <SelectTrigger className="h-11 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm">
                         <SelectValue placeholder="Select city" />
                       </SelectTrigger>
                       <SelectContent>
@@ -233,13 +233,13 @@ export default function PostRequirementPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="mode" className="text-xs font-bold text-[#1F1924]">Teaching Mode *</Label>
+                    <Label htmlFor="mode" className="text-xs font-bold text-[#243238]">Teaching Mode *</Label>
                     <Select
                       value={formData.mode}
                       onValueChange={(value) => setFormData({...formData, mode: value})}
                       required
                     >
-                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
+                      <SelectTrigger className="h-11 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm">
                         <SelectValue placeholder="Select mode" />
                       </SelectTrigger>
                       <SelectContent>
@@ -253,25 +253,25 @@ export default function PostRequirementPage() {
 
                 <div className="grid sm:grid-cols-2 gap-4 mt-4">
                   <div className="space-y-1.5">
-                    <Label htmlFor="locality" className="text-xs font-bold text-[#1F1924]">Locality / Area</Label>
+                    <Label htmlFor="locality" className="text-xs font-bold text-[#243238]">Locality / Area</Label>
                     <Input
                       id="locality"
                       type="text"
                       placeholder="e.g. Kakkanad, Kaloor, Edappally"
-                      className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                      className="h-11 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm"
                       value={formData.locality}
                       onChange={(e) => setFormData({...formData, locality: e.target.value})}
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="pincode" className="text-xs font-bold text-[#1F1924]">Pincode</Label>
+                    <Label htmlFor="pincode" className="text-xs font-bold text-[#243238]">Pincode</Label>
                     <Input
                       id="pincode"
                       type="text"
                       maxLength={6}
                       placeholder="e.g. 682030"
-                      className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                      className="h-11 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm"
                       value={formData.pincode}
                       onChange={(e) => setFormData({...formData, pincode: e.target.value.replace(/\D/g, '')})}
                     />
@@ -288,14 +288,14 @@ export default function PostRequirementPage() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <Label htmlFor="budget" className="text-xs font-bold text-[#1F1924]">Hourly Budget (₹)</Label>
+                    <Label htmlFor="budget" className="text-xs font-bold text-[#243238]">Hourly Budget (₹)</Label>
                     <div className="relative">
                       <IndianRupee className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
                       <Input
                         id="budget"
                         type="text"
                         placeholder="e.g. 400 - 600"
-                        className="pl-10 h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                        className="pl-10 h-11 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm"
                         value={formData.budget}
                         onChange={(e) => setFormData({...formData, budget: e.target.value})}
                       />
@@ -303,12 +303,12 @@ export default function PostRequirementPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="frequency" className="text-xs font-bold text-[#1F1924]">Classes per Week</Label>
+                    <Label htmlFor="frequency" className="text-xs font-bold text-[#243238]">Classes per Week</Label>
                     <Select
                       value={formData.frequency}
                       onValueChange={(value) => setFormData({...formData, frequency: value})}
                     >
-                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
+                      <SelectTrigger className="h-11 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm">
                         <SelectValue placeholder="Select frequency" />
                       </SelectTrigger>
                       <SelectContent>
@@ -324,12 +324,12 @@ export default function PostRequirementPage() {
 
               {/* Requirement Description */}
               <div className="space-y-1.5">
-                <Label htmlFor="description" className="text-xs font-bold text-[#1F1924]">Requirement Details *</Label>
+                <Label htmlFor="description" className="text-xs font-bold text-[#243238]">Requirement Details *</Label>
                 <Textarea
                   id="description"
                   placeholder="Detail your goals: syllabus/board (CBSE, ICSE, State), specific chapters, exam targets, preferred evening/morning hours…"
                   rows={4}
-                  className="rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm p-3 focus-visible:ring-plum-600"
+                  className="rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm p-3 focus-visible:ring-plum-600"
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
                   required
@@ -362,7 +362,7 @@ export default function PostRequirementPage() {
                   <Button
                     type="button"
                     variant="outline"
-                    className="w-full h-12 border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 rounded-xl text-xs sm:text-sm font-semibold"
+                    className="w-full h-12 border-[#E2E5DF] text-[#243238] hover:bg-plum-50 rounded-xl text-xs sm:text-sm font-semibold"
                   >
                     Create Student Account
                   </Button>

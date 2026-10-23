@@ -77,19 +77,19 @@ export default function SubscriptionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1F1924]">
+    <div className="min-h-screen bg-[#F6F3EA] text-[#243238]">
       {/* Header */}
-      <div className="bg-white border-b border-[#EADDD0]">
+      <div className="bg-white border-b border-[#E2E5DF]">
         <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link href="/dashboard/student">
-                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl border border-[#EADDD0] hover:bg-plum-50 text-slate-700">
+                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl border border-[#E2E5DF] hover:bg-plum-50 text-slate-700">
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
               </Link>
               <div>
-                <h1 className="text-xl sm:text-2xl font-extrabold text-[#1F1924] tracking-tight">Subscription Plans</h1>
+                <h1 className="text-xl sm:text-2xl font-extrabold text-[#243238] tracking-tight">Subscription Plans</h1>
                 <p className="text-xs text-slate-500">Pick the plan that fits your tutoring or learning volume</p>
               </div>
             </div>
@@ -123,7 +123,7 @@ export default function SubscriptionPage() {
                 <Card
                   key={plan.id}
                   className={`relative rounded-2xl bg-white transition-all flex flex-col justify-between ${
-                    plan.isPopular ? 'border-plum-900 shadow-md ring-2 ring-plum-900/10' : 'border-[#EADDD0] shadow-xs'
+                    plan.isPopular ? 'border-plum-900 shadow-md ring-2 ring-plum-900/10' : 'border-[#E2E5DF] shadow-xs'
                   }`}
                 >
                   {plan.isPopular && (
@@ -142,11 +142,11 @@ export default function SubscriptionPage() {
                         {plan.coinsPerMonth} coins / mo
                       </Badge>
                     )}
-                    <CardTitle className="text-lg font-bold text-[#1F1924]">{plan.name}</CardTitle>
+                    <CardTitle className="text-lg font-bold text-[#243238]">{plan.name}</CardTitle>
                   </CardHeader>
                   <CardContent className="pt-2 pb-6 flex-1 flex flex-col justify-between">
                     <div className="mb-4 text-center">
-                      <span className="text-3xl font-extrabold text-[#1F1924]">₹{plan.price}</span>
+                      <span className="text-3xl font-extrabold text-[#243238]">₹{plan.price}</span>
                       <span className="text-xs text-slate-500 ml-1">/ month</span>
                     </div>
 
@@ -163,7 +163,7 @@ export default function SubscriptionPage() {
                       className={`w-full rounded-xl text-xs font-semibold h-10 ${
                         plan.isPopular
                           ? 'bg-plum-900 hover:bg-plum-950 text-white'
-                          : 'bg-white border border-[#EADDD0] text-plum-900 hover:bg-plum-50'
+                          : 'bg-white border border-[#E2E5DF] text-plum-900 hover:bg-plum-50'
                       }`}
                       disabled={plan.price === 0 || purchasingId === plan.id}
                       onClick={() => handleChoosePlan(plan)}
@@ -178,35 +178,35 @@ export default function SubscriptionPage() {
         </div>
 
         {/* Benefits Section */}
-        <Card className="mb-12 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="mb-12 border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardContent className="p-6 sm:p-8">
             <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
               <div>
                 <div className="bg-plum-50 text-plum-900 rounded-2xl w-11 h-11 flex items-center justify-center mx-auto mb-3">
                   <Shield className="h-5 w-5" />
                 </div>
-                <h3 className="text-xs font-bold text-[#1F1924] mb-1">Razorpay Secured</h3>
+                <h3 className="text-xs font-bold text-[#243238] mb-1">Razorpay Secured</h3>
                 <p className="text-[11px] text-slate-500">RBI-compliant bank grade encryption</p>
               </div>
               <div>
                 <div className="bg-plum-50 text-plum-900 rounded-2xl w-11 h-11 flex items-center justify-center mx-auto mb-3">
                   <Bell className="h-5 w-5" />
                 </div>
-                <h3 className="text-xs font-bold text-[#1F1924] mb-1">Advance Alerts</h3>
+                <h3 className="text-xs font-bold text-[#243238] mb-1">Advance Alerts</h3>
                 <p className="text-[11px] text-slate-500">Clear notifications before renewal</p>
               </div>
               <div>
                 <div className="bg-plum-50 text-plum-900 rounded-2xl w-11 h-11 flex items-center justify-center mx-auto mb-3">
                   <HeadphonesIcon className="h-5 w-5" />
                 </div>
-                <h3 className="text-xs font-bold text-[#1F1924] mb-1">Dedicated Support</h3>
+                <h3 className="text-xs font-bold text-[#243238] mb-1">Dedicated Support</h3>
                 <p className="text-[11px] text-slate-500">Direct WhatsApp support helpline</p>
               </div>
               <div>
                 <div className="bg-plum-50 text-plum-900 rounded-2xl w-11 h-11 flex items-center justify-center mx-auto mb-3">
                   <Check className="h-5 w-5" />
                 </div>
-                <h3 className="text-xs font-bold text-[#1F1924] mb-1">Zero Hidden Fees</h3>
+                <h3 className="text-xs font-bold text-[#243238] mb-1">Zero Hidden Fees</h3>
                 <p className="text-[11px] text-slate-500">Transparent pricing, cancel anytime</p>
               </div>
             </div>
@@ -215,12 +215,12 @@ export default function SubscriptionPage() {
 
         {/* FAQ Section */}
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-xl sm:text-2xl font-extrabold text-[#1F1924] text-center mb-6">Frequently Asked Questions</h2>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-[#243238] text-center mb-6">Frequently Asked Questions</h2>
           <div className="grid sm:grid-cols-2 gap-3.5">
             {faqs.map((faq, index) => (
-              <Card key={index} className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+              <Card key={index} className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                 <CardContent className="p-4 sm:p-5">
-                  <h3 className="text-xs font-bold text-[#1F1924] mb-1.5">{faq.question}</h3>
+                  <h3 className="text-xs font-bold text-[#243238] mb-1.5">{faq.question}</h3>
                   <p className="text-xs text-slate-600 leading-relaxed">{faq.answer}</p>
                 </CardContent>
               </Card>

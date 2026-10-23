@@ -59,9 +59,9 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
   };
 
   return (
-    <Card className="h-full border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+    <Card className="h-full border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-base font-bold flex items-center gap-2 text-[#1F1924]">
+        <CardTitle className="text-base font-bold flex items-center gap-2 text-[#243238]">
           <Calendar className="h-4 w-4 text-plum-800" />
           {userRole === 'Tutor' ? "Today's & Upcoming Classes" : "My Scheduled Classes"}
         </CardTitle>
@@ -91,10 +91,10 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
               const isPending = booking.status === 'Pending';
 
               return (
-                <div key={booking.id} className="p-3 rounded-xl border border-[#EADDD0] bg-[#FAF8F5] space-y-2">
+                <div key={booking.id} className="p-3 rounded-xl border border-[#E2E5DF] bg-[#F6F3EA] space-y-2">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="font-bold text-xs sm:text-sm text-[#1F1924]">
+                      <span className="font-bold text-xs sm:text-sm text-[#243238]">
                         {userRole === 'Tutor' ? booking.studentName : booking.tutorName}
                       </span>
                       <span className="text-xs text-slate-500 ml-1.5">({booking.subject})</span>
@@ -117,7 +117,7 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
                       </Badge>
                     )}
                     {booking.gradeLevel && (
-                      <span className="text-[11px] bg-white text-plum-900 px-1.5 py-0.5 rounded border border-[#EADDD0] font-medium">
+                      <span className="text-[11px] bg-white text-plum-900 px-1.5 py-0.5 rounded border border-[#E2E5DF] font-medium">
                         {booking.gradeLevel}
                       </span>
                     )}
@@ -131,7 +131,7 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
                   )}
 
                   {booking.studentNotes && (
-                    <div className="text-[11px] text-slate-600 bg-white/70 p-1.5 rounded-lg border border-[#EADDD0] italic">
+                    <div className="text-[11px] text-slate-600 bg-white/70 p-1.5 rounded-lg border border-[#E2E5DF] italic">
                       “{booking.studentNotes}”
                     </div>
                   )}
@@ -151,12 +151,12 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
 
                   {/* Actions for Student on Pending bookings */}
                   {userRole === 'Student' && isPending && (
-                    <div className="pt-2 border-t border-[#F0E6DB] flex items-center justify-between">
+                    <div className="pt-2 border-t border-[#E2E5DF] flex items-center justify-between">
                       <span className="text-[11px] text-slate-500">Awaiting tutor confirmation</span>
                       <Button
                         size="sm"
                         variant="outline"
-                        className="text-xs h-7 border-[#EADDD0] text-rose-700 hover:bg-rose-50 rounded-lg px-2"
+                        className="text-xs h-7 border-[#E2E5DF] text-rose-700 hover:bg-rose-50 rounded-lg px-2"
                         disabled={actioningId === booking.id}
                         onClick={() => handleUpdateStatus(booking.id, 'Cancelled')}
                       >
@@ -167,11 +167,11 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
 
                   {/* Actions for Tutor on Confirmed bookings */}
                   {userRole === 'Tutor' && isConfirmed && (
-                    <div className="pt-2 border-t border-[#F0E6DB] flex items-center justify-end">
+                    <div className="pt-2 border-t border-[#E2E5DF] flex items-center justify-end">
                       <Button
                         size="sm"
                         variant="outline"
-                        className="text-xs h-7 border-[#EADDD0] text-slate-700 hover:bg-slate-100 rounded-lg px-2"
+                        className="text-xs h-7 border-[#E2E5DF] text-slate-700 hover:bg-slate-100 rounded-lg px-2"
                         disabled={actioningId === booking.id}
                         onClick={() => handleUpdateStatus(booking.id, 'Completed')}
                       >
@@ -182,13 +182,13 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
 
                   {/* Actions for Tutor on Pending bookings */}
                   {userRole === 'Tutor' && isPending && (
-                    <div className="pt-2 border-t border-[#F0E6DB] space-y-2">
+                    <div className="pt-2 border-t border-[#E2E5DF] space-y-2">
                       <Input
                         type="text"
                         placeholder="Video meeting link (e.g. Google Meet / Zoom)"
                         value={meetingLinks[booking.id] || ''}
                         onChange={(e) => setMeetingLinks({ ...meetingLinks, [booking.id]: e.target.value })}
-                        className="text-xs bg-white h-8 rounded-lg border-[#EADDD0]"
+                        className="text-xs bg-white h-8 rounded-lg border-[#E2E5DF]"
                       />
                       <div className="flex gap-2">
                         <Button
@@ -202,7 +202,7 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="text-xs h-8 border-[#EADDD0] text-rose-700 hover:bg-rose-50 rounded-lg"
+                          className="text-xs h-8 border-[#E2E5DF] text-rose-700 hover:bg-rose-50 rounded-lg"
                           disabled={actioningId === booking.id}
                           onClick={() => handleUpdateStatus(booking.id, 'Cancelled')}
                         >

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Star, MapPin, Monitor, BookOpen, Clock, Users, CheckCircle, Heart } from 'lucide-react';
+import { Star, MapPin, Monitor, BookOpen, Clock, Users, CheckCircle, Heart, Play, ShieldCheck } from 'lucide-react';
 import { Tutor } from '@/lib/types';
 
 interface TutorCardProps {
@@ -13,7 +13,7 @@ interface TutorCardProps {
 
 export default function TutorCard({ tutor }: TutorCardProps) {
   return (
-    <Card className="overflow-hidden bg-white border border-[#E7E3EB] hover:border-plum-300 hover:shadow-md transition-all duration-300 rounded-xl">
+    <Card className="overflow-hidden bg-white border border-[#E2E5DF] hover:border-plum-300 hover:shadow-md transition-all duration-300 rounded-xl">
       <CardContent className="p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row gap-5">
           <div className="flex-shrink-0 self-start sm:self-auto">
@@ -34,9 +34,24 @@ export default function TutorCard({ tutor }: TutorCardProps) {
           <div className="flex-grow">
             <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-[#1F1924] flex items-center gap-2">
+                <h3 className="text-lg sm:text-xl font-bold text-[#243238] flex items-center gap-2 flex-wrap">
                   <span>{tutor.name}</span>
-                  {tutor.verified && (
+                  {tutor.idVerified && (
+                    <Badge variant="secondary" className="bg-plum-50 text-plum-900 border border-plum-200 font-medium text-[10px] px-1.5 py-0.5">
+                      🛡️ ID Reviewed
+                    </Badge>
+                  )}
+                  {tutor.qualificationVerified && (
+                    <Badge variant="secondary" className="bg-plum-50 text-plum-900 border border-plum-200 font-medium text-[10px] px-1.5 py-0.5">
+                      🎓 Degree Reviewed
+                    </Badge>
+                  )}
+                  {tutor.policeCheckVerified && (
+                    <Badge variant="secondary" className="bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium text-[10px] px-1.5 py-0.5">
+                      👮 Police Check Reviewed
+                    </Badge>
+                  )}
+                  {!tutor.idVerified && !tutor.qualificationVerified && !tutor.policeCheckVerified && tutor.verified && (
                     <Badge variant="secondary" className="bg-lavender-100 text-plum-900 border-none font-medium text-xs">
                       Verified
                     </Badge>
@@ -45,6 +60,11 @@ export default function TutorCard({ tutor }: TutorCardProps) {
                     <Badge variant="outline" className="bg-emerald-50 text-emerald-800 border-emerald-200 font-semibold text-[11px] px-2 py-0.5">
                       Free Demo
                     </Badge>
+                  )}
+                  {tutor.introVideoUrl && (
+                    <span className="inline-flex items-center text-[10px] text-plum-800 bg-plum-50 border border-plum-200 rounded-md px-1.5 py-0.5 font-medium">
+                      <Play className="h-2.5 w-2.5 mr-0.5 fill-plum-800" /> Intro Video
+                    </span>
                   )}
                 </h3>
                 <p className="text-sm text-gray-500 mt-0.5">{tutor.qualification}</p>
@@ -112,7 +132,7 @@ export default function TutorCard({ tutor }: TutorCardProps) {
                   </Button>
                 </Link>
                 <Link href={`/messages?tutor=${tutor.id}`}>
-                  <Button variant="outline" size="sm" className="border-[#E7E3EB] text-gray-700 hover:text-plum-900 text-xs px-3 h-8">
+                  <Button variant="outline" size="sm" className="border-[#E2E5DF] text-gray-700 hover:text-plum-900 text-xs px-3 h-8">
                     Contact
                   </Button>
                 </Link>

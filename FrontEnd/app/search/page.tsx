@@ -140,11 +140,11 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] flex flex-col text-[#1F1924]">
+    <div className="min-h-screen bg-[#F6F3EA] flex flex-col text-[#243238]">
       <Header />
       <div className="flex-1">
         {/* Search Header */}
-        <div className="bg-white/95 backdrop-blur-md border-b border-[#EADDD0] sticky top-16 z-30 shadow-xs">
+        <div className="bg-white/95 backdrop-blur-md border-b border-[#E2E5DF] sticky top-16 z-30 shadow-xs">
         <div className="container mx-auto px-4 py-3.5">
           <div className="flex flex-col lg:flex-row gap-3">
             <div className="relative flex-1">
@@ -152,7 +152,7 @@ export default function SearchPage() {
               <Input
                 type="text"
                 placeholder="Search subjects, tutors, or topics..."
-                className="pl-10 h-11 bg-[#FAF8F5] border-[#EADDD0] rounded-xl focus-visible:ring-plum-600 focus-visible:border-plum-600"
+                className="pl-10 h-11 bg-[#F6F3EA] border-[#E2E5DF] rounded-xl focus-visible:ring-plum-600 focus-visible:border-plum-600"
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
               />
@@ -160,7 +160,7 @@ export default function SearchPage() {
 
             <div className="flex gap-2.5">
               <Select value={filters.city || 'all'} onValueChange={(value) => setFilters({ ...filters, city: value === 'all' ? '' : value })}>
-                <SelectTrigger className="w-36 sm:w-44 h-11 bg-white border-[#EADDD0] rounded-xl">
+                <SelectTrigger className="w-36 sm:w-44 h-11 bg-white border-[#E2E5DF] rounded-xl">
                   <MapPin className="h-4 w-4 mr-2 text-plum-700 shrink-0" />
                   <SelectValue placeholder="Location" />
                 </SelectTrigger>
@@ -173,7 +173,7 @@ export default function SearchPage() {
               </Select>
 
               <Select value={filters.subject || 'all'} onValueChange={(value) => setFilters({ ...filters, subject: value === 'all' ? '' : value })}>
-                <SelectTrigger className="w-36 sm:w-44 h-11 bg-white border-[#EADDD0] rounded-xl">
+                <SelectTrigger className="w-36 sm:w-44 h-11 bg-white border-[#E2E5DF] rounded-xl">
                   <SelectValue placeholder="Subject" />
                 </SelectTrigger>
                 <SelectContent>
@@ -186,7 +186,7 @@ export default function SearchPage() {
 
               <Button
                 variant="outline"
-                className="lg:hidden h-11 rounded-xl border-[#EADDD0] text-[#1F1924]"
+                className="lg:hidden h-11 rounded-xl border-[#E2E5DF] text-[#243238]"
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <Filter className="h-4 w-4 mr-1.5 text-plum-700" />
@@ -203,7 +203,7 @@ export default function SearchPage() {
               className={`px-3 py-1 rounded-full text-xs font-semibold shrink-0 transition-colors ${
                 filters.boards.length === 0
                   ? 'bg-plum-900 text-white'
-                  : 'bg-[#FAF8F5] text-slate-600 hover:bg-[#F2ECE4] border border-[#EADDD0]'
+                  : 'bg-[#F6F3EA] text-slate-600 hover:bg-[#F2ECE4] border border-[#E2E5DF]'
               }`}
             >
               All Boards
@@ -217,7 +217,7 @@ export default function SearchPage() {
                   className={`px-3 py-1 rounded-full text-xs font-semibold shrink-0 transition-colors ${
                     active
                       ? 'bg-plum-900 text-white shadow-xs'
-                      : 'bg-[#FAF8F5] text-slate-600 hover:bg-[#F2ECE4] border border-[#EADDD0]'
+                      : 'bg-[#F6F3EA] text-slate-600 hover:bg-[#F2ECE4] border border-[#E2E5DF]'
                   }`}
                 >
                   {b}
@@ -232,10 +232,10 @@ export default function SearchPage() {
         <div className="flex gap-6">
           {/* Sidebar Filters - Desktop */}
           <aside className="hidden lg:block w-72 flex-shrink-0">
-            <Card className="sticky top-36 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+            <Card className="sticky top-36 border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
               <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-5 pb-3 border-b border-[#F0E6DB]">
-                  <h3 className="text-base font-bold text-[#1F1924]">Filters</h3>
+                <div className="flex items-center justify-between mb-5 pb-3 border-b border-[#E2E5DF]">
+                  <h3 className="text-base font-bold text-[#243238]">Filters</h3>
                   <button
                     onClick={clearFilters}
                     className="text-xs font-semibold text-plum-700 hover:text-plum-900 transition-colors"
@@ -265,7 +265,7 @@ export default function SearchPage() {
                     placeholder="e.g. Kakkanad, Kaloor, Edappally"
                     value={filters.locality}
                     onChange={(e) => setFilters({ ...filters, locality: e.target.value })}
-                    className="h-10 rounded-xl border-[#EADDD0] text-xs bg-[#FAF8F5]"
+                    className="h-10 rounded-xl border-[#E2E5DF] text-xs bg-[#F6F3EA]"
                   />
                   {/* Quick locality chips */}
                   <div className="flex flex-wrap gap-1 mt-2">
@@ -277,7 +277,7 @@ export default function SearchPage() {
                         className={`text-[10px] px-2 py-0.5 rounded-md font-medium border ${
                           filters.locality === loc
                             ? 'bg-plum-900 text-white border-plum-900'
-                            : 'bg-white text-slate-600 border-[#EADDD0] hover:bg-slate-50'
+                            : 'bg-white text-slate-600 border-[#E2E5DF] hover:bg-slate-50'
                         }`}
                       >
                         {loc}
@@ -295,7 +295,7 @@ export default function SearchPage() {
                     placeholder="e.g. 682030"
                     value={filters.pincode}
                     onChange={(e) => setFilters({ ...filters, pincode: e.target.value.replace(/\D/g, '') })}
-                    className="h-10 rounded-xl border-[#EADDD0] text-xs bg-[#FAF8F5]"
+                    className="h-10 rounded-xl border-[#E2E5DF] text-xs bg-[#F6F3EA]"
                   />
                 </div>
 
@@ -402,7 +402,7 @@ export default function SearchPage() {
           <main className="flex-1">
             {/* Mobile Filters */}
             {showFilters && (
-              <Card className="lg:hidden mb-4 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+              <Card className="lg:hidden mb-4 border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                 <CardContent className="p-4 space-y-4">
                   <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl">
                     <label className="flex items-center cursor-pointer">
@@ -423,7 +423,7 @@ export default function SearchPage() {
                         placeholder="Locality (e.g. Kakkanad)"
                         value={filters.locality}
                         onChange={(e) => setFilters({ ...filters, locality: e.target.value })}
-                        className="h-10 rounded-xl border-[#EADDD0] text-xs"
+                        className="h-10 rounded-xl border-[#E2E5DF] text-xs"
                       />
                       <Input
                         type="text"
@@ -431,7 +431,7 @@ export default function SearchPage() {
                         placeholder="Pincode"
                         value={filters.pincode}
                         onChange={(e) => setFilters({ ...filters, pincode: e.target.value.replace(/\D/g, '') })}
-                        className="h-10 rounded-xl border-[#EADDD0] text-xs"
+                        className="h-10 rounded-xl border-[#E2E5DF] text-xs"
                       />
                     </div>
                   </div>
@@ -443,14 +443,14 @@ export default function SearchPage() {
                         placeholder="Min"
                         value={filters.minRate}
                         onChange={(e) => setFilters({ ...filters, minRate: parseInt(e.target.value) || 0 })}
-                        className="h-10 rounded-xl border-[#EADDD0]"
+                        className="h-10 rounded-xl border-[#E2E5DF]"
                       />
                       <Input
                         type="number"
                         placeholder="Max"
                         value={filters.maxRate}
                         onChange={(e) => setFilters({ ...filters, maxRate: parseInt(e.target.value) || 2000 })}
-                        className="h-10 rounded-xl border-[#EADDD0]"
+                        className="h-10 rounded-xl border-[#E2E5DF]"
                       />
                     </div>
                   </div>
@@ -484,13 +484,13 @@ export default function SearchPage() {
             {/* Results Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5">
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1F1924]">Find Tutors</h1>
+                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#243238]">Find Tutors</h1>
                 <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{loading ? 'Searching tutors…' : `${totalCount} verified tutor${totalCount === 1 ? '' : 's'} available`}</p>
               </div>
 
               <div className="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
                 <Select value={filters.sortBy} onValueChange={(value) => setFilters({ ...filters, sortBy: value })}>
-                  <SelectTrigger className="w-36 sm:w-44 h-10 bg-white border-[#EADDD0] rounded-xl text-xs sm:text-sm">
+                  <SelectTrigger className="w-36 sm:w-44 h-10 bg-white border-[#E2E5DF] rounded-xl text-xs sm:text-sm">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
@@ -501,11 +501,11 @@ export default function SearchPage() {
                   </SelectContent>
                 </Select>
 
-                <div className="flex border border-[#EADDD0] bg-white rounded-xl overflow-hidden p-0.5">
+                <div className="flex border border-[#E2E5DF] bg-white rounded-xl overflow-hidden p-0.5">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className={`h-9 w-9 rounded-lg ${viewMode === 'list' ? 'bg-plum-900 text-white hover:bg-plum-900 hover:text-white' : 'text-slate-600 hover:text-[#1F1924]'}`}
+                    className={`h-9 w-9 rounded-lg ${viewMode === 'list' ? 'bg-plum-900 text-white hover:bg-plum-900 hover:text-white' : 'text-slate-600 hover:text-[#243238]'}`}
                     onClick={() => setViewMode('list')}
                   >
                     <List className="h-4 w-4" />
@@ -513,7 +513,7 @@ export default function SearchPage() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className={`h-9 w-9 rounded-lg ${viewMode === 'grid' ? 'bg-plum-900 text-white hover:bg-plum-900 hover:text-white' : 'text-slate-600 hover:text-[#1F1924]'}`}
+                    className={`h-9 w-9 rounded-lg ${viewMode === 'grid' ? 'bg-plum-900 text-white hover:bg-plum-900 hover:text-white' : 'text-slate-600 hover:text-[#243238]'}`}
                     onClick={() => setViewMode('grid')}
                   >
                     <Grid className="h-4 w-4" />
@@ -563,19 +563,19 @@ export default function SearchPage() {
 
             {/* Tutor Results */}
             {loading ? (
-              <Card className="text-center py-16 border-[#EADDD0] bg-white rounded-2xl">
+              <Card className="text-center py-16 border-[#E2E5DF] bg-white rounded-2xl">
                 <CardContent>
                   <div className="w-8 h-8 border-2 border-plum-900 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
                   <p className="text-sm text-slate-600 font-medium">Finding tutors near you…</p>
                 </CardContent>
               </Card>
             ) : filteredTutors.length === 0 ? (
-              <Card className="text-center py-16 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+              <Card className="text-center py-16 border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                 <CardContent className="max-w-md mx-auto">
                   <div className="w-14 h-14 rounded-2xl bg-plum-50 text-plum-800 flex items-center justify-center mx-auto mb-4">
                     <User className="h-7 w-7" />
                   </div>
-                  <h3 className="text-lg font-bold text-[#1F1924] mb-1.5">No tutors match your search</h3>
+                  <h3 className="text-lg font-bold text-[#243238] mb-1.5">No tutors match your search</h3>
                   <p className="text-xs sm:text-sm text-slate-500 mb-5">Try relaxing your price range or removing some filters to see more results.</p>
                   <Button onClick={clearFilters} className="bg-plum-900 hover:bg-plum-950 text-white rounded-xl h-10 px-5 text-xs font-semibold">
                     Clear All Filters

@@ -121,6 +121,13 @@ CREATE TABLE IF NOT EXISTS tutor_profiles (
     "Locality"        VARCHAR(100),
     "Pincode"         VARCHAR(10),
     "TravelRadiusKm"  INTEGER,
+    "IdVerified"            BOOLEAN         NOT NULL DEFAULT FALSE,
+    "QualificationVerified" BOOLEAN         NOT NULL DEFAULT FALSE,
+    "AddressVerified"       BOOLEAN         NOT NULL DEFAULT FALSE,
+    "PoliceCheckVerified"   BOOLEAN         NOT NULL DEFAULT FALSE,
+    "IntroVideoUrl"         VARCHAR(500),
+    "WhatsAppNotificationsEnabled" BOOLEAN  NOT NULL DEFAULT FALSE,
+    "WhatsAppPhoneNumber"   VARCHAR(20),
     "CreatedAt"       TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
     "UpdatedAt"       TIMESTAMPTZ     NOT NULL DEFAULT NOW()
 );
@@ -324,6 +331,35 @@ CREATE TABLE IF NOT EXISTS "ChatMessages" (
 CREATE INDEX IF NOT EXISTS "IX_ChatMessages_ConversationId" ON "ChatMessages"("ConversationId");
 CREATE INDEX IF NOT EXISTS "IX_ChatMessages_SentAt" ON "ChatMessages"("SentAt");
 CREATE INDEX IF NOT EXISTS "IX_ChatMessages_IsRead" ON "ChatMessages"("IsRead");
+
+-- ── coin_refund_requests ───────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS coin_refund_requests (
+    "Id"                UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
+    "TutorProfileId"    UUID         NOT NULL REFERENCES tutor_profiles("Id") ON DELETE CASCADE,
+    "CoinTransactionId" UUID         NOT NULL,
+    "ReferenceId"       UUID,
+    "CoinsRequested"    INTEGER      NOT NULL,
+    "Reason"            VARCHAR(50)  NOT NULL,
+    "Explanation"       VARCHAR(1000) NOT NULL,
+    "Status"            VARCHAR(20)  NOT NULL DEFAULT 'Pending',
+    "AdminNotes"        VARCHAR(500),
+    "ReviewedByUserId"  UUID,
+    "ReviewedAt"        TIMESTAMPTZ,
+    "CreatedAt"         TIMESTAMPTZ  NOT NULL DEFAULT NOW()
+);
+
+-- ── whatsapp_notification_logs ────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS whatsapp_notification_logs (
+    "Id"               UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
+    "TutorProfileId"   UUID          NOT NULL REFERENCES tutor_profiles("Id") ON DELETE CASCADE,
+    "RequirementId"    UUID          NOT NULL REFERENCES tuition_requirements("Id") ON DELETE CASCADE,
+    "RecipientPhone"   VARCHAR(20)   NOT NULL,
+    "MessageContent"   VARCHAR(1000) NOT NULL,
+    "Status"           VARCHAR(30)   NOT NULL,
+    "Provider"         VARCHAR(50)   NOT NULL DEFAULT 'Mock',
+    "ProviderResponse" VARCHAR(500),
+    "CreatedAt"        TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+);
 
 -- ── auto-update UpdatedAt ─────────────────────────────────────────────────────
 CREATE OR REPLACE FUNCTION set_updated_at()

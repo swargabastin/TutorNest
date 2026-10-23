@@ -21,6 +21,13 @@ export interface Tutor {
   travelRadiusKm?: number;
   boards?: string[];
   offersFreeDemo?: boolean;
+  idVerified?: boolean;
+  qualificationVerified?: boolean;
+  addressVerified?: boolean;
+  policeCheckVerified?: boolean;
+  introVideoUrl?: string;
+  whatsAppNotificationsEnabled?: boolean;
+  whatsAppPhoneNumber?: string;
 }
 
 export interface Student {

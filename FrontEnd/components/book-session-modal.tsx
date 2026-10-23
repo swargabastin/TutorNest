@@ -89,9 +89,9 @@ export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookS
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md rounded-2xl border-[#EADDD0] bg-white">
+      <DialogContent className="sm:max-w-md rounded-2xl border-[#E2E5DF] bg-white">
         <DialogHeader>
-          <DialogTitle className="text-lg font-extrabold flex items-center gap-2 text-[#1F1924]">
+          <DialogTitle className="text-lg font-extrabold flex items-center gap-2 text-[#243238]">
             <Calendar className="h-5 w-5 text-plum-800" />
             {isTrial ? `Book Free Demo with ${tutor.name}` : `Book a Class with ${tutor.name}`}
           </DialogTitle>
@@ -103,7 +103,7 @@ export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookS
               <CheckCircle className="h-6 w-6" />
             </div>
             <div>
-              <h3 className="font-bold text-base text-[#1F1924]">
+              <h3 className="font-bold text-base text-[#243238]">
                 {isTrial ? 'Free Demo Requested!' : 'Session Request Sent!'}
               </h3>
               <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
@@ -127,9 +127,9 @@ export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookS
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <Label htmlFor="subject" className="text-xs font-bold text-[#1F1924]">Subject</Label>
+                <Label htmlFor="subject" className="text-xs font-bold text-[#243238]">Subject</Label>
                 <Select value={subject} onValueChange={setSubject}>
-                  <SelectTrigger id="subject" className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs">
+                  <SelectTrigger id="subject" className="h-9 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs">
                     <SelectValue placeholder="Select Subject" />
                   </SelectTrigger>
                   <SelectContent>
@@ -141,13 +141,13 @@ export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookS
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="gradeLevel" className="text-xs font-bold text-[#1F1924]">Student Level</Label>
+                <Label htmlFor="gradeLevel" className="text-xs font-bold text-[#243238]">Student Level</Label>
                 <Input
                   id="gradeLevel"
                   placeholder="e.g. Class 10 / CBSE"
                   value={gradeLevel}
                   onChange={(e) => setGradeLevel(e.target.value)}
-                  className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs"
+                  className="h-9 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs"
                   required
                 />
               </div>
@@ -162,7 +162,7 @@ export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookS
                   value={date}
                   min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
                   onChange={(e) => setDate(e.target.value)}
-                  className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs"
+                  className="h-9 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs"
                   required
                 />
               </div>
@@ -174,7 +174,7 @@ export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookS
                   type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                  className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs"
+                  className="h-9 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs"
                   required
                 />
               </div>
@@ -184,7 +184,7 @@ export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookS
               <div className="space-y-1">
                 <Label htmlFor="mode" className="text-xs font-medium">Class Mode</Label>
                 <Select value={mode} onValueChange={setMode}>
-                  <SelectTrigger id="mode" className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs">
+                  <SelectTrigger id="mode" className="h-9 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs">
                     <SelectValue placeholder="Mode" />
                   </SelectTrigger>
                   <SelectContent>
@@ -202,7 +202,7 @@ export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookS
                     id="isTrial"
                     checked={isTrial}
                     onChange={(e) => setIsTrial(e.target.checked)}
-                    className="rounded border-[#EADDD0] text-plum-900 focus:ring-plum-600 accent-plum-900"
+                    className="rounded border-[#E2E5DF] text-plum-900 focus:ring-plum-600 accent-plum-900"
                   />
                   <Label htmlFor="isTrial" className="text-xs font-medium cursor-pointer">
                     Free Demo (45 min)
@@ -213,7 +213,7 @@ export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookS
 
             {mode === 'Offline' && (
               <div className="space-y-1">
-                <Label htmlFor="address" className="text-xs font-bold text-[#1F1924]">
+                <Label htmlFor="address" className="text-xs font-bold text-[#243238]">
                   Locality & Home Address <span className="text-rose-500">*</span>
                 </Label>
                 <Input
@@ -221,27 +221,27 @@ export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookS
                   placeholder="e.g. Kakkanad, Near Infopark Gate 1"
                   value={locationAddress}
                   onChange={(e) => setLocationAddress(e.target.value)}
-                  className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs"
+                  className="h-9 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs"
                   required={mode === 'Offline'}
                 />
               </div>
             )}
 
             <div className="space-y-1">
-              <Label htmlFor="notes" className="text-xs font-bold text-[#1F1924]">Topics or Goals (Optional)</Label>
+              <Label htmlFor="notes" className="text-xs font-bold text-[#243238]">Topics or Goals (Optional)</Label>
               <Textarea
                 id="notes"
                 placeholder="What topics, chapters or exams would you like help with?"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
-                className="text-xs rounded-xl border-[#EADDD0] bg-[#FAF8F5]"
+                className="text-xs rounded-xl border-[#E2E5DF] bg-[#F6F3EA]"
               />
             </div>
 
-            <div className="p-2.5 bg-[#FAF8F5] rounded-xl border border-[#EADDD0] text-xs text-slate-600 flex justify-between items-center">
+            <div className="p-2.5 bg-[#F6F3EA] rounded-xl border border-[#E2E5DF] text-xs text-slate-600 flex justify-between items-center">
               <span>Estimated Tuition Fee:</span>
-              <span className="font-extrabold text-[#1F1924]">
+              <span className="font-extrabold text-[#243238]">
                 {isTrial ? '₹0 (100% Free Demo)' : `₹${tutor.hourlyRate} / hour`}
               </span>
             </div>

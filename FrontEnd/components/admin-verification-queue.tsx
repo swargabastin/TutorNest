@@ -61,10 +61,10 @@ export function AdminVerificationQueue() {
   };
 
   return (
-    <Card className="border border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+    <Card className="border border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
       <CardHeader className="flex flex-row items-center justify-between pb-3">
         <div>
-          <CardTitle className="text-base font-bold flex items-center gap-2 text-[#1F1924]">
+          <CardTitle className="text-base font-bold flex items-center gap-2 text-[#243238]">
             <FileCheck className="h-5 w-5 text-plum-800" />
             Verification Documents Approval Queue
           </CardTitle>
@@ -89,12 +89,12 @@ export function AdminVerificationQueue() {
         ) : pendingDocs.length === 0 ? (
           <div className="text-center py-6 text-slate-500">
             <CheckCircle className="h-8 w-8 mx-auto mb-2 text-emerald-600" />
-            <p className="text-xs font-bold text-[#1F1924]">All verification documents reviewed!</p>
+            <p className="text-xs font-bold text-[#243238]">All verification documents reviewed!</p>
             <p className="text-[11px] text-slate-400 mt-0.5">New submissions will appear here automatically.</p>
           </div>
         ) : (
           <div className="space-y-3">
-            <div className="hidden md:grid grid-cols-5 text-xs font-bold text-slate-400 border-b border-[#F0E6DB] pb-2">
+            <div className="hidden md:grid grid-cols-5 text-xs font-bold text-slate-400 border-b border-[#E2E5DF] pb-2">
               <span className="col-span-1">Tutor Name</span>
               <span className="col-span-1">Document Type</span>
               <span className="col-span-1">Submitted Date</span>
@@ -105,9 +105,9 @@ export function AdminVerificationQueue() {
             {pendingDocs.map((doc) => (
               <div
                 key={doc.id}
-                className="flex flex-col md:grid md:grid-cols-5 items-start md:items-center py-2.5 border-b border-[#F0E6DB] last:border-b-0 gap-2 md:gap-0"
+                className="flex flex-col md:grid md:grid-cols-5 items-start md:items-center py-2.5 border-b border-[#E2E5DF] last:border-b-0 gap-2 md:gap-0"
               >
-                <div className="col-span-1 font-bold text-xs text-[#1F1924]">
+                <div className="col-span-1 font-bold text-xs text-[#243238]">
                   {doc.tutorName}
                 </div>
 
@@ -140,7 +140,7 @@ export function AdminVerificationQueue() {
                         placeholder="Reason for rejection *"
                         value={rejectionReason}
                         onChange={(e) => setRejectionReason(e.target.value)}
-                        className="text-xs bg-white rounded-lg border-[#EADDD0] h-8"
+                        className="text-xs bg-white rounded-lg border-[#E2E5DF] h-8"
                       />
                       <div className="flex gap-2">
                         <Button
@@ -155,7 +155,7 @@ export function AdminVerificationQueue() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="text-xs h-7 rounded-lg border-[#EADDD0]"
+                          className="text-xs h-7 rounded-lg border-[#E2E5DF]"
                           onClick={() => {
                             setRejectingId(null);
                             setRejectionReason('');
@@ -179,7 +179,7 @@ export function AdminVerificationQueue() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="text-xs text-rose-700 border-[#EADDD0] hover:bg-rose-50 h-8 px-3 rounded-lg font-semibold"
+                        className="text-xs text-rose-700 border-[#E2E5DF] hover:bg-rose-50 h-8 px-3 rounded-lg font-semibold"
                         disabled={actioningId === doc.id}
                         onClick={() => {
                           setRejectingId(doc.id);

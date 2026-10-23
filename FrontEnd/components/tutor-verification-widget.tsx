@@ -109,7 +109,7 @@ export function TutorVerificationWidget() {
     <Card className="border shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-3">
         <div className="space-y-1">
-          <CardTitle className="text-base font-bold flex items-center gap-2 text-[#1F1924]">
+          <CardTitle className="text-base font-bold flex items-center gap-2 text-[#243238]">
             <FileCheck className="h-5 w-5 text-plum-800" />
             Identity &amp; Qualification Verification
           </CardTitle>
@@ -132,14 +132,14 @@ export function TutorVerificationWidget() {
 
       <CardContent className="space-y-5">
         {/* Upload Form */}
-        <form onSubmit={handleUpload} className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#EADDD0] space-y-3.5">
+        <form onSubmit={handleUpload} className="p-4 bg-[#F6F3EA] rounded-2xl border border-[#E2E5DF] space-y-3.5">
           <h4 className="font-bold text-xs uppercase tracking-wider text-slate-500">Upload New Document</h4>
 
           <div className="grid sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="docType" className="text-xs font-bold text-[#1F1924]">Document Type</Label>
+              <Label htmlFor="docType" className="text-xs font-bold text-[#243238]">Document Type</Label>
               <Select value={selectedDocType} onValueChange={setSelectedDocType}>
-                <SelectTrigger id="docType" className="bg-white rounded-xl border-[#EADDD0] h-10 text-xs">
+                <SelectTrigger id="docType" className="bg-white rounded-xl border-[#E2E5DF] h-10 text-xs">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -152,13 +152,13 @@ export function TutorVerificationWidget() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="fileInput" className="text-xs font-bold text-[#1F1924]">Select File (JPG, PNG, WEBP, PDF &lt; 10MB)</Label>
+              <Label htmlFor="fileInput" className="text-xs font-bold text-[#243238]">Select File (JPG, PNG, WEBP, PDF &lt; 10MB)</Label>
               <input
                 id="fileInput"
                 type="file"
                 accept=".jpg,.jpeg,.png,.webp,.pdf"
                 onChange={handleFileChange}
-                className="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-plum-50 file:text-plum-900 hover:file:bg-plum-100 cursor-pointer bg-white rounded-xl border border-[#EADDD0] p-1 h-10"
+                className="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-plum-50 file:text-plum-900 hover:file:bg-plum-100 cursor-pointer bg-white rounded-xl border border-[#E2E5DF] p-1 h-10"
               />
             </div>
           </div>
@@ -188,14 +188,14 @@ export function TutorVerificationWidget() {
               {documents.map((doc) => (
                 <div
                   key={doc.id}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl border border-[#EADDD0] bg-[#FAF8F5] gap-2.5"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl border border-[#E2E5DF] bg-[#F6F3EA] gap-2.5"
                 >
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-xl bg-plum-100 text-plum-900">
                       <FileText className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-[#1F1924]">
+                      <p className="text-xs font-bold text-[#243238]">
                         {docTypeLabels[doc.docType] ?? doc.docType}
                       </p>
                       <p className="text-[10px] text-slate-400">

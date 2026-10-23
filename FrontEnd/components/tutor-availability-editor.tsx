@@ -17,8 +17,11 @@ import {
   CheckCircle,
   AlertCircle,
   Loader2,
+  Play,
+  MessageCircle,
 } from 'lucide-react';
 import { tutorsApi, lookupsApi, TutorDetail } from '@/lib/api';
+import { parseVideoUrl } from '@/lib/video-utils';
 
 const DAYS = [
   { dayOfWeek: 1, label: 'Mon', fullLabel: 'Monday' },
@@ -49,6 +52,9 @@ export function TutorAvailabilityEditor() {
   const [locality, setLocality] = useState('');
   const [pincode, setPincode] = useState('');
   const [travelRadius, setTravelRadius] = useState<number | ''>(5);
+  const [introVideoUrl, setIntroVideoUrl] = useState('');
+  const [whatsAppNotificationsEnabled, setWhatsAppNotificationsEnabled] = useState(false);
+  const [whatsAppPhoneNumber, setWhatsAppPhoneNumber] = useState('');
 
   // Availability matrix: Set of slot keys formatted as `${dayOfWeek}_${slotKey}`
   const [activeSlots, setActiveSlots] = useState<Set<string>>(new Set());
@@ -64,6 +70,9 @@ export function TutorAvailabilityEditor() {
         setLocality(profile.locality || '');
         setPincode(profile.pincode || '');
         setTravelRadius(profile.travelRadiusKm ?? 5);
+        setIntroVideoUrl(profile.introVideoUrl || '');
+        setWhatsAppNotificationsEnabled(profile.whatsAppNotificationsEnabled ?? false);
+        setWhatsAppPhoneNumber(profile.whatsAppPhoneNumber || profile.phone || '');
 
         // Preload availability
         if (profile.availabilities && profile.availabilities.length > 0) {
@@ -142,13 +151,16 @@ export function TutorAvailabilityEditor() {
     setErrorMessage(null);
 
     try {
-      // 1. Update Profile (OffersFreeDemo, Boards, Locality, Pincode, TravelRadiusKm)
+      // 1. Update Profile (OffersFreeDemo, Boards, Locality, Pincode, TravelRadiusKm, Video, WhatsApp)
       await tutorsApi.updateProfile({
         offersFreeDemo,
         boards: selectedBoards,
         locality: locality.trim() || undefined,
         pincode: pincode.trim() || undefined,
         travelRadiusKm: travelRadius === '' ? undefined : Number(travelRadius),
+        introVideoUrl: introVideoUrl.trim() || undefined,
+        whatsAppNotificationsEnabled,
+        whatsAppPhoneNumber: whatsAppPhoneNumber.trim() || undefined,
       });
 
       // 2. Prepare and save Availability slots
@@ -180,7 +192,7 @@ export function TutorAvailabilityEditor() {
 
   if (loading) {
     return (
-      <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+      <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
         <CardContent className="p-8 text-center text-slate-500 text-xs">
           <Loader2 className="h-5 w-5 animate-spin mx-auto mb-2 text-plum-900" />
           Loading your availability settings…
@@ -190,11 +202,11 @@ export function TutorAvailabilityEditor() {
   }
 
   return (
-    <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs overflow-hidden">
-      <CardHeader className="border-b border-[#F0E6DB] bg-[#FAF8F5]/60 pb-4">
+    <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs overflow-hidden">
+      <CardHeader className="border-b border-[#E2E5DF] bg-[#F6F3EA]/60 pb-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <CardTitle className="text-base font-bold text-[#1F1924] flex items-center gap-2">
+            <CardTitle className="text-base font-bold text-[#243238] flex items-center gap-2">
               <Calendar className="h-4 w-4 text-plum-900" />
               Availability & Tutoring Preferences
             </CardTitle>
@@ -240,7 +252,7 @@ export function TutorAvailabilityEditor() {
         <div className="p-4 rounded-xl border border-plum-200 bg-plum-50/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-xs sm:text-sm text-[#1F1924]">Offer 30-Minute Free Demo Classes</span>
+              <span className="font-bold text-xs sm:text-sm text-[#243238]">Offer 30-Minute Free Demo Classes</span>
               <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 border-emerald-200 text-[10px]">
                 Recommended
               </Badge>
@@ -277,7 +289,7 @@ export function TutorAvailabilityEditor() {
                 variant="outline"
                 size="sm"
                 onClick={() => setPreset('weekdays')}
-                className="text-[11px] h-7 px-2.5 rounded-lg border-[#EADDD0] hover:bg-plum-50"
+                className="text-[11px] h-7 px-2.5 rounded-lg border-[#E2E5DF] hover:bg-plum-50"
               >
                 + Weekday Evenings
               </Button>
@@ -286,7 +298,7 @@ export function TutorAvailabilityEditor() {
                 variant="outline"
                 size="sm"
                 onClick={() => setPreset('weekends')}
-                className="text-[11px] h-7 px-2.5 rounded-lg border-[#EADDD0] hover:bg-plum-50"
+                className="text-[11px] h-7 px-2.5 rounded-lg border-[#E2E5DF] hover:bg-plum-50"
               >
                 + Weekends
               </Button>
@@ -302,23 +314,23 @@ export function TutorAvailabilityEditor() {
             </div>
           </div>
 
-          <div className="overflow-x-auto border border-[#EADDD0] rounded-xl bg-white shadow-2xs">
+          <div className="overflow-x-auto border border-[#E2E5DF] rounded-xl bg-white shadow-2xs">
             <table className="w-full text-xs text-left">
               <thead>
-                <tr className="border-b border-[#EADDD0] bg-[#FAF8F5]">
+                <tr className="border-b border-[#E2E5DF] bg-[#F6F3EA]">
                   <th className="p-2.5 font-bold text-slate-700 w-24">Day</th>
                   {TIME_SLOTS.map((slot) => (
                     <th key={slot.key} className="p-2.5 font-bold text-slate-700 text-center">
-                      <div className="font-semibold text-xs text-[#1F1924]">{slot.label}</div>
+                      <div className="font-semibold text-xs text-[#243238]">{slot.label}</div>
                       <div className="text-[10px] text-slate-500 font-normal">{slot.time}</div>
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#F0E6DB]">
+              <tbody className="divide-y divide-[#E2E5DF]">
                 {DAYS.map((day) => (
                   <tr key={day.dayOfWeek} className="hover:bg-plum-50/20 transition-colors">
-                    <td className="p-2.5 font-bold text-[#1F1924]">
+                    <td className="p-2.5 font-bold text-[#243238]">
                       <span className="hidden sm:inline">{day.fullLabel}</span>
                       <span className="sm:hidden">{day.label}</span>
                     </td>
@@ -332,7 +344,7 @@ export function TutorAvailabilityEditor() {
                             className={`w-full py-1.5 px-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center gap-1 ${
                               isActive
                                 ? 'bg-plum-900 text-white shadow-2xs font-semibold hover:bg-plum-950'
-                                : 'bg-[#FAF8F5] text-slate-500 hover:bg-[#F0E6DB] border border-dashed border-[#EADDD0]'
+                                : 'bg-[#F6F3EA] text-slate-500 hover:bg-[#E2E5DF] border border-dashed border-[#E2E5DF]'
                             }`}
                           >
                             {isActive ? (
@@ -354,7 +366,7 @@ export function TutorAvailabilityEditor() {
         </div>
 
         {/* Section 3: Curriculum & Syllabus Boards */}
-        <div className="space-y-2 pt-2 border-t border-[#F0E6DB]">
+        <div className="space-y-2 pt-2 border-t border-[#E2E5DF]">
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
             <BookOpen className="h-3.5 w-3.5 text-plum-900" />
             Curricula & Syllabus Boards Taught
@@ -371,7 +383,7 @@ export function TutorAvailabilityEditor() {
                   className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
                     isSelected
                       ? 'bg-plum-900 text-white border-plum-900 font-semibold shadow-2xs'
-                      : 'bg-white text-slate-700 border-[#EADDD0] hover:bg-[#FAF8F5]'
+                      : 'bg-white text-slate-700 border-[#E2E5DF] hover:bg-[#F6F3EA]'
                   }`}
                 >
                   {isSelected && <Check className="h-3 w-3 inline mr-1 stroke-[3]" />}
@@ -383,7 +395,7 @@ export function TutorAvailabilityEditor() {
         </div>
 
         {/* Section 4: Hyperlocal Location & Travel Radius */}
-        <div className="space-y-3 pt-2 border-t border-[#F0E6DB]">
+        <div className="space-y-3 pt-2 border-t border-[#E2E5DF]">
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
             <MapPin className="h-3.5 w-3.5 text-plum-900" />
             Hyperlocal Tutoring Area & Radius
@@ -396,7 +408,7 @@ export function TutorAvailabilityEditor() {
                 placeholder="e.g. Kakkanad, Kaloor, Edappally"
                 value={locality}
                 onChange={(e) => setLocality(e.target.value)}
-                className="text-xs h-9 bg-white border-[#EADDD0] rounded-xl"
+                className="text-xs h-9 bg-white border-[#E2E5DF] rounded-xl"
               />
             </div>
             <div>
@@ -407,7 +419,7 @@ export function TutorAvailabilityEditor() {
                 placeholder="e.g. 682030"
                 value={pincode}
                 onChange={(e) => setPincode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                className="text-xs h-9 bg-white border-[#EADDD0] rounded-xl font-mono"
+                className="text-xs h-9 bg-white border-[#E2E5DF] rounded-xl font-mono"
               />
             </div>
             <div>
@@ -419,10 +431,107 @@ export function TutorAvailabilityEditor() {
                 placeholder="5"
                 value={travelRadius}
                 onChange={(e) => setTravelRadius(e.target.value === '' ? '' : Number(e.target.value))}
-                className="text-xs h-9 bg-white border-[#EADDD0] rounded-xl"
+                className="text-xs h-9 bg-white border-[#E2E5DF] rounded-xl"
               />
             </div>
           </div>
+        </div>
+
+        {/* Section 5: Tutor Video Introduction (Phase 2) */}
+        <div className="space-y-3 pt-2 border-t border-[#E2E5DF]">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+              <Play className="h-3.5 w-3.5 text-plum-900 fill-plum-900" />
+              Tutor Video Introduction Reel
+            </h3>
+            <Badge variant="outline" className="text-[10px] bg-plum-50 text-plum-900 border-plum-200">
+              Optional • 3.8× More Inquiries
+            </Badge>
+          </div>
+          <p className="text-xs text-slate-500">
+            Paste a 45–90 second introductory video link from YouTube, Vimeo, or Cloudinary.
+          </p>
+          <div className="space-y-2">
+            <Input
+              type="url"
+              placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              value={introVideoUrl}
+              onChange={(e) => setIntroVideoUrl(e.target.value)}
+              className="text-xs h-9 bg-white border-[#E2E5DF] rounded-xl font-mono"
+            />
+            {(() => {
+              const video = parseVideoUrl(introVideoUrl);
+              if (!video.isValid || !video.embedUrl) return null;
+              return (
+                <div className="p-3 bg-[#F6F3EA] border border-[#E2E5DF] rounded-xl space-y-2">
+                  <div className="flex items-center justify-between text-xs text-slate-600">
+                    <span className="font-semibold flex items-center gap-1 text-emerald-800">
+                      <Check className="h-3.5 w-3.5 text-emerald-600" /> Valid {video.provider.toUpperCase()} Video URL
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setIntroVideoUrl('')}
+                      className="text-[11px] text-rose-600 hover:underline"
+                    >
+                      Remove Video
+                    </button>
+                  </div>
+                  <div className="relative aspect-video max-w-sm rounded-lg overflow-hidden bg-black border border-[#E2E5DF]">
+                    <iframe
+                      src={video.embedUrl}
+                      title="Preview Introduction Video"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      className="absolute inset-0 w-full h-full border-0"
+                    />
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+
+        {/* Section 6: WhatsApp Instant Lead Alerts (Phase 3) */}
+        <div className="space-y-3 pt-2 border-t border-[#E2E5DF]">
+          <div className="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-xs sm:text-sm text-[#243238] flex items-center gap-1.5">
+                  <MessageCircle className="h-4 w-4 text-emerald-700" />
+                  Instant WhatsApp Lead Alerts
+                </span>
+                <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 border-emerald-200 text-[10px]">
+                  Opt-In
+                </Badge>
+              </div>
+              <p className="text-xs text-slate-600">
+                Receive instant WhatsApp notifications when new student requirements match your subjects, board, and locality. You can opt out at any time.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <Switch
+                checked={whatsAppNotificationsEnabled}
+                onCheckedChange={setWhatsAppNotificationsEnabled}
+                aria-label="Toggle WhatsApp Lead Alerts"
+              />
+              <span className="text-xs font-semibold text-emerald-950">
+                {whatsAppNotificationsEnabled ? 'Enabled' : 'Disabled'}
+              </span>
+            </div>
+          </div>
+
+          {whatsAppNotificationsEnabled && (
+            <div className="max-w-xs">
+              <label className="text-xs font-semibold text-slate-700 block mb-1">WhatsApp Phone Number</label>
+              <Input
+                type="tel"
+                placeholder="+91 9876543210"
+                value={whatsAppPhoneNumber}
+                onChange={(e) => setWhatsAppPhoneNumber(e.target.value)}
+                className="text-xs h-9 bg-white border-[#E2E5DF] rounded-xl font-mono"
+              />
+              <p className="text-[11px] text-slate-400 mt-1">Must include country code (default: +91 for India).</p>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

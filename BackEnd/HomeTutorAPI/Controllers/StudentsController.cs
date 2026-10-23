@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
+using HomeTutorAPI.Services.WhatsApp;
+using Microsoft.Extensions.Logging;
+
 namespace HomeTutorAPI.Controllers;
 
 [ApiController]
@@ -18,7 +21,9 @@ public class StudentsController(
     IStudentRepository studentRepo,
     ITutorRepository   tutorRepo,
     IMapper            mapper,
-    AppDbContext        db) : ControllerBase
+    AppDbContext        db,
+    IWhatsAppNotificationService whatsAppService,
+    ILogger<StudentsController> logger) : ControllerBase
 {
     // ── GET /api/students/me ──────────────────────────────────────────────────
     [HttpGet("me")]
@@ -89,6 +94,29 @@ public class StudentsController(
 
         await db.TuitionRequirements.AddAsync(requirement, ct);
         await db.SaveChangesAsync(ct);
+
+        // Phase 3: WhatsApp instant lead notifications to matching opted-in tutors
+        try
+        {
+            var subjectLower = req.Subject.ToLower().Trim();
+            var matchingTutors = await db.TutorProfiles
+                .Include(t => t.User)
+                .Include(t => t.TutorSubjects).ThenInclude(ts => ts.Subject)
+                .Where(t => t.WhatsAppNotificationsEnabled &&
+                            t.Status == TutorStatus.Approved &&
+                            t.TutorSubjects.Any(ts => ts.Subject.Name.ToLower() == subjectLower))
+                .Take(10)
+                .ToListAsync(ct);
+
+            foreach (var t in matchingTutors)
+            {
+                await whatsAppService.SendLeadNotificationAsync(t, requirement, ct);
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Non-blocking error dispatching WhatsApp alerts for Requirement {Id}", requirement.Id);
+        }
 
         return CreatedAtAction(nameof(GetMyProfile), null, mapper.Map<RequirementDto>(requirement));
     }

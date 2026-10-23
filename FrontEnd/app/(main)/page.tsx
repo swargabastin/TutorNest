@@ -59,9 +59,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-ivory-100 dark:bg-[#140B17] text-[#1F1924] dark:text-ivory-50">
+    <div className="min-h-screen bg-ivory-100 dark:bg-[#0A242F] text-[#243238] dark:text-ivory-50">
       {/* ── 1. Compact Hero Section ─────────────────────────────────────────── */}
-      <section className="relative bg-gradient-to-br from-plum-900 via-plum-800 to-[#2A082C] text-white overflow-hidden py-10 sm:py-14 lg:py-20">
+      <section className="relative bg-gradient-to-br from-plum-900 via-plum-800 to-[#0E3342] text-white overflow-hidden py-10 sm:py-14 lg:py-20">
         {/* Subtle ambient lighting */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-lavender-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 left-10 w-72 h-72 bg-plum-500/15 rounded-full blur-2xl pointer-events-none" />
@@ -83,7 +83,7 @@ export default function Home() {
             {/* Smart Search Card */}
             <form
               onSubmit={handleSearch}
-              className="bg-white dark:bg-[#1C1221] rounded-2xl p-2.5 sm:p-3 shadow-xl border border-plum-900/20 max-w-2xl text-left"
+              className="bg-white dark:bg-[#0F313E] rounded-2xl p-2.5 sm:p-3 shadow-xl border border-plum-900/20 max-w-2xl text-left"
             >
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <div className="relative flex-1">
@@ -139,11 +139,11 @@ export default function Home() {
       </section>
 
       {/* ── 2. Popular Subjects: Horizontal Swipe on Mobile ─────────────────── */}
-      <section className="py-8 sm:py-12 border-b border-[#EBE7F0]">
+      <section className="py-8 sm:py-12 border-b border-[#E2E5DF]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1F1924] dark:text-ivory-50">
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#243238] dark:text-ivory-50">
                 Explore Top Subjects
               </h2>
               <p className="text-xs sm:text-sm text-gray-500">Pick a topic to view available verified tutors</p>
@@ -165,7 +165,7 @@ export default function Home() {
                 href={`/search?subject=${encodeURIComponent(subject)}`}
                 className="snap-start shrink-0 min-w-[130px] sm:min-w-0"
               >
-                <div className="p-3 sm:p-4 rounded-xl bg-white dark:bg-[#1E1424] border border-[#E7E3EB] dark:border-plum-900/60 hover:border-plum-400 hover:shadow-sm text-center transition-all group">
+                <div className="p-3 sm:p-4 rounded-xl bg-white dark:bg-[#0F313E] border border-[#E2E5DF] dark:border-plum-900/60 hover:border-plum-400 hover:shadow-sm text-center transition-all group">
                   <div className="w-9 h-9 mx-auto mb-2 rounded-lg bg-lavender-100/70 dark:bg-plum-900/50 flex items-center justify-center text-plum-800 dark:text-lavender-200 group-hover:scale-110 transition-transform">
                     <BookOpen className="h-4 w-4" />
                   </div>
@@ -180,12 +180,12 @@ export default function Home() {
       </section>
 
       {/* ── 3. Featured Tutors: Horizontal Touch Carousel on Mobile ─────────── */}
-      <section className="py-8 sm:py-12 bg-white dark:bg-[#180E1C] border-b border-[#EBE7F0]">
+      <section className="py-8 sm:py-12 bg-white dark:bg-[#0D2B37] border-b border-[#E2E5DF]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1F1924] dark:text-ivory-50">
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#243238] dark:text-ivory-50">
                   Featured Tutors
                 </h2>
                 <Badge variant="secondary" className="bg-lavender-100 text-plum-900 text-[11px] font-semibold">
@@ -215,10 +215,10 @@ export default function Home() {
       </section>
 
       {/* ── 4. How TutorNest Works: Compact 3-Step Flow ─────────────────────── */}
-      <section className="py-8 sm:py-12 bg-ivory-50 dark:bg-[#140B17] border-b border-[#EBE7F0]">
+      <section className="py-8 sm:py-12 bg-ivory-50 dark:bg-[#0A242F] border-b border-[#E2E5DF]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-xl mx-auto mb-6 sm:mb-8">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1F1924] dark:text-ivory-50">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#243238] dark:text-ivory-50">
               How TutorNest Works
             </h2>
             <p className="text-xs sm:text-sm text-gray-500 mt-1">Get started in three easy steps</p>
@@ -247,7 +247,7 @@ export default function Home() {
             ].map((item) => (
               <div
                 key={item.step}
-                className="flex items-start sm:flex-col sm:items-center sm:text-center gap-3.5 sm:gap-3 p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#1D1222] border border-[#E7E3EB] shadow-xs"
+                className="flex items-start sm:flex-col sm:items-center sm:text-center gap-3.5 sm:gap-3 p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#0F313E] border border-[#E2E5DF] shadow-xs"
               >
                 <div className="w-10 h-10 rounded-xl bg-plum-50 dark:bg-plum-950 flex items-center justify-center text-plum-800 dark:text-lavender-300 font-bold shrink-0">
                   <item.icon className="h-5 w-5" />
@@ -267,9 +267,9 @@ export default function Home() {
       </section>
 
       {/* ── 5. Become a Tutor Banner ────────────────────────────────────────── */}
-      <section className="py-8 sm:py-12 bg-white dark:bg-[#180E1C] border-b border-[#EBE7F0]">
+      <section className="py-8 sm:py-12 bg-white dark:bg-[#0D2B37] border-b border-[#E2E5DF]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-plum-900 via-plum-800 to-[#350A38] rounded-2xl p-6 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+          <div className="bg-gradient-to-r from-plum-900 via-plum-800 to-[#0E3342] rounded-2xl p-6 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
             <div className="max-w-xl text-center md:text-left">
               <Badge className="bg-white/15 text-ivory-100 border-none text-xs mb-3">
                 For Teachers &amp; Educators
@@ -306,10 +306,10 @@ export default function Home() {
       </section>
 
       {/* ── 6. Testimonials: Horizontal Swipeable on Mobile ─────────────────── */}
-      <section className="py-8 sm:py-12 bg-ivory-100 dark:bg-[#140B17]">
+      <section className="py-8 sm:py-12 bg-ivory-100 dark:bg-[#0A242F]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-lg mx-auto mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1F1924] dark:text-ivory-50">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#243238] dark:text-ivory-50">
               What Students Say
             </h2>
             <p className="text-xs sm:text-sm text-gray-500 mt-1">Real reviews from our learning community</p>
@@ -338,7 +338,7 @@ export default function Home() {
             ].map((testimonial, i) => (
               <div
                 key={i}
-                className="snap-start shrink-0 w-[80vw] max-w-[320px] sm:w-auto sm:max-w-none p-5 rounded-2xl bg-white dark:bg-[#1E1424] border border-[#E7E3EB] shadow-xs flex flex-col justify-between"
+                className="snap-start shrink-0 w-[80vw] max-w-[320px] sm:w-auto sm:max-w-none p-5 rounded-2xl bg-white dark:bg-[#0F313E] border border-[#E2E5DF] shadow-xs flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center space-x-1 mb-3">

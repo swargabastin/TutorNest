@@ -38,7 +38,12 @@ public class MappingProfile : Profile
                 t.Locality,
                 t.Pincode,
                 t.Boards,
-                t.OffersFreeDemo));
+                t.OffersFreeDemo,
+                t.IdVerified,
+                t.QualificationVerified,
+                t.AddressVerified,
+                t.PoliceCheckVerified,
+                t.IntroVideoUrl));
 
         // TutorProfile → TutorDetailDto
         CreateMap<TutorProfile, TutorDetailDto>()
@@ -69,7 +74,14 @@ public class MappingProfile : Profile
                 t.Pincode,
                 t.TravelRadiusKm,
                 t.Boards,
-                t.OffersFreeDemo));
+                t.OffersFreeDemo,
+                t.IdVerified,
+                t.QualificationVerified,
+                t.AddressVerified,
+                t.PoliceCheckVerified,
+                t.IntroVideoUrl,
+                t.WhatsAppNotificationsEnabled,
+                t.WhatsAppPhoneNumber));
 
         // Review → ReviewDto
         CreateMap<Review, ReviewDto>()
@@ -166,5 +178,34 @@ public class MappingProfile : Profile
                 b.CancellationReason,
                 b.CreatedAt,
                 b.GradeLevel));
+
+        // CoinRefundRequest → CoinRefundRequestDto
+        CreateMap<CoinRefundRequest, CoinRefundRequestDto>()
+            .ConstructUsing(r => new CoinRefundRequestDto(
+                r.Id,
+                r.TutorProfileId,
+                r.TutorProfile != null && r.TutorProfile.User != null ? r.TutorProfile.User.FullName : "Tutor",
+                r.CoinTransactionId,
+                r.ReferenceId,
+                r.CoinsRequested,
+                r.Reason.ToString(),
+                r.Explanation,
+                r.Status.ToString(),
+                r.AdminNotes,
+                r.ReviewedAt,
+                r.CreatedAt));
+
+        // WhatsAppNotificationLog → WhatsAppNotificationLogDto
+        CreateMap<WhatsAppNotificationLog, WhatsAppNotificationLogDto>()
+            .ConstructUsing(w => new WhatsAppNotificationLogDto(
+                w.Id,
+                w.TutorProfileId,
+                w.TutorProfile != null && w.TutorProfile.User != null ? w.TutorProfile.User.FullName : "Tutor",
+                w.RequirementId,
+                w.RecipientPhone,
+                w.MessageContent,
+                w.Status.ToString(),
+                w.Provider,
+                w.CreatedAt));
     }
 }
