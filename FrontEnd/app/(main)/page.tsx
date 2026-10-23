@@ -19,12 +19,17 @@ import {
   Play
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { tutorsApi, lookupsApi } from '@/lib/api';
 import type { Tutor } from '@/lib/types';
 
 export default function Home() {
+  const router = useRouter();
   const [featuredTutors, setFeaturedTutors] = useState<Tutor[]>([]);
   const [subjects, setSubjects] = useState<string[]>([]);
+  const [cities, setCities] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
 
   useEffect(() => {
     tutorsApi
@@ -36,7 +41,20 @@ export default function Home() {
       .getSubjects()
       .then((subs) => setSubjects(subs.map((s) => s.name)))
       .catch((err) => console.error('Failed to load subjects', err));
+
+    lookupsApi
+      .getCities()
+      .then((c) => setCities(c.map((x) => x.city)))
+      .catch((err) => console.error('Failed to load cities', err));
   }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) params.set('q', searchQuery.trim());
+    if (selectedCity.trim()) params.set('city', selectedCity.trim());
+    router.push(`/search?${params.toString()}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -58,34 +76,37 @@ export default function Home() {
             </p>
 
             {/* Search Box */}
-            <div className="bg-white rounded-xl shadow-xl p-4 max-w-2xl">
+            <form onSubmit={handleSearch} className="bg-white rounded-xl shadow-xl p-4 max-w-2xl">
               <div className="flex flex-col md:flex-row gap-3">
                 <div className="flex-1">
                   <input
                     type="text"
-                    placeholder="What do you want to learn?"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="What do you want to learn? (e.g. Math, Physics)"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   />
                 </div>
-                <div className="md:w-48">
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-500">
-                    <option value="">Select city</option>
-                    <option value="mumbai">Mumbai</option>
-                    <option value="delhi">Delhi</option>
-                    <option value="bangalore">Bangalore</option>
-                    <option value="hyderabad">Hyderabad</option>
-                    <option value="chennai">Chennai</option>
-                    <option value="pune">Pune</option>
+                <div className="md:w-56">
+                  <select
+                    value={selectedCity}
+                    onChange={(e) => setSelectedCity(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  >
+                    <option value="">All Cities / Locations</option>
+                    {cities.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
                   </select>
                 </div>
-                <Link href="/search">
-                  <Button className="w-full md:w-auto px-8 py-3 bg-teal-600 hover:bg-teal-700">
-                    <Search className="h-5 w-5 mr-2" />
-                    Search
-                  </Button>
-                </Link>
+                <Button type="submit" className="w-full md:w-auto px-8 py-3 bg-teal-600 hover:bg-teal-700">
+                  <Search className="h-5 w-5 mr-2" />
+                  Search
+                </Button>
               </div>
-            </div>
+            </form>
 
             {/* Quick Stats */}
             <div className="flex flex-wrap gap-8 mt-8 text-teal-100">

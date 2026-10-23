@@ -136,25 +136,25 @@ export default function SearchPage() {
             </div>
 
             <div className="flex gap-3">
-              <Select value={filters.city} onValueChange={(value) => setFilters({ ...filters, city: value })}>
+              <Select value={filters.city || 'all'} onValueChange={(value) => setFilters({ ...filters, city: value === 'all' ? '' : value })}>
                 <SelectTrigger className="w-40">
                   <MapPin className="h-4 w-4 mr-2 text-gray-400" />
                   <SelectValue placeholder="Location" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Cities</SelectItem>
+                  <SelectItem value="all">All Cities</SelectItem>
                   {cities.map((city) => (
                     <SelectItem key={city} value={city}>{city}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
 
-              <Select value={filters.subject} onValueChange={(value) => setFilters({ ...filters, subject: value })}>
+              <Select value={filters.subject || 'all'} onValueChange={(value) => setFilters({ ...filters, subject: value === 'all' ? '' : value })}>
                 <SelectTrigger className="w-40">
                   <SelectValue placeholder="Subject" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Subjects</SelectItem>
+                  <SelectItem value="all">All Subjects</SelectItem>
                   {subjects.map((subject) => (
                     <SelectItem key={subject} value={subject}>{subject}</SelectItem>
                   ))}

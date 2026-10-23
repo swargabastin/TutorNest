@@ -126,6 +126,34 @@ using (var scope = app.Services.CreateScope())
             await db.SaveChangesAsync();
             logger.LogInformation("Default Admin user seeded: admin@hometutor.in / Admin@123");
         }
+
+        // ── Seed Cities / Locations if not present ────────────────────────────────────
+        string[] allCities =
+        [
+            "Ahmedabad", "Alappuzha", "Bangalore", "Bhopal", "Bhubaneswar", "Chandigarh",
+            "Chennai", "Coimbatore", "Dehradun", "Delhi", "Ernakulam", "Ernakulam (Kochi)",
+            "Faridabad", "Ghaziabad", "Gurgaon", "Guwahati", "Hyderabad", "Indore", "Jaipur",
+            "Kannur", "Kochi", "Kollam", "Kolkata", "Kottayam", "Kozhikode", "Lucknow",
+            "Madurai", "Malappuram", "Mumbai", "Mysore", "Nagpur", "Noida", "Palakkad",
+            "Patna", "Pune", "Raipur", "Ranchi", "Salem", "Surat", "Thiruvananthapuram",
+            "Thrissur", "Tiruchirappalli", "Vadodara", "Varanasi", "Vijayawada", "Visakhapatnam"
+        ];
+
+        var existingCities = await db.Locations.Select(l => l.City).ToListAsync();
+        var missingCities = allCities.Where(c => !existingCities.Contains(c, StringComparer.OrdinalIgnoreCase)).ToList();
+        if (missingCities.Count > 0)
+        {
+            var newLocations = missingCities.Select(c => new HomeTutorAPI.Models.Location
+            {
+                City = c,
+                State = "India",
+                Country = "India",
+                IsActive = true
+            });
+            await db.Locations.AddRangeAsync(newLocations);
+            await db.SaveChangesAsync();
+            logger.LogInformation("Seeded {Count} additional cities including Ernakulam.", missingCities.Count);
+        }
     }
     catch (Exception ex)
     {
