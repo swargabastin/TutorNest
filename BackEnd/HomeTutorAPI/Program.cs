@@ -131,13 +131,24 @@ using (var scope = app.Services.CreateScope())
         string[] allCities =
         [
             "Ahmedabad", "Alappuzha", "Bangalore", "Bhopal", "Bhubaneswar", "Chandigarh",
-            "Chennai", "Coimbatore", "Dehradun", "Delhi", "Ernakulam", "Ernakulam (Kochi)",
-            "Faridabad", "Ghaziabad", "Gurgaon", "Guwahati", "Hyderabad", "Indore", "Jaipur",
-            "Kannur", "Kochi", "Kollam", "Kolkata", "Kottayam", "Kozhikode", "Lucknow",
-            "Madurai", "Malappuram", "Mumbai", "Mysore", "Nagpur", "Noida", "Palakkad",
-            "Patna", "Pune", "Raipur", "Ranchi", "Salem", "Surat", "Thiruvananthapuram",
-            "Thrissur", "Tiruchirappalli", "Vadodara", "Varanasi", "Vijayawada", "Visakhapatnam"
+            "Chennai", "Coimbatore", "Dehradun", "Delhi", "Faridabad", "Ghaziabad",
+            "Gurgaon", "Guwahati", "Hyderabad", "Indore", "Jaipur", "Kannur", "Kochi",
+            "Kollam", "Kolkata", "Kottayam", "Kozhikode", "Lucknow", "Madurai", "Malappuram",
+            "Mumbai", "Mysore", "Nagpur", "Noida", "Palakkad", "Patna", "Pune", "Raipur",
+            "Ranchi", "Salem", "Surat", "Thiruvananthapuram", "Thrissur", "Tiruchirappalli",
+            "Vadodara", "Varanasi", "Vijayawada", "Visakhapatnam"
         ];
+
+        // Clean up any Ernakulam entries so Kochi is used exclusively
+        var ernakulamEntries = await db.Locations
+            .Where(l => l.City.StartsWith("Ernakulam", StringComparison.OrdinalIgnoreCase))
+            .ToListAsync();
+        if (ernakulamEntries.Count > 0)
+        {
+            db.Locations.RemoveRange(ernakulamEntries);
+            await db.SaveChangesAsync();
+            logger.LogInformation("Removed {Count} Ernakulam entries in favor of Kochi.", ernakulamEntries.Count);
+        }
 
         var existingCities = await db.Locations.Select(l => l.City).ToListAsync();
         var missingCities = allCities.Where(c => !existingCities.Contains(c, StringComparer.OrdinalIgnoreCase)).ToList();
@@ -152,7 +163,7 @@ using (var scope = app.Services.CreateScope())
             });
             await db.Locations.AddRangeAsync(newLocations);
             await db.SaveChangesAsync();
-            logger.LogInformation("Seeded {Count} additional cities including Ernakulam.", missingCities.Count);
+            logger.LogInformation("Seeded {Count} additional cities including Kochi.", missingCities.Count);
         }
     }
     catch (Exception ex)
