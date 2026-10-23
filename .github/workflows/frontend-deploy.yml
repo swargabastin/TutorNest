@@ -33,7 +33,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://hometutor-api.azurewebsites.net/api' }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://tutornest-api.onrender.com/api' }}
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
