@@ -61,40 +61,40 @@ export function AdminVerificationQueue() {
   };
 
   return (
-    <Card className="border shadow-sm">
+    <Card className="border border-[#EADDD0] bg-white rounded-2xl shadow-xs">
       <CardHeader className="flex flex-row items-center justify-between pb-3">
         <div>
-          <CardTitle className="text-lg font-semibold flex items-center gap-2">
-            <FileCheck className="h-5 w-5 text-teal-600" />
+          <CardTitle className="text-base font-bold flex items-center gap-2 text-[#1F1924]">
+            <FileCheck className="h-5 w-5 text-plum-800" />
             Verification Documents Approval Queue
           </CardTitle>
-          <p className="text-sm text-gray-500">
+          <p className="text-xs text-slate-500">
             FIFO review queue for tutor ID and qualification verification uploads.
           </p>
         </div>
-        <Badge variant="outline" className="bg-teal-50 text-teal-700 border-teal-200">
+        <Badge variant="outline" className="bg-plum-50 text-plum-900 border-plum-200 text-xs font-semibold">
           {pendingDocs.length} Pending
         </Badge>
       </CardHeader>
 
       <CardContent>
         {error && (
-          <div className="mb-4 text-xs text-red-600 bg-red-50 border border-red-200 rounded p-2.5">
+          <div className="mb-4 text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-xl p-2.5">
             {error}
           </div>
         )}
 
         {loading ? (
-          <p className="text-sm text-gray-500 py-4">Loading queue…</p>
+          <p className="text-xs text-slate-500 py-4 text-center">Loading queue…</p>
         ) : pendingDocs.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            <CheckCircle className="h-10 w-10 mx-auto mb-2 text-green-500" />
-            <p className="text-sm font-medium">All verification documents reviewed!</p>
-            <p className="text-xs text-gray-400 mt-1">New submissions will appear here automatically.</p>
+          <div className="text-center py-6 text-slate-500">
+            <CheckCircle className="h-8 w-8 mx-auto mb-2 text-emerald-600" />
+            <p className="text-xs font-bold text-[#1F1924]">All verification documents reviewed!</p>
+            <p className="text-[11px] text-slate-400 mt-0.5">New submissions will appear here automatically.</p>
           </div>
         ) : (
-          <div className="space-y-4">
-            <div className="hidden md:grid grid-cols-5 text-xs font-semibold text-gray-500 border-b pb-2">
+          <div className="space-y-3">
+            <div className="hidden md:grid grid-cols-5 text-xs font-bold text-slate-400 border-b border-[#F0E6DB] pb-2">
               <span className="col-span-1">Tutor Name</span>
               <span className="col-span-1">Document Type</span>
               <span className="col-span-1">Submitted Date</span>
@@ -105,20 +105,20 @@ export function AdminVerificationQueue() {
             {pendingDocs.map((doc) => (
               <div
                 key={doc.id}
-                className="flex flex-col md:grid md:grid-cols-5 items-start md:items-center py-3 border-b last:border-b-0 gap-2 md:gap-0"
+                className="flex flex-col md:grid md:grid-cols-5 items-start md:items-center py-2.5 border-b border-[#F0E6DB] last:border-b-0 gap-2 md:gap-0"
               >
-                <div className="col-span-1 font-medium text-sm text-gray-900">
+                <div className="col-span-1 font-bold text-xs text-[#1F1924]">
                   {doc.tutorName}
                 </div>
 
                 <div className="col-span-1">
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge variant="outline" className="text-[10px] bg-plum-50 text-plum-900 border-plum-200">
                     {docTypeLabels[doc.docType] ?? doc.docType}
                   </Badge>
                 </div>
 
-                <div className="col-span-1 text-xs text-gray-500">
-                  {new Date(doc.createdAt).toLocaleDateString()}
+                <div className="col-span-1 text-xs text-slate-500">
+                  {new Date(doc.createdAt).toLocaleDateString('en-IN')}
                 </div>
 
                 <div className="col-span-1">
@@ -126,7 +126,7 @@ export function AdminVerificationQueue() {
                     href={doc.fileUrl.startsWith('http') ? doc.fileUrl : doc.fileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-xs text-teal-600 hover:underline font-medium gap-1"
+                    className="inline-flex items-center text-xs text-plum-900 hover:underline font-bold gap-1"
                   >
                     View Document <ExternalLink className="h-3 w-3" />
                   </a>
@@ -140,13 +140,13 @@ export function AdminVerificationQueue() {
                         placeholder="Reason for rejection *"
                         value={rejectionReason}
                         onChange={(e) => setRejectionReason(e.target.value)}
-                        className="text-xs bg-white"
+                        className="text-xs bg-white rounded-lg border-[#EADDD0] h-8"
                       />
                       <div className="flex gap-2">
                         <Button
                           size="sm"
                           variant="destructive"
-                          className="flex-1 text-xs py-1 h-7"
+                          className="flex-1 text-xs h-7 rounded-lg"
                           disabled={actioningId === doc.id}
                           onClick={() => handleReview(doc.id, false, rejectionReason)}
                         >
@@ -155,7 +155,7 @@ export function AdminVerificationQueue() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="text-xs py-1 h-7"
+                          className="text-xs h-7 rounded-lg border-[#EADDD0]"
                           onClick={() => {
                             setRejectingId(null);
                             setRejectionReason('');
@@ -169,7 +169,7 @@ export function AdminVerificationQueue() {
                     <div className="flex gap-2">
                       <Button
                         size="sm"
-                        className="bg-green-600 hover:bg-green-700 text-white text-xs h-8 px-3"
+                        className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs h-8 px-3 rounded-lg font-semibold"
                         disabled={actioningId === doc.id}
                         onClick={() => handleReview(doc.id, true)}
                       >
@@ -179,7 +179,7 @@ export function AdminVerificationQueue() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="text-xs text-red-600 border-red-200 hover:bg-red-50 h-8 px-3"
+                        className="text-xs text-rose-700 border-[#EADDD0] hover:bg-rose-50 h-8 px-3 rounded-lg font-semibold"
                         disabled={actioningId === doc.id}
                         onClick={() => {
                           setRejectingId(doc.id);

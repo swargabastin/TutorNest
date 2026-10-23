@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
+import MobileNav from '@/components/mobile-nav';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   title: 'TutorNest - Find Your Perfect Tutor',
   description: 'Connect with verified, experienced tutors across India. Find the perfect tutor for school subjects, competitive exams, and skill development.',
   manifest: '/manifest.json',
-  themeColor: '#0d9488',
+  themeColor: '#4A154B',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -46,8 +47,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>
-        {children}
+      <body className={`${inter.className} antialiased min-h-screen bg-ivory-100 text-[#1F1924]`}>
+        <div className="flex flex-col min-h-screen pb-14 md:pb-0">
+          {children}
+        </div>
+        <MobileNav />
         {/* Required by lib/api.ts openRazorpay() — provides window.Razorpay */}
         <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
         {/* Register lightweight PWA Service Worker */}

@@ -71,18 +71,18 @@ export default function DashboardSidebar({ role }: DashboardSidebarProps) {
   const links = role === 'student' ? studentLinks : role === 'tutor' ? tutorLinks : adminLinks;
 
   return (
-    <aside className="hidden md:block w-64 bg-white border-r min-h-screen shrink-0">
+    <aside className="hidden md:block w-64 bg-white border-r border-[#EADDD0] min-h-screen shrink-0">
       <div className="sticky top-0">
-        <div className="p-4 border-b">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">T</span>
+        <div className="p-4 border-b border-[#F0E6DB]">
+          <Link href="/" className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 bg-plum-900 rounded-xl flex items-center justify-center shadow-xs">
+              <span className="text-white font-bold text-base">T</span>
             </div>
-            <span className="text-lg font-bold text-gray-900">TutorNest</span>
+            <span className="text-lg font-extrabold tracking-tight text-[#1F1924]">TutorNest</span>
           </Link>
         </div>
 
-        <nav className="p-4 space-y-1">
+        <nav className="p-3 space-y-1">
           {links.map((link) => {
             const Icon = link.icon;
             const isActive = pathname ? (pathname === link.href || pathname.startsWith(link.href + '/')) : false;
@@ -92,13 +92,13 @@ export default function DashboardSidebar({ role }: DashboardSidebarProps) {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-colors',
+                  'flex items-center space-x-3 px-3 py-2 rounded-xl text-xs font-semibold transition-colors',
                   isActive
-                    ? 'bg-teal-50 text-teal-700 font-medium'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    ? 'bg-plum-900 text-white shadow-xs'
+                    : 'text-slate-600 hover:bg-[#FAF8F5] hover:text-[#1F1924]'
                 )}
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-4 w-4 shrink-0" />
                 <span>{link.label}</span>
               </Link>
             );

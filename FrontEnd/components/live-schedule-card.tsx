@@ -59,60 +59,60 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
   };
 
   return (
-    <Card className="h-full">
-      <CardHeader className="flex flex-row items-center justify-between pb-3">
-        <CardTitle className="text-lg font-semibold flex items-center gap-2">
-          <Calendar className="h-5 w-5 text-teal-600" />
+    <Card className="h-full border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <CardTitle className="text-base font-bold flex items-center gap-2 text-[#1F1924]">
+          <Calendar className="h-4 w-4 text-plum-800" />
           {userRole === 'Tutor' ? "Today's & Upcoming Classes" : "My Scheduled Classes"}
         </CardTitle>
-        <span className="text-xs text-gray-500 font-normal">
+        <span className="text-[11px] text-slate-500 font-medium">
           {bookings.filter(b => b.status === 'Confirmed').length} Active
         </span>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         {loading ? (
-          <p className="text-gray-500 text-sm py-4">Loading schedule…</p>
+          <p className="text-slate-500 text-xs py-4 text-center">Loading schedule…</p>
         ) : bookings.length === 0 ? (
-          <div className="text-center text-gray-500 text-sm py-8">
-            <Clock className="h-8 w-8 mx-auto mb-2 text-gray-300" />
+          <div className="text-center text-slate-500 text-xs py-8">
+            <Clock className="h-7 w-7 mx-auto mb-2 text-slate-300" />
             No sessions scheduled yet.
             <br />
-            <span className="text-xs text-gray-400">
+            <span className="text-[11px] text-slate-400 mt-1 block">
               {userRole === 'Tutor'
                 ? 'Session requests from students will appear here.'
                 : 'Book a session directly from a tutor profile!'}
             </span>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {bookings.slice(0, 5).map((booking) => {
               const startDate = new Date(booking.startTime);
               const isConfirmed = booking.status === 'Confirmed';
               const isPending = booking.status === 'Pending';
 
               return (
-                <div key={booking.id} className="p-3 rounded-lg border bg-gray-50 space-y-2">
+                <div key={booking.id} className="p-3 rounded-xl border border-[#EADDD0] bg-[#FAF8F5] space-y-2">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="font-semibold text-sm text-gray-900">
+                      <span className="font-bold text-xs sm:text-sm text-[#1F1924]">
                         {userRole === 'Tutor' ? booking.studentName : booking.tutorName}
                       </span>
-                      <span className="text-xs text-gray-500 ml-2">({booking.subject})</span>
+                      <span className="text-xs text-slate-500 ml-1.5">({booking.subject})</span>
                     </div>
                     {getStatusBadge(booking.status)}
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-gray-600">
+                  <div className="flex items-center gap-3 text-xs text-slate-600">
                     <span className="flex items-center gap-1">
-                      <Clock className="h-3.5 w-3.5 text-gray-400" />
-                      {startDate.toLocaleDateString()} at {startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      <Clock className="h-3 w-3 text-slate-400" />
+                      {startDate.toLocaleDateString('en-IN')} at {startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                     <span className="flex items-center gap-1">
-                      {booking.mode === 'Online' ? <Video className="h-3.5 w-3.5 text-teal-600" /> : <MapPin className="h-3.5 w-3.5 text-gray-400" />}
+                      {booking.mode === 'Online' ? <Video className="h-3 w-3 text-plum-800" /> : <MapPin className="h-3 w-3 text-slate-400" />}
                       {booking.mode}
                     </span>
                     {booking.isTrial && (
-                      <Badge variant="outline" className="text-xs bg-teal-50 text-teal-700">Trial</Badge>
+                      <Badge variant="outline" className="text-[10px] bg-plum-50 text-plum-900 border-plum-200">Trial</Badge>
                     )}
                   </div>
 
@@ -122,7 +122,7 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
                         href={booking.meetingLink.startsWith('http') ? booking.meetingLink : `https://${booking.meetingLink}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-xs text-teal-600 hover:underline font-medium gap-1"
+                        className="inline-flex items-center text-xs text-plum-900 hover:underline font-semibold gap-1"
                       >
                         Join Class Online <ExternalLink className="h-3 w-3" />
                       </a>
@@ -131,18 +131,18 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
 
                   {/* Actions for Tutor on Pending bookings */}
                   {userRole === 'Tutor' && isPending && (
-                    <div className="pt-2 border-t space-y-2">
+                    <div className="pt-2 border-t border-[#F0E6DB] space-y-2">
                       <Input
                         type="text"
                         placeholder="Video meeting link (e.g. Google Meet / Zoom)"
                         value={meetingLinks[booking.id] || ''}
                         onChange={(e) => setMeetingLinks({ ...meetingLinks, [booking.id]: e.target.value })}
-                        className="text-xs bg-white h-7"
+                        className="text-xs bg-white h-8 rounded-lg border-[#EADDD0]"
                       />
                       <div className="flex gap-2">
                         <Button
                           size="sm"
-                          className="flex-1 text-xs h-7 bg-green-600 hover:bg-green-700"
+                          className="flex-1 text-xs h-8 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-semibold"
                           disabled={actioningId === booking.id}
                           onClick={() => handleUpdateStatus(booking.id, 'Confirmed')}
                         >
@@ -151,7 +151,7 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="text-xs h-7 text-red-600"
+                          className="text-xs h-8 border-[#EADDD0] text-rose-700 hover:bg-rose-50 rounded-lg"
                           disabled={actioningId === booking.id}
                           onClick={() => handleUpdateStatus(booking.id, 'Cancelled')}
                         >

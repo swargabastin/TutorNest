@@ -3,75 +3,84 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'luc
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">T</span>
+    <footer className="bg-[#1C081E] text-ivory-100/80 border-t border-plum-900/60">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+          {/* Brand info */}
+          <div className="col-span-2 md:col-span-1">
+            <div className="flex items-center space-x-2.5 mb-3.5">
+              <div className="w-9 h-9 bg-gradient-to-br from-plum-600 to-plum-900 rounded-xl flex items-center justify-center">
+                <span className="text-ivory-50 font-bold text-lg">T</span>
               </div>
-              <span className="text-xl font-bold text-white">TutorNest</span>
+              <span className="text-lg font-bold text-ivory-50 tracking-tight">TutorNest</span>
             </div>
-            <p className="text-gray-400 mb-4">
-              Connecting students with the best tutors across India. Find your perfect match today.
+            <p className="text-sm text-ivory-200/70 mb-4 leading-relaxed">
+              India&apos;s verified platform for 1-on-1 home and online tutoring. Real tutors, measurable learning.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
-                <Facebook className="h-5 w-5" />
+            <div className="flex space-x-3 text-ivory-300">
+              <a href="#" aria-label="Facebook" className="p-1.5 rounded-lg bg-plum-950/80 hover:text-lavender-300 hover:bg-plum-900 transition-colors">
+                <Facebook className="h-4 w-4" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
-                <Twitter className="h-5 w-5" />
+              <a href="#" aria-label="Twitter" className="p-1.5 rounded-lg bg-plum-950/80 hover:text-lavender-300 hover:bg-plum-900 transition-colors">
+                <Twitter className="h-4 w-4" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
-                <Instagram className="h-5 w-5" />
+              <a href="#" aria-label="Instagram" className="p-1.5 rounded-lg bg-plum-950/80 hover:text-lavender-300 hover:bg-plum-900 transition-colors">
+                <Instagram className="h-4 w-4" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
-                <Linkedin className="h-5 w-5" />
+              <a href="#" aria-label="LinkedIn" className="p-1.5 rounded-lg bg-plum-950/80 hover:text-lavender-300 hover:bg-plum-900 transition-colors">
+                <Linkedin className="h-4 w-4" />
               </a>
             </div>
           </div>
 
+          {/* Quick Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li><Link href="/search" className="hover:text-teal-400 transition-colors">Find Tutors</Link></li>
-              <li><Link href="/post-requirement" className="hover:text-teal-400 transition-colors">Post Requirement</Link></li>
-              <li><Link href="/register/tutor" className="hover:text-teal-400 transition-colors">Become a Tutor</Link></li>
-              <li><Link href="/pricing" className="hover:text-teal-400 transition-colors">Pricing</Link></li>
+            <h3 className="text-sm font-semibold text-ivory-50 uppercase tracking-wider mb-3">Quick Links</h3>
+            <ul className="space-y-2 text-sm text-ivory-200/70">
+              <li><Link href="/search" className="hover:text-lavender-300 transition-colors">Find Tutors</Link></li>
+              <li><Link href="/post-requirement" className="hover:text-lavender-300 transition-colors">Post Requirement</Link></li>
+              <li><Link href="/register/tutor" className="hover:text-lavender-300 transition-colors">Become a Tutor</Link></li>
+              <li><Link href="/pricing" className="hover:text-lavender-300 transition-colors">Pricing Plans</Link></li>
             </ul>
           </div>
 
+          {/* Legal */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Support &amp; Legal</h3>
-            <ul className="space-y-2">
-              <li><Link href="/terms" className="hover:text-teal-400 transition-colors">Terms of Service</Link></li>
-              <li><Link href="/privacy" className="hover:text-teal-400 transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/refund-policy" className="hover:text-teal-400 transition-colors">Refund &amp; Cancellation Policy</Link></li>
+            <h3 className="text-sm font-semibold text-ivory-50 uppercase tracking-wider mb-3">Support & Legal</h3>
+            <ul className="space-y-2 text-sm text-ivory-200/70">
+              <li><Link href="/terms" className="hover:text-lavender-300 transition-colors">Terms of Service</Link></li>
+              <li><Link href="/privacy" className="hover:text-lavender-300 transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/refund-policy" className="hover:text-lavender-300 transition-colors">Refund Policy</Link></li>
             </ul>
           </div>
 
-          <div>
-            <h3 className="text-white font-semibold mb-4">Contact Us</h3>
-            <ul className="space-y-3">
+          {/* Contact */}
+          <div className="col-span-2 md:col-span-1">
+            <h3 className="text-sm font-semibold text-ivory-50 uppercase tracking-wider mb-3">Contact</h3>
+            <ul className="space-y-2.5 text-sm text-ivory-200/70">
               <li className="flex items-center space-x-2">
-                <Mail className="h-5 w-5 text-teal-400" />
-                <span>support@tutornest.com</span>
+                <Mail className="h-4 w-4 text-lavender-300 shrink-0" />
+                <span className="truncate">support@tutornest.com</span>
               </li>
               <li className="flex items-center space-x-2">
-                <Phone className="h-5 w-5 text-teal-400" />
+                <Phone className="h-4 w-4 text-lavender-300 shrink-0" />
                 <span>+91 1800 123 4567</span>
               </li>
               <li className="flex items-start space-x-2">
-                <MapPin className="h-5 w-5 text-teal-400 mt-0.5" />
-                <span>123 Education Hub, Mumbai, MH 400001</span>
+                <MapPin className="h-4 w-4 text-lavender-300 shrink-0 mt-0.5" />
+                <span>India &bull; Online &amp; In-Person</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} TutorNest. All rights reserved.</p>
+        <div className="border-t border-plum-900/80 mt-8 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-ivory-300/60 gap-3">
+          <p>&copy; {new Date().getFullYear()} TutorNest Education Technologies. All rights reserved.</p>
+          <div className="flex gap-4">
+            <Link href="/terms" className="hover:underline">Terms</Link>
+            <Link href="/privacy" className="hover:underline">Privacy</Link>
+            <Link href="/refund-policy" className="hover:underline">Refunds</Link>
+          </div>
         </div>
       </div>
     </footer>

@@ -37,73 +37,94 @@ export default function PricingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#1F1924] flex flex-col">
       <Header />
 
-      <section className="py-16 bg-gradient-to-br from-teal-600 to-emerald-700 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Simple, Transparent Pricing</h1>
-          <p className="text-lg text-teal-100 max-w-2xl mx-auto">
-            Choose the plan that works best for you. All plans come with a 7-day money-back guarantee.
+      {/* Hero */}
+      <section className="py-12 md:py-16 bg-[#1C081E] text-white">
+        <div className="container mx-auto px-4 text-center max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold uppercase tracking-wider mb-4 border border-white/15">
+            Transparent Subscription Plans
+          </div>
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
+            Invest in Your Academic Success
+          </h1>
+          <p className="text-sm md:text-base text-white/80 max-w-xl mx-auto leading-relaxed">
+            Choose the plan tailored for your learning goals. Unlock verified tutor contacts with zero hidden charges.
           </p>
         </div>
       </section>
 
       {/* Student Plans */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">For Students</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Find the perfect tutor without breaking the bank
+      <section className="py-10 md:py-14">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-8 md:mb-10">
+            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#1F1924] mb-2">For Students & Parents</h2>
+            <p className="text-xs md:text-sm text-slate-500 max-w-md mx-auto">
+              Connect directly with verified tutors across Kerala.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {loading ? (
-              <p className="col-span-full text-center text-gray-500">Loading plans…</p>
+              <div className="col-span-full text-center py-12">
+                <div className="w-8 h-8 border-2 border-plum-900 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                <p className="text-xs text-slate-500">Loading student plans…</p>
+              </div>
             ) : (
               studentPlans.map((plan) => (
                 <Card
                   key={plan.id}
-                  className={`relative ${plan.isPopular ? 'border-2 border-teal-500 shadow-lg' : ''}`}
+                  className={`relative rounded-2xl border transition-all duration-200 bg-white flex flex-col justify-between ${
+                    plan.isPopular
+                      ? 'border-plum-900 shadow-md ring-2 ring-plum-900/10'
+                      : 'border-[#EADDD0] shadow-xs'
+                  }`}
                 >
                   {plan.isPopular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-teal-500">Most Popular</Badge>
+                      <Badge className="bg-plum-900 hover:bg-plum-900 text-white text-[11px] font-bold px-3 py-0.5 rounded-full shadow-xs">
+                        Most Popular
+                      </Badge>
                     </div>
                   )}
-                  <CardHeader className="text-center pb-2">
-                    <div className="mx-auto mb-4 w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center">
+                  <CardHeader className="text-center pb-2 pt-6">
+                    <div className="mx-auto mb-3 w-11 h-11 rounded-xl bg-plum-50 text-plum-900 flex items-center justify-center">
                       {plan.price === 0 ? (
-                        <Star className="h-6 w-6 text-teal-600" />
+                        <Star className="h-5 w-5" />
                       ) : (
-                        <Coins className="h-6 w-6 text-teal-600" />
+                        <Coins className="h-5 w-5" />
                       )}
                     </div>
-                    <CardTitle>{plan.name}</CardTitle>
-                    <div className="mt-4">
-                      <span className="text-3xl font-bold text-gray-900">₹{plan.price}</span>
-                      <span className="text-gray-500">/month</span>
+                    <CardTitle className="text-lg font-bold text-[#1F1924]">{plan.name}</CardTitle>
+                    <div className="mt-3">
+                      <span className="text-3xl font-extrabold text-[#1F1924]">₹{plan.price}</span>
+                      <span className="text-xs text-slate-500">/month</span>
                     </div>
                     {plan.coinsPerMonth > 0 && (
-                      <p className="text-sm text-teal-600 font-medium mt-2">
+                      <p className="text-xs text-plum-800 font-semibold mt-1">
                         Includes {plan.coinsPerMonth} coins
                       </p>
                     )}
                   </CardHeader>
-                  <CardContent className="pt-4">
-                    <ul className="space-y-3 mb-6">
+                  <CardContent className="pt-2 pb-6 flex-1 flex flex-col justify-between">
+                    <ul className="space-y-2.5 mb-6 text-left">
                       {plan.features.map((text, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <Check className="h-5 w-5 flex-shrink-0 mt-0.5 text-teal-500" />
-                          <span className="text-sm text-gray-700">{text}</span>
+                          <Check className="h-4 w-4 flex-shrink-0 mt-0.5 text-plum-800" />
+                          <span className="text-xs text-slate-700 leading-snug">{text}</span>
                         </li>
                       ))}
                     </ul>
-                    <Link href={plan.price === 0 ? '/register/student' : '/subscription'}>
-                      <Button className="w-full" variant={plan.isPopular ? 'default' : 'outline'}>
-                        {plan.price === 0 ? 'Get Started' : `Choose ${plan.name}`}
+                    <Link href={plan.price === 0 ? '/register/student' : '/subscription'} className="w-full">
+                      <Button
+                        className={`w-full rounded-xl text-xs font-semibold h-10 ${
+                          plan.isPopular
+                            ? 'bg-plum-900 hover:bg-plum-950 text-white'
+                            : 'bg-white border border-[#EADDD0] text-plum-950 hover:bg-plum-50'
+                        }`}
+                      >
+                        {plan.price === 0 ? 'Get Started Free' : `Choose ${plan.name}`}
                       </Button>
                     </Link>
                   </CardContent>
@@ -115,53 +136,68 @@ export default function PricingPage() {
       </section>
 
       {/* Tutor Plans */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">For Tutors</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Plans built for tutors — coins unlock student leads, and higher tiers get you more visibility in search.
+      <section className="py-10 md:py-14 bg-white border-y border-[#EADDD0]">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-8 md:mb-10">
+            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#1F1924] mb-2">For Tutors</h2>
+            <p className="text-xs md:text-sm text-slate-500 max-w-md mx-auto">
+              Unlock genuine student leads, stand out in search, and grow your teaching income.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {loading ? (
-              <p className="col-span-full text-center text-gray-500">Loading plans…</p>
+              <div className="col-span-full text-center py-12">
+                <div className="w-8 h-8 border-2 border-plum-900 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                <p className="text-xs text-slate-500">Loading tutor plans…</p>
+              </div>
             ) : (
               tutorPlans.map((plan) => (
                 <Card
                   key={plan.id}
-                  className={`relative ${plan.isPopular ? 'border-2 border-teal-500 shadow-lg' : ''}`}
+                  className={`relative rounded-2xl border transition-all duration-200 bg-white flex flex-col justify-between ${
+                    plan.isPopular
+                      ? 'border-plum-900 shadow-md ring-2 ring-plum-900/10'
+                      : 'border-[#EADDD0] shadow-xs'
+                  }`}
                 >
                   {plan.isPopular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-teal-500">Best Value</Badge>
+                      <Badge className="bg-plum-900 hover:bg-plum-900 text-white text-[11px] font-bold px-3 py-0.5 rounded-full shadow-xs">
+                        Best Value
+                      </Badge>
                     </div>
                   )}
-                  <CardHeader className="text-center pb-2">
-                    <div className="mx-auto mb-4 w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center">
-                      {plan.price === 0 ? <Star className="h-6 w-6 text-teal-600" /> :
-                       plan.isPopular ? <Zap className="h-6 w-6 text-teal-600" /> :
-                       <Crown className="h-6 w-6 text-teal-600" />}
+                  <CardHeader className="text-center pb-2 pt-6">
+                    <div className="mx-auto mb-3 w-11 h-11 rounded-xl bg-plum-50 text-plum-900 flex items-center justify-center">
+                      {plan.price === 0 ? <Star className="h-5 w-5" /> :
+                       plan.isPopular ? <Zap className="h-5 w-5" /> :
+                       <Crown className="h-5 w-5" />}
                     </div>
-                    <CardTitle>{plan.name}</CardTitle>
-                    <div className="mt-4">
-                      <span className="text-3xl font-bold text-gray-900">₹{plan.price}</span>
-                      <span className="text-gray-500">/month</span>
+                    <CardTitle className="text-lg font-bold text-[#1F1924]">{plan.name}</CardTitle>
+                    <div className="mt-3">
+                      <span className="text-3xl font-extrabold text-[#1F1924]">₹{plan.price}</span>
+                      <span className="text-xs text-slate-500">/month</span>
                     </div>
                   </CardHeader>
-                  <CardContent className="pt-4">
-                    <ul className="space-y-3 mb-6">
+                  <CardContent className="pt-2 pb-6 flex-1 flex flex-col justify-between">
+                    <ul className="space-y-2.5 mb-6 text-left">
                       {plan.features.map((text, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <Check className="h-5 w-5 text-teal-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-sm text-gray-700">{text}</span>
+                          <Check className="h-4 w-4 text-plum-800 flex-shrink-0 mt-0.5" />
+                          <span className="text-xs text-slate-700 leading-snug">{text}</span>
                         </li>
                       ))}
                     </ul>
-                    <Link href="/register/tutor">
-                      <Button className="w-full" variant={plan.isPopular ? 'default' : 'outline'}>
-                        Get Started
+                    <Link href="/register/tutor" className="w-full">
+                      <Button
+                        className={`w-full rounded-xl text-xs font-semibold h-10 ${
+                          plan.isPopular
+                            ? 'bg-plum-900 hover:bg-plum-950 text-white'
+                            : 'bg-white border border-[#EADDD0] text-plum-950 hover:bg-plum-50'
+                        }`}
+                      >
+                        Start as Tutor
                       </Button>
                     </Link>
                   </CardContent>
@@ -173,23 +209,24 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+      <section className="py-10 md:py-14 bg-[#FAF8F5]">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#1F1924] mb-2">Frequently Asked Questions</h2>
+            <p className="text-xs md:text-sm text-slate-500">Everything you need to know about TutorNest subscriptions.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid sm:grid-cols-2 gap-4">
             {[
               { q: 'Can I change plans anytime?', a: 'Yes! You can upgrade or downgrade anytime. Changes take effect immediately with prorated billing.' },
-              { q: 'What are coins used for?', a: 'Coins are used to contact tutors. Each contact costs 50 coins. Higher plans include more monthly coins.' },
-              { q: 'Is there a free trial?', a: 'The Free plan lets you explore the platform. Premium features require a subscription.' },
-              { q: 'How do I cancel?', a: 'You can cancel anytime from your dashboard. No questions asked, and you keep your benefits until the billing period ends.' }
+              { q: 'What are coins used for?', a: 'Coins are used to contact tutors or unlock student requirements. Higher tier plans include generous monthly coins.' },
+              { q: 'Is there a free trial?', a: 'The Free tier lets you search all tutors and browse posted student requirements without paying anything.' },
+              { q: 'How do I cancel my plan?', a: 'You can cancel anytime with one click in your account settings. You keep all benefits until the end of your billing cycle.' }
             ].map((faq, index) => (
-              <Card key={index}>
-                <CardContent className="p-6">
-                  <h3 className="font-semibold text-gray-900 mb-2">{faq.q}</h3>
-                  <p className="text-gray-600">{faq.a}</p>
+              <Card key={index} className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                <CardContent className="p-5">
+                  <h3 className="text-sm font-bold text-[#1F1924] mb-1.5">{faq.q}</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">{faq.a}</p>
                 </CardContent>
               </Card>
             ))}
@@ -198,20 +235,20 @@ export default function PricingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-teal-600">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
-          <p className="text-teal-100 mb-8">
-            Join thousands of students and tutors on TutorNest
+      <section className="py-12 bg-plum-950 text-white">
+        <div className="container mx-auto px-4 text-center max-w-xl">
+          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-3">Ready to Get Started?</h2>
+          <p className="text-xs md:text-sm text-white/80 mb-6">
+            Join thousands of students and tutors across Kerala on TutorNest.
           </p>
-          <div className="flex justify-center gap-4 flex-wrap">
+          <div className="flex justify-center gap-3 flex-wrap">
             <Link href="/register/student">
-              <Button className="bg-white text-teal-600 hover:bg-gray-100">
+              <Button className="bg-[#FAF8F5] text-plum-950 hover:bg-white rounded-xl h-10 px-5 text-xs font-bold">
                 Sign Up as Student
               </Button>
             </Link>
             <Link href="/register/tutor">
-              <Button variant="outline" className="border-white text-white hover:bg-white/10 bg-transparent">
+              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 bg-transparent rounded-xl h-10 px-5 text-xs font-semibold">
                 Sign Up as Tutor
               </Button>
             </Link>

@@ -115,63 +115,63 @@ export default function AdminDashboard() {
 
   if (isUnauthorized) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 sm:p-6">
-        <Card className="w-full max-w-md shadow-md border-gray-200">
-          <CardHeader className="text-center pb-2">
-            <div className="bg-teal-50 text-teal-600 rounded-full p-4 mx-auto w-16 h-16 flex items-center justify-center mb-3">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 sm:p-6 text-center text-[#1F1924]">
+        <Card className="w-full max-w-md shadow-xs border-[#EADDD0] bg-white rounded-3xl overflow-hidden">
+          <CardHeader className="text-center pb-2 pt-8">
+            <div className="bg-plum-50 text-plum-900 rounded-2xl p-4 mx-auto w-16 h-16 flex items-center justify-center mb-3">
               <Shield className="h-8 w-8" />
             </div>
-            <CardTitle className="text-2xl font-bold text-gray-900">Administrator Sign In</CardTitle>
-            <p className="text-gray-600 text-sm mt-1">
-              Authenticate with your administrator credentials to access the management portal.
+            <CardTitle className="text-xl font-extrabold text-[#1F1924]">Admin Portal Authentication</CardTitle>
+            <p className="text-slate-600 text-xs sm:text-sm mt-1 max-w-xs mx-auto">
+              Please enter your administrator credentials to access platform governance and approvals.
             </p>
           </CardHeader>
-          <CardContent className="pt-4">
-            <form onSubmit={handleAdminLogin} className="space-y-4">
+          <CardContent className="pt-4 pb-8 px-6 sm:px-8">
+            <form onSubmit={handleAdminLogin} className="space-y-4 text-left">
               {loginError && (
-                <div className="p-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-md">
+                <div className="p-3 text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-xl">
                   {loginError}
                 </div>
               )}
-              <div className="space-y-1 text-left">
-                <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Email</label>
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Email</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                   <Input
                     type="email"
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
                     required
-                    className="pl-10"
+                    className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                     placeholder="admin@hometutor.in"
                   />
                 </div>
               </div>
-              <div className="space-y-1 text-left">
-                <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Password</label>
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                   <Input
                     type="password"
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                     required
-                    className="pl-10"
+                    className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                     placeholder="Admin@123"
                   />
                 </div>
               </div>
               <Button
                 type="submit"
-                className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2.5"
+                className="w-full h-11 bg-plum-900 hover:bg-plum-950 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs mt-2"
                 disabled={loggingIn}
               >
-                {loggingIn ? 'Authenticating...' : 'Sign In as Administrator'}
+                {loggingIn ? 'Authenticating…' : 'Sign In as Administrator'}
               </Button>
             </form>
-            <div className="mt-4 pt-4 border-t text-center">
+            <div className="mt-4 pt-3 border-t border-[#F0E6DB] text-center">
               <Link href="/">
-                <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900">
+                <Button variant="ghost" size="sm" className="text-xs text-slate-500 hover:text-plum-900">
                   Return to Home
                 </Button>
               </Link>
@@ -183,75 +183,77 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-[#1F1924]">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600 mt-1">Platform overview and management</p>
+          <h1 className="text-xl sm:text-2xl font-extrabold text-[#1F1924] tracking-tight">Admin Overview</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Platform growth, verifications, and financial health</p>
         </div>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-teal-500 to-teal-600 text-white">
-          <CardContent className="p-6">
+        <Card className="bg-[#1C081E] text-white rounded-2xl shadow-xs border-0">
+          <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-teal-100 text-sm">Total Tutors</p>
-                <p className="text-3xl font-bold mt-2">{loading ? '—' : (stats?.totalTutors ?? 0).toLocaleString()}</p>
+                <p className="text-white/70 text-xs font-medium">Total Tutors</p>
+                <p className="text-2xl sm:text-3xl font-extrabold mt-1">{loading ? '—' : (stats?.totalTutors ?? 0).toLocaleString()}</p>
               </div>
-              <div className="bg-white/20 rounded-lg p-3">
-                <GraduationCap className="h-6 w-6" />
+              <div className="bg-white/10 rounded-xl p-2.5 text-white">
+                <GraduationCap className="h-5 w-5" />
               </div>
             </div>
-            <p className="text-xs text-teal-200 mt-3">{loading ? '' : `${stats?.pendingApplications ?? 0} pending approval`}</p>
+            <p className="text-[11px] text-white/60 mt-2.5">{loading ? '' : `${stats?.pendingApplications ?? 0} pending review`}</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-6">
+        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+          <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Total Students</p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">{loading ? '—' : (stats?.totalStudents ?? 0).toLocaleString()}</p>
+                <p className="text-slate-500 text-xs font-medium">Registered Students</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">{loading ? '—' : (stats?.totalStudents ?? 0).toLocaleString()}</p>
               </div>
-              <div className="bg-blue-100 text-blue-600 rounded-lg p-3">
-                <Users className="h-6 w-6" />
+              <div className="bg-plum-50 text-plum-900 rounded-xl p-2.5">
+                <Users className="h-5 w-5" />
               </div>
             </div>
+            <p className="text-[11px] text-slate-400 mt-2.5">Active platform learners</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-6">
+        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+          <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Total Requirements</p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">{loading ? '—' : (stats?.totalRequirements ?? 0).toLocaleString()}</p>
+                <p className="text-slate-500 text-xs font-medium">Requirements Posted</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">{loading ? '—' : (stats?.totalRequirements ?? 0).toLocaleString()}</p>
               </div>
-              <div className="bg-orange-100 text-orange-600 rounded-lg p-3">
-                <FileText className="h-6 w-6" />
+              <div className="bg-plum-50 text-plum-900 rounded-xl p-2.5">
+                <FileText className="h-5 w-5" />
               </div>
             </div>
+            <p className="text-[11px] text-slate-400 mt-2.5">Total student needs</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-6">
+        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+          <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Revenue This Month</p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">
+                <p className="text-slate-500 text-xs font-medium">Revenue This Month</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">
                   <span className="text-sm">₹</span>
                   {loading ? '—' : ((stats?.revenueThisMonth ?? 0) / 1000).toFixed(0)}k
                 </p>
               </div>
-              <div className="bg-green-100 text-green-600 rounded-lg p-3">
-                <IndianRupee className="h-6 w-6" />
+              <div className="bg-emerald-50 text-emerald-700 rounded-xl p-2.5">
+                <IndianRupee className="h-5 w-5" />
               </div>
             </div>
-            <p className={`text-xs mt-3 flex items-center ${Number(revenueGrowth) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <p className={`text-[11px] mt-2.5 flex items-center ${Number(revenueGrowth) >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>
               {Number(revenueGrowth) >= 0 ? <TrendingUp className="h-3 w-3 mr-1" /> : <TrendingDown className="h-3 w-3 mr-1" />}
               {revenueGrowth}% vs last month
             </p>
@@ -261,22 +263,22 @@ export default function AdminDashboard() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-lg">Revenue Overview (Last 6 Months)</CardTitle>
+        <Card className="lg:col-span-2 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-bold text-[#1F1924]">Revenue Trend (Last 6 Months)</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
-              <p className="text-gray-500 text-sm">Loading…</p>
+              <p className="text-slate-500 text-xs py-8 text-center">Loading trend data…</p>
             ) : (
-              <div className="h-64 flex items-end gap-2 px-4">
+              <div className="h-56 flex items-end gap-3 px-2 pt-4">
                 {revenueChart.map((data, index) => (
-                  <div key={index} className="flex-1 flex flex-col items-center">
+                  <div key={index} className="flex-1 flex flex-col items-center h-full justify-end">
                     <div
-                      className="w-full bg-gradient-to-t from-teal-600 to-teal-400 rounded-t-md transition-all hover:from-teal-500 hover:to-teal-300"
-                      style={{ height: `${Math.min(180, Math.max(8, ((data?.revenue ?? 0) / maxRevenue) * 180))}px` }}
+                      className="w-full bg-plum-900 hover:bg-plum-800 rounded-t-lg transition-all"
+                      style={{ height: `${Math.min(160, Math.max(10, ((data?.revenue ?? 0) / maxRevenue) * 160))}px` }}
                     />
-                    <span className="text-xs text-gray-500 mt-2">{data?.month ?? ''}</span>
+                    <span className="text-[11px] font-semibold text-slate-500 mt-2 truncate w-full text-center">{data?.month ?? ''}</span>
                   </div>
                 ))}
               </div>
@@ -285,20 +287,20 @@ export default function AdminDashboard() {
         </Card>
 
         {/* User Growth */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">New Users (Last 6 Months)</CardTitle>
+        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-bold text-[#1F1924]">New Registrations</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-2.5">
             {loading ? (
-              <p className="text-gray-500 text-sm">Loading…</p>
+              <p className="text-slate-500 text-xs py-8 text-center">Loading metrics…</p>
             ) : (
               (stats?.userGrowthChart ?? []).map((point, index) => (
-                <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
-                  <span className="text-sm font-medium">{point.month}</span>
-                  <div className="flex gap-4 text-sm">
-                    <span className="text-teal-600">{point.tutors} tutors</span>
-                    <span className="text-blue-600">{point.students} students</span>
+                <div key={index} className="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF8F5] border border-[#EADDD0]">
+                  <span className="text-xs font-bold text-[#1F1924]">{point.month}</span>
+                  <div className="flex gap-3 text-xs">
+                    <span className="font-semibold text-plum-900">{point.tutors} tutors</span>
+                    <span className="font-semibold text-slate-600">{point.students} students</span>
                   </div>
                 </div>
               ))
@@ -312,29 +314,31 @@ export default function AdminDashboard() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Recent Transactions */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-lg">Recent Transactions</CardTitle>
+        <Card className="lg:col-span-2 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-bold text-[#1F1924]">Recent Razorpay Transactions</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
-              <p className="text-gray-500 text-sm">Loading…</p>
+              <p className="text-slate-500 text-xs py-4 text-center">Loading transactions…</p>
             ) : recentTransactions.length === 0 ? (
-              <p className="text-gray-500 text-sm">No transactions yet.</p>
+              <p className="text-slate-500 text-xs py-4 text-center">No transaction records logged.</p>
             ) : (
-              <div className="space-y-4">
-                <div className="grid grid-cols-4 text-sm font-medium text-gray-500 pb-2 border-b">
+              <div className="space-y-2">
+                <div className="grid grid-cols-4 text-xs font-bold text-slate-400 pb-2 border-b border-[#F0E6DB]">
                   <span>User</span>
                   <span>Type</span>
                   <span>Amount</span>
                   <span className="text-right">Date</span>
                 </div>
                 {recentTransactions.map((txn) => (
-                  <div key={txn.id} className="grid grid-cols-4 text-sm items-center py-2 hover:bg-gray-50 -mx-2 px-2 rounded">
-                    <span className="font-medium text-gray-900">{txn.user}</span>
-                    <Badge variant="secondary">{txn.type}</Badge>
-                    <span className="text-gray-900">₹{txn.amount}</span>
-                    <span className="text-right text-gray-500">{txn.createdAt ? new Date(txn.createdAt).toLocaleDateString() : '—'}</span>
+                  <div key={txn.id} className="grid grid-cols-4 text-xs items-center py-2 px-2 hover:bg-[#FAF8F5] rounded-xl transition-colors">
+                    <span className="font-bold text-[#1F1924] truncate">{txn.user}</span>
+                    <div>
+                      <Badge variant="outline" className="text-[10px] bg-plum-50 text-plum-900 border-plum-200">{txn.type}</Badge>
+                    </div>
+                    <span className="font-extrabold text-[#1F1924]">₹{txn.amount}</span>
+                    <span className="text-right text-slate-400 text-[11px]">{txn.createdAt ? new Date(txn.createdAt).toLocaleDateString('en-IN') : '—'}</span>
                   </div>
                 ))}
               </div>
@@ -343,48 +347,48 @@ export default function AdminDashboard() {
         </Card>
 
         {/* Pending Applications */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Pending Applications</CardTitle>
+        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-bold text-[#1F1924]">Pending Tutor Applications</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             {loading ? (
-              <p className="text-gray-500 text-sm">Loading…</p>
+              <p className="text-slate-500 text-xs py-4 text-center">Loading applications…</p>
             ) : pendingApplications.length > 0 ? pendingApplications.map((app) => (
-              <div key={app.id} className="p-3 rounded-lg border bg-gray-50">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium text-gray-900">{app.name}</span>
-                  <Badge variant="outline" className="text-yellow-600 border-yellow-300">
+              <div key={app.id} className="p-3 rounded-xl border border-[#EADDD0] bg-[#FAF8F5]">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs font-bold text-[#1F1924]">{app.name}</span>
+                  <Badge variant="outline" className="text-[10px] bg-amber-50 text-amber-700 border-amber-200">
                     <Clock className="h-3 w-3 mr-1" /> Pending
                   </Badge>
                 </div>
-                <p className="text-sm text-gray-600">{app.subjects?.join(', ') ?? ''}</p>
-                <div className="flex gap-2 mt-3">
+                <p className="text-xs text-slate-600 mb-2">{app.subjects?.join(', ') ?? ''}</p>
+                <div className="flex gap-2">
                   <Button
                     size="sm"
-                    className="flex-1"
+                    className="flex-1 h-8 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold"
                     disabled={actioning === app.id}
                     onClick={() => handleDecision(app.id, 'Approved')}
                   >
-                    <CheckCircle className="h-4 w-4 mr-1" />
+                    <CheckCircle className="h-3.5 w-3.5 mr-1" />
                     Approve
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 h-8 rounded-lg border-[#EADDD0] text-rose-700 hover:bg-rose-50 text-xs font-semibold"
                     disabled={actioning === app.id}
                     onClick={() => handleDecision(app.id, 'Rejected')}
                   >
-                    <XCircle className="h-4 w-4 mr-1" />
+                    <XCircle className="h-3.5 w-3.5 mr-1" />
                     Reject
                   </Button>
                 </div>
               </div>
             )) : (
-              <div className="text-center py-8 text-gray-500">
-                <CheckCircle className="h-12 w-12 mx-auto mb-3 text-green-500" />
-                <p>No pending applications</p>
+              <div className="text-center py-6 text-slate-500">
+                <CheckCircle className="h-8 w-8 mx-auto mb-2 text-emerald-600" />
+                <p className="text-xs">No pending applications</p>
               </div>
             )}
           </CardContent>

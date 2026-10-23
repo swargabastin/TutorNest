@@ -94,22 +94,28 @@ export default function PostRequirementPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <Card className="max-w-lg w-full text-center">
-          <CardContent className="p-12">
-            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="h-10 w-10 text-green-600" />
+      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center p-4">
+        <Card className="max-w-lg w-full text-center border-[#EADDD0] bg-white rounded-3xl shadow-sm">
+          <CardContent className="p-8 sm:p-12">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-5 border border-emerald-100">
+              <CheckCircle className="h-8 w-8" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Requirement Posted Successfully!</h2>
-            <p className="text-gray-600 mb-6">
-              Your tuition requirement has been posted. Qualified tutors will respond to your request shortly.
+            <h2 className="text-2xl font-bold text-[#1F1924] mb-2">Requirement Posted!</h2>
+            <p className="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
+              Your tuition requirement has been broadcast to qualified tutors. Interested educators will reach out directly.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/search">
-                <Button>Browse Tutors</Button>
+                <Button className="w-full sm:w-auto bg-plum-900 hover:bg-plum-950 text-white rounded-xl px-5 h-10 text-xs font-semibold">
+                  Browse Tutors Now
+                </Button>
               </Link>
-              <Button variant="outline" onClick={() => setSubmitted(false)}>
-                Post Another
+              <Button
+                variant="outline"
+                onClick={() => setSubmitted(false)}
+                className="w-full sm:w-auto border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 rounded-xl px-5 h-10 text-xs font-semibold"
+              >
+                Post Another Requirement
               </Button>
             </div>
           </CardContent>
@@ -119,42 +125,42 @@ export default function PostRequirementPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-emerald-50 py-12 px-4">
-      <div className="container mx-auto max-w-3xl">
-        <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-8">
-          <ArrowLeft className="h-4 w-4 mr-2" />
+    <div className="min-h-screen bg-[#FAF8F5] py-8 sm:py-12 px-4 text-[#1F1924]">
+      <div className="container mx-auto max-w-2xl">
+        <Link href="/" className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-plum-900 mb-6 transition-colors">
+          <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
           Back to Home
         </Link>
 
-        <Card className="shadow-xl border-0">
-          <CardHeader className="text-center pb-2 border-b">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 text-teal-600 mx-auto mb-4">
-              <FileText className="h-8 w-8" />
+        <Card className="shadow-xs border border-[#EADDD0] bg-white rounded-3xl overflow-hidden">
+          <CardHeader className="text-center pb-4 pt-8 px-6 sm:px-10 border-b border-[#F0E6DB] bg-gradient-to-b from-plum-50/50 to-transparent">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-plum-100 text-plum-900 mx-auto mb-3">
+              <FileText className="h-6 w-6" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Post Your Tuition Requirement</h1>
-            <p className="text-gray-600 mt-2">
-              Let tutors find you - describe what you need and receive proposals
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1F1924]">Post Tuition Requirement</h1>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-md mx-auto">
+              Describe your learning goals and let verified tutors send you proposals
             </p>
           </CardHeader>
 
-          <CardContent className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-8">
+          <CardContent className="p-6 sm:p-10">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Requirement Details */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <BookOpen className="h-5 w-5 mr-2 text-teal-600" />
-                  Requirement Details
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
+                  <BookOpen className="h-4 w-4 text-plum-800" />
+                  Subject & Level
                 </h3>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="subject">Subject *</Label>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="subject" className="text-xs font-bold text-[#1F1924]">Subject *</Label>
                     <Select
                       value={formData.subject}
                       onValueChange={(value) => setFormData({...formData, subject: value})}
                       required
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
                         <SelectValue placeholder="Select subject" />
                       </SelectTrigger>
                       <SelectContent>
@@ -165,14 +171,14 @@ export default function PostRequirementPage() {
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="level">Class/Level *</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="level" className="text-xs font-bold text-[#1F1924]">Class / Level *</Label>
                     <Select
                       value={formData.level}
                       onValueChange={(value) => setFormData({...formData, level: value})}
                       required
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
                         <SelectValue placeholder="Select level" />
                       </SelectTrigger>
                       <SelectContent>
@@ -184,15 +190,15 @@ export default function PostRequirementPage() {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6 mt-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="city">City *</Label>
+                <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="city" className="text-xs font-bold text-[#1F1924]">Location / City *</Label>
                     <Select
                       value={formData.city}
                       onValueChange={(value) => setFormData({...formData, city: value})}
                       required
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
                         <SelectValue placeholder="Select city" />
                       </SelectTrigger>
                       <SelectContent>
@@ -203,14 +209,14 @@ export default function PostRequirementPage() {
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="mode">Teaching Mode *</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="mode" className="text-xs font-bold text-[#1F1924]">Teaching Mode *</Label>
                     <Select
                       value={formData.mode}
                       onValueChange={(value) => setFormData({...formData, mode: value})}
                       required
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
                         <SelectValue placeholder="Select mode" />
                       </SelectTrigger>
                       <SelectContent>
@@ -225,41 +231,41 @@ export default function PostRequirementPage() {
 
               {/* Budget & Schedule */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <IndianRupee className="h-5 w-5 mr-2 text-teal-600" />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
+                  <IndianRupee className="h-4 w-4 text-plum-800" />
                   Budget & Schedule
                 </h3>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="budget">Budget (per hour)</Label>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="budget" className="text-xs font-bold text-[#1F1924]">Hourly Budget (₹)</Label>
                     <div className="relative">
-                      <IndianRupee className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                      <IndianRupee className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
                       <Input
                         id="budget"
                         type="text"
-                        placeholder="e.g., 400-600"
-                        className="pl-10"
+                        placeholder="e.g. 400 - 600"
+                        className="pl-10 h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                         value={formData.budget}
                         onChange={(e) => setFormData({...formData, budget: e.target.value})}
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="frequency">Classes per Week</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="frequency" className="text-xs font-bold text-[#1F1924]">Classes per Week</Label>
                     <Select
                       value={formData.frequency}
                       onValueChange={(value) => setFormData({...formData, frequency: value})}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
                         <SelectValue placeholder="Select frequency" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="1-2">1-2 classes</SelectItem>
-                        <SelectItem value="3-4">3-4 classes</SelectItem>
-                        <SelectItem value="5-6">5-6 classes</SelectItem>
-                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="1-2">1-2 classes / week</SelectItem>
+                        <SelectItem value="3-4">3-4 classes / week</SelectItem>
+                        <SelectItem value="5-6">5-6 classes / week</SelectItem>
+                        <SelectItem value="daily">Daily classes</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -267,96 +273,54 @@ export default function PostRequirementPage() {
               </div>
 
               {/* Requirement Description */}
-              <div className="space-y-2">
-                <Label htmlFor="description">Describe Your Requirement *</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="description" className="text-xs font-bold text-[#1F1924]">Requirement Details *</Label>
                 <Textarea
                   id="description"
-                  placeholder="Provide details about what you're looking for: specific topics, exam preparation, learning goals, preferred timing, etc."
-                  rows={5}
+                  placeholder="Detail your goals: syllabus/board (CBSE, ICSE, State), specific chapters, exam targets, preferred evening/morning hours…"
+                  rows={4}
+                  className="rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm p-3 focus-visible:ring-plum-600"
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
                   required
                 />
-                <p className="text-sm text-gray-500">
-                  Be specific to attract the right tutors. Mention exam dates, current understanding level, and any special requirements.
-                </p>
-              </div>
-
-              {/* Contact Details */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <User className="h-5 w-5 mr-2 text-teal-600" />
-                  Your Contact Details
-                </h3>
-                <p className="text-sm text-gray-500 mb-4">
-                  We'll use the contact details from your student account when tutors respond —
-                  log in or register below if you haven't already.
-                </p>
-
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="studentName">Name</Label>
-                    <Input
-                      id="studentName"
-                      type="text"
-                      placeholder="Your name"
-                      value={formData.studentName}
-                      onChange={(e) => setFormData({...formData, studentName: e.target.value})}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="+91 98765 43210"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your@email.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    />
-                  </div>
-                </div>
               </div>
 
               {/* Tips */}
-              <div className="bg-teal-50 rounded-lg p-4">
-                <h4 className="font-medium text-teal-900 mb-2">Tips for a Better Response:</h4>
-                <ul className="space-y-1 text-sm text-teal-800">
-                  <li>• Include specific topics or chapters you need help with</li>
-                  <li>• Mention your current school/college and board (CBSE, ICSE, etc.)</li>
-                  <li>• Specify preferred timings and days</li>
-                  <li>• State if you have any deadline or exam date</li>
+              <div className="bg-plum-50/70 border border-plum-100 rounded-2xl p-4">
+                <h4 className="text-xs font-bold text-plum-950 mb-1.5">Tips for Faster Responses:</h4>
+                <ul className="space-y-1 text-xs text-slate-700">
+                  <li>• Mention the student's curriculum (CBSE, ICSE, Kerala State, IGCSE).</li>
+                  <li>• Note upcoming unit tests or entrance exams (NEET, JEE, KEAM).</li>
+                  <li>• Share preferred weekly hours or weekends-only preference.</li>
                 </ul>
               </div>
 
               {error && (
-                <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">{error}</p>
+                <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-4 py-2.5">{error}</p>
               )}
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button type="submit" className="flex-1 py-3" disabled={submitting}>
-                  {submitting ? 'Posting…' : 'Post Requirement'}
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <Button
+                  type="submit"
+                  className="flex-1 h-12 bg-plum-900 hover:bg-plum-950 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs"
+                  disabled={submitting}
+                >
+                  {submitting ? 'Broadcasting…' : 'Post Requirement'}
                 </Button>
-                <Link href="/register/student">
-                  <Button type="button" variant="outline" className="w-full py-3">
-                    Register for Free (Get More Responses)
+                <Link href="/register/student" className="sm:w-auto">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full h-12 border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 rounded-xl text-xs sm:text-sm font-semibold"
+                  >
+                    Create Student Account
                   </Button>
                 </Link>
               </div>
 
-              <p className="text-center text-sm text-gray-500">
-                By posting, you agree to receive calls/SMS from interested tutors.
+              <p className="text-center text-[11px] text-slate-500">
+                By posting, you agree to receive communications from interested verified educators.
               </p>
             </form>
           </CardContent>

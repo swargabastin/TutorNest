@@ -43,26 +43,30 @@ export default function PaymentPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <Card className="max-w-lg w-full text-center">
-          <CardContent className="p-12">
-            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-              <Check className="h-10 w-10 text-green-600" />
+      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center p-4 text-[#1F1924]">
+        <Card className="max-w-lg w-full text-center border-[#EADDD0] bg-white rounded-3xl shadow-xs">
+          <CardContent className="p-8 sm:p-12">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-4 border border-emerald-100">
+              <Check className="h-8 w-8" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Payment Successful!</h2>
-            <p className="text-gray-600 mb-6">
-              {orderSummary.coins.toLocaleString()} coins have been added to your wallet.
+            <h2 className="text-2xl font-extrabold text-[#1F1924] mb-2">Payment Successful!</h2>
+            <p className="text-xs sm:text-sm text-slate-600 mb-5">
+              {orderSummary.coins.toLocaleString()} coins have been credited to your wallet balance.
             </p>
-            <div className="bg-teal-50 rounded-lg p-4 mb-6">
-              <p className="text-sm text-gray-600">Transaction ID</p>
-              <p className="font-mono font-medium">TXN-{Date.now()}</p>
+            <div className="bg-[#FAF8F5] border border-[#EADDD0] rounded-xl p-3.5 mb-6 text-xs">
+              <p className="text-slate-500 font-medium mb-0.5">Order Reference</p>
+              <p className="font-mono font-bold text-plum-950">TXN-{Date.now()}</p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <div className="flex flex-col sm:flex-row gap-2.5 justify-center">
               <Link href="/wallet">
-                <Button>View Wallet</Button>
+                <Button className="w-full sm:w-auto bg-plum-900 hover:bg-plum-950 text-white rounded-xl text-xs font-semibold px-5 h-10">
+                  View Coin Wallet
+                </Button>
               </Link>
               <Link href="/search">
-                <Button variant="outline">Find Tutors</Button>
+                <Button variant="outline" className="w-full sm:w-auto border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 rounded-xl text-xs font-semibold px-5 h-10">
+                  Browse Verified Tutors
+                </Button>
               </Link>
             </div>
           </CardContent>
@@ -72,73 +76,73 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#1F1924]">
       {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
+      <div className="bg-white border-b border-[#EADDD0]">
+        <div className="container mx-auto px-4 py-3 sm:py-4">
+          <div className="flex items-center gap-3">
             <Link href="/wallet">
-              <Button variant="ghost" size="icon">
-                <ArrowLeft className="h-5 w-5" />
+              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl border border-[#EADDD0] hover:bg-plum-50 text-slate-700">
+                <ArrowLeft className="h-4 w-4" />
               </Button>
             </Link>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Payment</h1>
-              <p className="text-sm text-gray-600">Complete your purchase</p>
+              <h1 className="text-xl font-extrabold text-[#1F1924] tracking-tight">Checkout</h1>
+              <p className="text-xs text-slate-500">Secure Razorpay coin transaction</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
+      <div className="container mx-auto px-4 py-6 md:py-8">
+        <div className="grid lg:grid-cols-3 gap-6">
           {/* Payment Form */}
           <div className="lg:col-span-2">
-            <form onSubmit={handlePayment} className="space-y-6">
+            <form onSubmit={handlePayment} className="space-y-5">
               {/* Payment Method Selection */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Select Payment Method</CardTitle>
+              <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold text-[#1F1924]">Select Payment Method</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-3 gap-3">
                     <button
                       type="button"
                       onClick={() => setPaymentMethod('card')}
-                      className={`p-4 rounded-lg border-2 text-center transition-all ${
+                      className={`p-3.5 rounded-xl border-2 text-center transition-all ${
                         paymentMethod === 'card'
-                          ? 'border-teal-500 bg-teal-50'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-plum-900 bg-plum-50/70 shadow-xs'
+                          : 'border-[#EADDD0] bg-[#FAF8F5] hover:border-plum-200'
                       }`}
                     >
-                      <CreditCard className={`h-8 w-8 mx-auto mb-2 ${paymentMethod === 'card' ? 'text-teal-600' : 'text-gray-400'}`} />
-                      <span className={`font-medium ${paymentMethod === 'card' ? 'text-teal-600' : 'text-gray-700'}`}>Card</span>
+                      <CreditCard className={`h-6 w-6 mx-auto mb-1.5 ${paymentMethod === 'card' ? 'text-plum-900' : 'text-slate-400'}`} />
+                      <span className={`text-xs font-bold ${paymentMethod === 'card' ? 'text-plum-950' : 'text-slate-700'}`}>Card</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setPaymentMethod('upi')}
-                      className={`p-4 rounded-lg border-2 text-center transition-all ${
+                      className={`p-3.5 rounded-xl border-2 text-center transition-all ${
                         paymentMethod === 'upi'
-                          ? 'border-teal-500 bg-teal-50'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-plum-900 bg-plum-50/70 shadow-xs'
+                          : 'border-[#EADDD0] bg-[#FAF8F5] hover:border-plum-200'
                       }`}
                     >
-                      <div className="h-8 w-8 mx-auto mb-2 bg-gradient-to-r from-green-500 to-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-xs">
+                      <div className="h-6 w-6 mx-auto mb-1.5 bg-plum-900 text-white rounded-lg flex items-center justify-center font-bold text-[10px]">
                         UPI
                       </div>
-                      <span className={`font-medium ${paymentMethod === 'upi' ? 'text-teal-600' : 'text-gray-700'}`}>UPI</span>
+                      <span className={`text-xs font-bold ${paymentMethod === 'upi' ? 'text-plum-950' : 'text-slate-700'}`}>UPI</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setPaymentMethod('netbanking')}
-                      className={`p-4 rounded-lg border-2 text-center transition-all ${
+                      className={`p-3.5 rounded-xl border-2 text-center transition-all ${
                         paymentMethod === 'netbanking'
-                          ? 'border-teal-500 bg-teal-50'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-plum-900 bg-plum-50/70 shadow-xs'
+                          : 'border-[#EADDD0] bg-[#FAF8F5] hover:border-plum-200'
                       }`}
                     >
-                      <Building2 className={`h-8 w-8 mx-auto mb-2 ${paymentMethod === 'netbanking' ? 'text-teal-600' : 'text-gray-400'}`} />
-                      <span className={`font-medium ${paymentMethod === 'netbanking' ? 'text-teal-600' : 'text-gray-700'}`}>Net Banking</span>
+                      <Building2 className={`h-6 w-6 mx-auto mb-1.5 ${paymentMethod === 'netbanking' ? 'text-plum-900' : 'text-slate-400'}`} />
+                      <span className={`text-xs font-bold ${paymentMethod === 'netbanking' ? 'text-plum-950' : 'text-slate-700'}`}>Net Banking</span>
                     </button>
                   </div>
                 </CardContent>
@@ -146,48 +150,49 @@ export default function PaymentPage() {
 
               {/* Card Details */}
               {paymentMethod === 'card' && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <CreditCard className="h-5 w-5 text-gray-400" />
+                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-bold flex items-center gap-1.5 text-[#1F1924]">
+                      <CreditCard className="h-4 w-4 text-plum-800" />
                       Card Details
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="cardName">Name on Card</Label>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="cardName" className="text-xs font-bold text-[#1F1924]">Name on Card</Label>
                       <Input
                         id="cardName"
-                        placeholder="Enter name as shown on card"
+                        placeholder="Enter full name"
+                        className="h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                         required
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="cardNumber">Card Number</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="cardNumber" className="text-xs font-bold text-[#1F1924]">Card Number</Label>
                       <Input
                         id="cardNumber"
                         placeholder="1234 5678 9012 3456"
-                        className="font-mono"
+                        className="font-mono h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                         required
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="expiry">Expiry Date</Label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1.5">
+                        <Label htmlFor="expiry" className="text-xs font-bold text-[#1F1924]">Expiry</Label>
                         <Input
                           id="expiry"
-                          placeholder="MM/YY"
-                          className="font-mono"
+                          placeholder="MM / YY"
+                          className="font-mono h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                           required
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="cvv">CVV</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="cvv" className="text-xs font-bold text-[#1F1924]">CVV</Label>
                         <Input
                           id="cvv"
                           type="password"
                           placeholder="•••"
-                          className="font-mono"
+                          className="font-mono h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                           maxLength={4}
                           required
                         />
@@ -199,27 +204,28 @@ export default function PaymentPage() {
 
               {/* UPI */}
               {paymentMethod === 'upi' && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">UPI Payment</CardTitle>
+                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-bold text-[#1F1924]">UPI Virtual Address</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="upiId">UPI ID</Label>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="upiId" className="text-xs font-bold text-[#1F1924]">UPI ID / VPA</Label>
                       <Input
                         id="upiId"
-                        placeholder="yourname@upi"
+                        placeholder="username@okaxis"
+                        className="h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                         required
                       />
                     </div>
-                    <div className="grid grid-cols-4 gap-4">
+                    <div className="grid grid-cols-4 gap-2">
                       {['GPay', 'PhonePe', 'Paytm', 'BHIM'].map((app) => (
                         <button
                           key={app}
                           type="button"
-                          className="p-3 rounded-lg border hover:bg-gray-50 transition-colors"
+                          className="p-2.5 rounded-xl border border-[#EADDD0] bg-[#FAF8F5] hover:bg-plum-50 hover:border-plum-200 text-xs font-semibold text-slate-700 transition-colors"
                         >
-                          <span className="text-sm font-medium">{app}</span>
+                          {app}
                         </button>
                       ))}
                     </div>
@@ -229,19 +235,19 @@ export default function PaymentPage() {
 
               {/* Net Banking */}
               {paymentMethod === 'netbanking' && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Net Banking</CardTitle>
+                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-bold text-[#1F1924]">Net Banking</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      <Label>Select Bank</Label>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {['SBI', 'HDFC', 'ICICI', 'Axis', 'Kotak', 'PNB', 'Yes Bank', 'Others'].map((bank, i) => (
+                      <Label className="text-xs font-bold text-[#1F1924]">Select Bank</Label>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {['SBI', 'HDFC', 'ICICI', 'Axis', 'Federal Bank', 'Canara', 'Kotak', 'Others'].map((bank) => (
                           <button
                             key={bank}
                             type="button"
-                            className={`p-3 rounded-lg border text-sm font-medium hover:bg-gray-50 transition-colors ${i === 7 ? 'text-teal-600' : ''}`}
+                            className="p-2.5 rounded-xl border border-[#EADDD0] bg-[#FAF8F5] text-xs font-semibold hover:bg-plum-50 hover:border-plum-200 transition-colors"
                           >
                             {bank}
                           </button>
@@ -255,30 +261,30 @@ export default function PaymentPage() {
               {/* Pay Button */}
               <Button
                 type="submit"
-                className="w-full py-4 text-lg"
+                className="w-full h-12 bg-plum-900 hover:bg-plum-950 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs"
                 disabled={processing}
               >
                 {processing ? (
                   <>
-                    <Clock className="h-5 w-5 mr-2 animate-spin" />
-                    Processing...
+                    <Clock className="h-4 w-4 mr-2 animate-spin" />
+                    Securing Transaction…
                   </>
                 ) : (
                   <>
-                    <Lock className="h-5 w-5 mr-2" />
-                    Pay ₹{orderSummary.total}
+                    <Lock className="h-4 w-4 mr-2" />
+                    Pay ₹{orderSummary.total} Securely
                   </>
                 )}
               </Button>
 
-              <div className="flex items-center justify-center gap-6 text-sm text-gray-500">
+              <div className="flex items-center justify-center gap-6 text-[11px] text-slate-400">
                 <div className="flex items-center gap-1">
-                  <Shield className="h-4 w-4" />
-                  <span>SSL Secured</span>
+                  <Shield className="h-3.5 w-3.5 text-plum-800" />
+                  <span>256-bit SSL</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Lock className="h-4 w-4" />
-                  <span>256-bit Encryption</span>
+                  <Lock className="h-3.5 w-3.5 text-plum-800" />
+                  <span>Razorpay Certified</span>
                 </div>
               </div>
             </form>
@@ -286,47 +292,45 @@ export default function PaymentPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-24">
-              <CardHeader>
-                <CardTitle className="text-lg">Order Summary</CardTitle>
+            <Card className="sticky top-20 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold text-[#1F1924]">Order Summary</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-lg bg-teal-50 border border-teal-100">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-teal-100 rounded-lg p-2">
-                      <Star className="h-6 w-6 text-teal-600 fill-teal-600" />
+              <CardContent className="space-y-3.5">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-[#FAF8F5] border border-[#EADDD0]">
+                  <div className="flex items-center gap-2.5">
+                    <div className="bg-plum-100 text-plum-900 rounded-lg p-1.5">
+                      <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{orderSummary.planName}</p>
-                      <p className="text-sm text-gray-600">{orderSummary.coins.toLocaleString()} coins</p>
+                      <p className="text-xs font-bold text-[#1F1924]">{orderSummary.planName}</p>
+                      <p className="text-[11px] text-slate-500">{orderSummary.coins.toLocaleString()} coins credit</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-3 pt-4 border-t">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Subtotal</span>
+                <div className="space-y-2 pt-2 border-t border-[#F0E6DB] text-xs">
+                  <div className="flex justify-between text-slate-600">
+                    <span>Base Amount</span>
                     <span>₹{orderSummary.amount}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">GST (18%)</span>
+                  <div className="flex justify-between text-slate-600">
+                    <span>GST (18%)</span>
                     <span>₹{orderSummary.tax}</span>
                   </div>
-                  <div className="flex justify-between font-bold text-lg pt-3 border-t">
-                    <span>Total</span>
-                    <span className="text-teal-600">₹{orderSummary.total}</span>
+                  <div className="flex justify-between font-extrabold text-sm pt-2 border-t border-[#F0E6DB]">
+                    <span>Total Payable</span>
+                    <span className="text-plum-950">₹{orderSummary.total}</span>
                   </div>
                 </div>
 
-                <div className="bg-yellow-50 rounded-lg p-4 mt-4">
+                <div className="bg-plum-50/60 border border-plum-100 rounded-xl p-3">
                   <div className="flex items-start gap-2">
-                    <div className="bg-yellow-100 text-yellow-600 rounded-full p-1 mt-0.5">
-                      <Wallet className="h-4 w-4" />
-                    </div>
+                    <Wallet className="h-3.5 w-3.5 text-plum-800 mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-sm font-medium text-yellow-800">Coins Added Instantly</p>
-                      <p className="text-xs text-yellow-600 mt-1">
-                        Coins will be credited to your account immediately after successful payment
+                      <p className="text-xs font-bold text-plum-950">Instant Activation</p>
+                      <p className="text-[11px] text-slate-600 mt-0.5">
+                        Coins will be immediately accessible in your wallet after payment.
                       </p>
                     </div>
                   </div>

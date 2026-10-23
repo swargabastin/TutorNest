@@ -100,76 +100,75 @@ export default function WalletPage() {
   const backHref = userRole === 'Tutor' ? '/dashboard/tutor' : userRole === 'Admin' ? '/dashboard/admin' : '/dashboard/student';
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#1F1924]">
       {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
+      <div className="bg-white border-b border-[#EADDD0]">
+        <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <Link href={backHref}>
-                <Button variant="ghost" size="icon">
-                  <ArrowLeft className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl border border-[#EADDD0] hover:bg-plum-50 text-slate-700">
+                  <ArrowLeft className="h-4 w-4" />
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Coin Wallet</h1>
-                <p className="text-sm text-gray-600">Manage your coins for tutoring services</p>
+                <h1 className="text-xl sm:text-2xl font-extrabold text-[#1F1924] tracking-tight">Coin Wallet</h1>
+                <p className="text-xs text-slate-500">Manage your coin balance to unlock leads and contact verified tutors</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6 md:py-8">
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Balance Card */}
-          <div className="lg:col-span-1">
-            <Card className="bg-gradient-to-br from-teal-500 to-emerald-600 text-white overflow-hidden">
-              <div className="absolute top-0 right-0 w-40 h-40 -mr-10 -mt-10 rounded-full bg-white/10"></div>
-              <div className="absolute bottom-0 left-0 w-24 h-24 -ml-6 -mb-6 rounded-full bg-white/10"></div>
+          <div className="lg:col-span-1 space-y-4">
+            <Card className="bg-[#1C081E] text-white rounded-2xl shadow-xs border-0 overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-36 h-36 -mr-8 -mt-8 rounded-full bg-white/5 pointer-events-none" />
               <CardContent className="relative p-6">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <div className="bg-white/20 rounded-lg p-2">
-                      <Wallet className="h-6 w-6" />
+                    <div className="bg-white/10 rounded-xl p-2 text-white">
+                      <Wallet className="h-5 w-5" />
                     </div>
-                    <span className="font-medium">Your Balance</span>
+                    <span className="text-xs font-semibold text-white/80">Available Coins</span>
                   </div>
                 </div>
-                <div className="mb-6">
-                  <p className="text-4xl font-bold">{loading ? '—' : balance.toLocaleString()}</p>
-                  <p className="text-teal-100 mt-1">Coins Available</p>
+                <div className="mb-4">
+                  <p className="text-3xl sm:text-4xl font-extrabold tracking-tight">{loading ? '—' : balance.toLocaleString()}</p>
+                  <p className="text-xs text-white/60 mt-0.5">Ready for instant unlocks</p>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-teal-100">
-                  <Gift className="h-4 w-4" />
-                  <span>Each coin = ₹1 value for tutor contacts</span>
+                <div className="flex items-center gap-1.5 text-xs text-white/70 pt-2 border-t border-white/10">
+                  <Gift className="h-3.5 w-3.5 shrink-0 text-amber-400" />
+                  <span>1 coin = ₹1 credit across TutorNest</span>
                 </div>
               </CardContent>
             </Card>
 
             {/* Quick Stats */}
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle className="text-lg">This Month Summary</CardTitle>
+            <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold text-[#1F1924]">Monthly Summary</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-green-100 text-green-600 rounded-lg p-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="bg-emerald-50 text-emerald-700 rounded-xl p-2">
                       <ArrowDownLeft className="h-4 w-4" />
                     </div>
-                    <span className="text-sm">Received</span>
+                    <span className="text-xs font-medium text-slate-600">Coins Added</span>
                   </div>
-                  <span className="font-bold text-green-600">+{monthReceived}</span>
+                  <span className="text-xs font-extrabold text-emerald-700">+{monthReceived}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-red-100 text-red-600 rounded-lg p-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="bg-rose-50 text-rose-700 rounded-xl p-2">
                       <ArrowUpRight className="h-4 w-4" />
                     </div>
-                    <span className="text-sm">Spent</span>
+                    <span className="text-xs font-medium text-slate-600">Coins Used</span>
                   </div>
-                  <span className="font-bold text-gray-700">-{monthSpent}</span>
+                  <span className="text-xs font-extrabold text-slate-700">-{monthSpent}</span>
                 </div>
               </CardContent>
             </Card>
@@ -177,68 +176,70 @@ export default function WalletPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            <Tabs defaultValue="buy">
-              <TabsList className="w-full">
-                <TabsTrigger value="buy" className="flex-1">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Buy Coins
+            <Tabs defaultValue="buy" className="w-full">
+              <TabsList className="w-full bg-white border border-[#EADDD0] p-1 rounded-xl h-11">
+                <TabsTrigger value="buy" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">
+                  <Plus className="h-3.5 w-3.5 mr-1.5" />
+                  Buy Coin Packages
                 </TabsTrigger>
-                <TabsTrigger value="history" className="flex-1">
-                  <History className="h-4 w-4 mr-2" />
-                  Transaction History
+                <TabsTrigger value="history" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">
+                  <History className="h-3.5 w-3.5 mr-1.5" />
+                  Transaction Log
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="buy" className="mt-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Select Coin Package</CardTitle>
-                    <p className="text-sm text-gray-600">Choose a package to continue</p>
+              <TabsContent value="buy" className="mt-4 space-y-4">
+                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base font-bold text-[#1F1924]">Select Coin Package</CardTitle>
+                    <p className="text-xs text-slate-500">Pick the bundle that matches your tutoring requirements</p>
                   </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <CardContent className="pt-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                       {coinPackages.map((pkg, index) => (
                         <button
                           key={index}
                           onClick={() => setSelectedPackage(index)}
-                          className={`relative p-4 rounded-lg border-2 text-center transition-all ${
+                          className={`relative p-4 rounded-xl border text-center transition-all ${
                             selectedPackage === index
-                              ? 'border-teal-500 bg-teal-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-plum-900 bg-plum-50/70 shadow-xs'
+                              : 'border-[#EADDD0] bg-[#FAF8F5] hover:border-plum-200'
                           }`}
                         >
                           {pkg.popular && (
-                            <Badge className="absolute -top-2 left-1/2 -translate-x-1/2">Popular</Badge>
+                            <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 bg-plum-900 text-white text-[10px] font-bold px-2 py-0">
+                              Best Value
+                            </Badge>
                           )}
-                          <div className="flex items-center justify-center gap-2 mb-2">
-                            <Star className={`h-6 w-6 ${selectedPackage === index ? 'text-teal-600 fill-teal-600' : 'text-gray-400'}`} />
-                            <span className={`text-2xl font-bold ${selectedPackage === index ? 'text-teal-600' : 'text-gray-900'}`}>
+                          <div className="flex items-center justify-center gap-1.5 mb-1.5 pt-1">
+                            <Star className={`h-4 w-4 ${selectedPackage === index ? 'text-amber-500 fill-amber-500' : 'text-slate-400'}`} />
+                            <span className="text-xl sm:text-2xl font-extrabold text-[#1F1924]">
                               {pkg.coins.toLocaleString()}
                             </span>
                           </div>
-                          <p className="font-medium text-gray-900">₹{pkg.price}</p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            ₹{(pkg.price / pkg.coins).toFixed(2)}/coin
+                          <p className="text-xs font-bold text-[#1F1924]">₹{pkg.price}</p>
+                          <p className="text-[10px] text-slate-400 mt-0.5">
+                            ₹{(pkg.price / pkg.coins).toFixed(2)} / coin
                           </p>
                         </button>
                       ))}
                     </div>
 
                     {selectedPackage !== null && coinPackages[selectedPackage] && (
-                      <div className="mt-6 p-4 rounded-lg bg-gray-50 border">
-                        <div className="flex items-center justify-between mb-4">
+                      <div className="mt-5 p-4 rounded-xl bg-[#FAF8F5] border border-[#EADDD0]">
+                        <div className="flex items-center justify-between mb-3">
                           <div>
-                            <p className="font-medium text-gray-900">{(coinPackages[selectedPackage]?.coins ?? 0).toLocaleString()} Coins</p>
-                            <p className="text-sm text-gray-600">Package selected</p>
+                            <p className="text-xs font-bold text-[#1F1924]">{(coinPackages[selectedPackage]?.coins ?? 0).toLocaleString()} Coins Bundle</p>
+                            <p className="text-[11px] text-slate-500">One-time top-up via Razorpay</p>
                           </div>
-                          <p className="text-xl font-bold text-gray-900">₹{coinPackages[selectedPackage]?.price ?? 0}</p>
+                          <p className="text-xl font-extrabold text-plum-950">₹{coinPackages[selectedPackage]?.price ?? 0}</p>
                         </div>
                         {error && (
-                          <p className="text-sm text-red-600 mb-3">{error}</p>
+                          <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg p-2.5 mb-3">{error}</p>
                         )}
-                        <Button className="w-full" onClick={handleBuy} disabled={buying}>
+                        <Button className="w-full h-11 bg-plum-900 hover:bg-plum-950 text-white rounded-xl text-xs font-bold" onClick={handleBuy} disabled={buying}>
                           <CreditCard className="h-4 w-4 mr-2" />
-                          {buying ? 'Processing…' : 'Proceed to Payment'}
+                          {buying ? 'Securing Gateway…' : 'Proceed to Checkout'}
                         </Button>
                       </div>
                     )}
@@ -246,56 +247,56 @@ export default function WalletPage() {
                 </Card>
 
                 {/* Use Coins Info */}
-                <Card className="mt-6">
-                  <CardHeader>
-                    <CardTitle className="text-lg">How to Use Coins</CardTitle>
+                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-bold text-[#1F1924]">How Coins Work</CardTitle>
                   </CardHeader>
-                  <CardContent className="grid md:grid-cols-3 gap-4">
-                    <div className="text-center p-4 rounded-lg bg-gray-50">
-                      <Phone className="h-8 w-8 text-teal-600 mx-auto mb-2" />
-                      <p className="font-medium">Contact Tutor</p>
-                      <p className="text-sm text-gray-600 mt-1">50 coins per contact</p>
+                  <CardContent className="grid sm:grid-cols-3 gap-3">
+                    <div className="text-center p-3 rounded-xl bg-[#FAF8F5] border border-[#EADDD0]">
+                      <Phone className="h-5 w-5 text-plum-800 mx-auto mb-1.5" />
+                      <p className="text-xs font-bold text-[#1F1924]">Contact Tutor</p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">50 coins per unlock</p>
                     </div>
-                    <div className="text-center p-4 rounded-lg bg-gray-50">
-                      <ArrowUpRight className="h-8 w-8 text-teal-600 mx-auto mb-2" />
-                      <p className="font-medium">Post Requirement</p>
-                      <p className="text-sm text-gray-600 mt-1">20 coins per post</p>
+                    <div className="text-center p-3 rounded-xl bg-[#FAF8F5] border border-[#EADDD0]">
+                      <ArrowUpRight className="h-5 w-5 text-plum-800 mx-auto mb-1.5" />
+                      <p className="text-xs font-bold text-[#1F1924]">Post Requirement</p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">Free with account</p>
                     </div>
-                    <div className="text-center p-4 rounded-lg bg-gray-50">
-                      <Star className="h-8 w-8 text-teal-600 mx-auto mb-2" />
-                      <p className="font-medium">Featured Post</p>
-                      <p className="text-sm text-gray-600 mt-1">100 coins per feature</p>
+                    <div className="text-center p-3 rounded-xl bg-[#FAF8F5] border border-[#EADDD0]">
+                      <Star className="h-5 w-5 text-plum-800 mx-auto mb-1.5" />
+                      <p className="text-xs font-bold text-[#1F1924]">Featured Listing</p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">100 coins for 7 days</p>
                     </div>
                   </CardContent>
                 </Card>
               </TabsContent>
 
-              <TabsContent value="history" className="mt-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Transaction History</CardTitle>
+              <TabsContent value="history" className="mt-4">
+                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base font-bold text-[#1F1924]">Coin Ledger</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
+                    <div className="space-y-2.5">
                       {(!transactions || transactions.length === 0) && (
-                        <p className="text-center text-gray-500 py-8">No transactions yet.</p>
+                        <p className="text-center text-xs text-slate-500 py-8">No transaction records logged yet.</p>
                       )}
                       {(transactions ?? []).map((txn) => (
-                        <div key={txn.id || `${txn.date}-${txn.amount}`} className="flex items-center justify-between p-4 rounded-lg border hover:shadow-sm transition-shadow">
-                          <div className="flex items-center gap-4">
-                            <div className={`rounded-lg p-3 ${txn.type === 'credit' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
-                              {txn.type === 'credit' ? <ArrowDownLeft className="h-5 w-5" /> : <ArrowUpRight className="h-5 w-5" />}
+                        <div key={txn.id || `${txn.date}-${txn.amount}`} className="flex items-center justify-between p-3 rounded-xl border border-[#EADDD0] bg-[#FAF8F5]">
+                          <div className="flex items-center gap-3">
+                            <div className={`rounded-xl p-2 ${txn.type === 'credit' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}`}>
+                              {txn.type === 'credit' ? <ArrowDownLeft className="h-4 w-4" /> : <ArrowUpRight className="h-4 w-4" />}
                             </div>
                             <div>
-                              <p className="font-medium text-gray-900">{txn.description || 'Coin transaction'}</p>
-                              <p className="text-sm text-gray-500">{txn.date ? new Date(txn.date).toLocaleDateString() : '—'}</p>
+                              <p className="text-xs font-bold text-[#1F1924]">{txn.description || 'Coin transaction'}</p>
+                              <p className="text-[10px] text-slate-400">{txn.date ? new Date(txn.date).toLocaleDateString('en-IN') : '—'}</p>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className={`text-lg font-bold ${txn.type === 'credit' ? 'text-green-600' : 'text-gray-700'}`}>
+                            <p className={`text-xs font-extrabold ${txn.type === 'credit' ? 'text-emerald-700' : 'text-slate-800'}`}>
                               {txn.type === 'credit' ? '+' : '-'}{txn.amount ?? 0}
                             </p>
-                            <p className="text-xs text-gray-500">Balance: {txn.balance ?? 0}</p>
+                            <p className="text-[10px] text-slate-400">Bal: {txn.balance ?? 0}</p>
                           </div>
                         </div>
                       ))}

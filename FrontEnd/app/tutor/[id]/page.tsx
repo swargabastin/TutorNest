@@ -27,6 +27,8 @@ import {
 import { tutorsApi, studentsApi, authApi } from '@/lib/api';
 import type { TutorDetail } from '@/lib/api';
 import type { Tutor } from '@/lib/types';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 import { BookSessionModal } from '@/components/book-session-modal';
 
 export default function TutorProfilePage() {
@@ -86,97 +88,113 @@ export default function TutorProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-600">Loading tutor profile…</p>
+      <div className="min-h-screen bg-[#FAF8F5] flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-8 h-8 border-2 border-plum-900 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+            <p className="text-xs text-slate-500 font-medium">Loading tutor profile…</p>
+          </div>
+        </div>
+        <Footer />
       </div>
     );
   }
 
   if (notFound || !tutor) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Card className="max-w-md text-center">
-          <CardContent className="p-12">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Tutor Not Found</h2>
-            <Link href="/search">
-              <Button>Back to Search</Button>
-            </Link>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-[#FAF8F5] flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center p-4">
+          <Card className="max-w-md w-full text-center border-[#EADDD0] bg-white rounded-3xl shadow-xs">
+            <CardContent className="p-8">
+              <h2 className="text-lg font-bold text-[#1F1924] mb-2">Tutor Not Found</h2>
+              <p className="text-xs text-slate-500 mb-5">The profile you are looking for does not exist or may have been unlisted.</p>
+              <Link href="/search">
+                <Button className="bg-plum-900 hover:bg-plum-950 text-white rounded-xl text-xs font-semibold px-5 h-10">
+                  Back to Tutor Search
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
-          <Link href="/search" className="inline-flex items-center text-gray-600 hover:text-gray-900">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Search
+    <div className="min-h-screen bg-[#FAF8F5] text-[#1F1924] flex flex-col">
+      <Header />
+
+      <div className="border-b border-[#EADDD0] bg-white">
+        <div className="container mx-auto px-4 py-3">
+          <Link href="/search" className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-plum-900 transition-colors">
+            <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
+            Back to Tutor Search
           </Link>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
+      <div className="container mx-auto px-4 py-6 md:py-8 flex-1">
+        <div className="grid lg:grid-cols-3 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Profile Header */}
-            <Card>
-              <CardContent className="p-8">
-                <div className="flex flex-col md:flex-row gap-6">
+            <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs overflow-hidden">
+              <CardContent className="p-6 sm:p-8">
+                <div className="flex flex-col sm:flex-row gap-5 items-start">
                   <img
                     src={tutor.avatar}
                     alt={tutor.name}
-                    className="w-32 h-32 rounded-full object-cover border-4 border-teal-100"
+                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-plum-200 shadow-xs shrink-0"
                   />
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-3 mb-3">
-                      <h1 className="text-2xl font-bold text-gray-900">{tutor.name}</h1>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <h1 className="text-xl sm:text-2xl font-extrabold text-[#1F1924] tracking-tight">{tutor.name}</h1>
                       {tutor.verified && (
-                        <Badge className="bg-teal-100 text-teal-700">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          Verified
+                        <Badge className="bg-plum-50 text-plum-900 border border-plum-200 text-[11px] font-bold py-0.5 px-2 rounded-full">
+                          <CheckCircle className="h-3 w-3 mr-1 text-plum-700" />
+                          Verified Tutor
                         </Badge>
                       )}
                     </div>
-                    <p className="text-gray-600 mb-4">{tutor.qualification}</p>
+                    <p className="text-xs sm:text-sm text-slate-600 mb-3">{tutor.qualification}</p>
 
-                    <div className="flex flex-wrap gap-6 text-sm">
-                      <div className="flex items-center">
-                        <Star className="h-5 w-5 text-yellow-500 fill-yellow-500 mr-1" />
-                        <span className="font-bold text-gray-900">{tutor.rating}</span>
-                        <span className="text-gray-500 ml-1">({tutor.reviewCount} reviews)</span>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs pt-1">
+                      <div className="flex items-center gap-1.5">
+                        <Star className="h-4 w-4 text-amber-500 fill-amber-500 shrink-0" />
+                        <span className="font-bold text-[#1F1924]">{tutor.rating}</span>
+                        <span className="text-slate-400">({tutor.reviewCount})</span>
                       </div>
-                      <div className="flex items-center text-gray-600">
-                        <BookOpen className="h-5 w-5 mr-1" />
-                        {tutor.experience} years experience
+                      <div className="flex items-center gap-1 text-slate-600">
+                        <BookOpen className="h-3.5 w-3.5 text-plum-700 shrink-0" />
+                        <span>{tutor.experience} yrs exp</span>
                       </div>
-                      <div className="flex items-center text-gray-600">
-                        <MapPin className="h-5 w-5 mr-1" />
-                        {tutor.location}
+                      <div className="flex items-center gap-1 text-slate-600">
+                        <MapPin className="h-3.5 w-3.5 text-plum-700 shrink-0" />
+                        <span>{tutor.location}</span>
                       </div>
-                      <div className="flex items-center text-gray-600">
-                        <Users className="h-5 w-5 mr-1" />
-                        {tutor.studentsTaught} students taught
+                      <div className="flex items-center gap-1 text-slate-600">
+                        <Users className="h-3.5 w-3.5 text-plum-700 shrink-0" />
+                        <span>{tutor.studentsTaught} taught</span>
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold text-teal-600">
+
+                  <div className="sm:text-right w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-0 border-[#F0E6DB]">
+                    <div className="text-2xl sm:text-3xl font-extrabold text-[#1F1924]">
                       ₹{tutor.hourlyRate}
-                      <span className="text-base font-normal text-gray-500">/hr</span>
+                      <span className="text-xs font-normal text-slate-500">/hr</span>
                     </div>
-                    <div className="flex flex-wrap gap-2 mt-3">
+                    <div className="flex flex-wrap gap-1.5 mt-2 justify-start sm:justify-end">
                       {tutor.mode.includes('online') && (
-                        <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                        <Badge variant="outline" className="text-[10px] bg-plum-50 text-plum-900 border-plum-200">
                           <Monitor className="h-3 w-3 mr-1" /> Online
                         </Badge>
                       )}
                       {tutor.mode.includes('offline') && (
-                        <Badge variant="secondary" className="bg-green-100 text-green-700">
+                        <Badge variant="outline" className="text-[10px] bg-[#FAF8F5] text-slate-700 border-[#EADDD0]">
                           <MapPin className="h-3 w-3 mr-1" /> In-person
                         </Badge>
                       )}
@@ -187,48 +205,50 @@ export default function TutorProfilePage() {
             </Card>
 
             {/* Tabs Content */}
-            <Tabs defaultValue="about">
-              <TabsList className="w-full">
-                <TabsTrigger value="about" className="flex-1">About</TabsTrigger>
-                <TabsTrigger value="reviews" className="flex-1">Reviews</TabsTrigger>
-                <TabsTrigger value="subjects" className="flex-1">Subjects</TabsTrigger>
+            <Tabs defaultValue="about" className="w-full">
+              <TabsList className="w-full bg-white border border-[#EADDD0] p-1 rounded-xl h-11">
+                <TabsTrigger value="about" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">About</TabsTrigger>
+                <TabsTrigger value="reviews" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">Reviews ({tutor.reviewCount})</TabsTrigger>
+                <TabsTrigger value="subjects" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">Subjects</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="about">
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-4">About Me</h3>
-                    <p className="text-gray-700 leading-relaxed mb-6">{tutor.bio}</p>
+              <TabsContent value="about" className="mt-4">
+                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                  <CardContent className="p-6 space-y-6">
+                    <div>
+                      <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-2">About Tutor</h3>
+                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{tutor.bio}</p>
+                    </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid sm:grid-cols-2 gap-4 pt-4 border-t border-[#F0E6DB]">
                       <div>
-                        <h4 className="font-medium text-gray-900 mb-3">Languages I Teach In</h4>
-                        <div className="flex flex-wrap gap-2">
+                        <h4 className="text-xs font-bold text-[#1F1924] mb-2">Languages Spoken</h4>
+                        <div className="flex flex-wrap gap-1.5">
                           {tutor.languages.map((lang) => (
-                            <Badge key={lang} variant="outline">{lang}</Badge>
+                            <Badge key={lang} variant="outline" className="text-xs border-[#EADDD0] bg-[#FAF8F5]">{lang}</Badge>
                           ))}
                         </div>
                       </div>
                       <div>
-                        <h4 className="font-medium text-gray-900 mb-3">Teaching Levels</h4>
-                        <div className="flex flex-wrap gap-2">
+                        <h4 className="text-xs font-bold text-[#1F1924] mb-2">Teaching Levels</h4>
+                        <div className="flex flex-wrap gap-1.5">
                           {tutor.teachingLevels.map((level) => (
-                            <Badge key={level} variant="outline">{level}</Badge>
+                            <Badge key={level} variant="outline" className="text-xs border-[#EADDD0] bg-[#FAF8F5]">{level}</Badge>
                           ))}
                         </div>
                       </div>
                       <div>
-                        <h4 className="font-medium text-gray-900 mb-3">Response Time</h4>
-                        <div className="flex items-center text-gray-700">
-                          <Clock className="h-5 w-5 mr-2 text-teal-600" />
-                          {tutor.responseTime}
+                        <h4 className="text-xs font-bold text-[#1F1924] mb-1.5">Response Time</h4>
+                        <div className="flex items-center text-xs text-slate-600">
+                          <Clock className="h-4 w-4 mr-1.5 text-plum-700" />
+                          Usually within {tutor.responseTime}
                         </div>
                       </div>
                       <div>
-                        <h4 className="font-medium text-gray-900 mb-3">Student Count</h4>
-                        <div className="flex items-center text-gray-700">
-                          <Users className="h-5 w-5 mr-2 text-teal-600" />
-                          {tutor.studentsTaught} students taught
+                        <h4 className="text-xs font-bold text-[#1F1924] mb-1.5">Student Base</h4>
+                        <div className="flex items-center text-xs text-slate-600">
+                          <Users className="h-4 w-4 mr-1.5 text-plum-700" />
+                          {tutor.studentsTaught}+ students mentored
                         </div>
                       </div>
                     </div>
@@ -236,56 +256,50 @@ export default function TutorProfilePage() {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="reviews">
-                <Card>
+              <TabsContent value="reviews" className="mt-4">
+                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
                   <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-4">
-                      Student Reviews
-                      <span className="text-sm font-normal text-gray-500 ml-2">({tutor.reviewCount} reviews)</span>
-                    </h3>
-
-                    <div className="flex items-center gap-6 mb-6 p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-6 mb-6 p-4 bg-[#FAF8F5] border border-[#EADDD0] rounded-xl">
                       <div className="text-center">
-                        <p className="text-4xl font-bold text-gray-900">{tutor.rating}</p>
+                        <p className="text-3xl font-extrabold text-[#1F1924]">{tutor.rating}</p>
                         <div className="flex items-center justify-center mt-1">
                           {[...Array(5)].map((_, i) => (
-                            <Star key={i} className={`h-4 w-4 ${i < Math.floor(tutor.rating) ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`} />
+                            <Star key={i} className={`h-3.5 w-3.5 ${i < Math.floor(tutor.rating) ? 'text-amber-500 fill-amber-500' : 'text-slate-200'}`} />
                           ))}
                         </div>
-                        <p className="text-sm text-gray-500 mt-1">{tutor.reviewCount} reviews</p>
+                        <p className="text-[11px] text-slate-500 mt-1">{tutor.reviewCount} total reviews</p>
                       </div>
                     </div>
 
-                    {/* Real reviews from the backend */}
                     {tutor.reviews.length === 0 ? (
-                      <p className="text-center text-gray-500 py-6">No reviews yet.</p>
+                      <p className="text-center text-xs text-slate-500 py-6">No verified reviews submitted yet.</p>
                     ) : (
                       <div className="space-y-4">
                         {tutor.reviews.map((review) => (
-                          <div key={review.id} className="border-b pb-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-medium text-gray-600 overflow-hidden">
+                          <div key={review.id} className="border-b border-[#F0E6DB] pb-4 last:border-0 last:pb-0">
+                            <div className="flex items-center justify-between mb-1.5">
+                              <div className="flex items-center gap-2.5">
+                                <div className="w-8 h-8 rounded-full bg-plum-100 text-plum-900 flex items-center justify-center text-xs font-bold">
                                   {review.studentAvatar ? (
-                                    <img src={review.studentAvatar} alt={review.studentName} className="w-full h-full object-cover" />
+                                    <img src={review.studentAvatar} alt={review.studentName} className="w-full h-full object-cover rounded-full" />
                                   ) : (
                                     review.studentName.charAt(0)
                                   )}
                                 </div>
                                 <div>
-                                  <p className="font-medium">{review.studentName}</p>
-                                  <p className="text-sm text-gray-500">
-                                    {new Date(review.createdAt).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+                                  <p className="text-xs font-bold text-[#1F1924]">{review.studentName}</p>
+                                  <p className="text-[10px] text-slate-400">
+                                    {new Date(review.createdAt).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
                                   </p>
                                 </div>
                               </div>
                               <div className="flex items-center">
                                 {[...Array(5)].map((_, i) => (
-                                  <Star key={i} className={`h-4 w-4 ${i < review.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`} />
+                                  <Star key={i} className={`h-3 w-3 ${i < review.rating ? 'text-amber-500 fill-amber-500' : 'text-slate-200'}`} />
                                 ))}
                               </div>
                             </div>
-                            {review.reviewText && <p className="text-gray-700">{review.reviewText}</p>}
+                            {review.reviewText && <p className="text-xs text-slate-700 leading-relaxed">{review.reviewText}</p>}
                           </div>
                         ))}
                       </div>
@@ -294,17 +308,17 @@ export default function TutorProfilePage() {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="subjects">
-                <Card>
+              <TabsContent value="subjects" className="mt-4">
+                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
                   <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-4">Subjects I Teach</h3>
-                    <div className="space-y-4">
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Subjects & Boards</h3>
+                    <div className="space-y-3">
                       {tutor.subjects.map((subject) => (
-                        <div key={subject} className="p-4 rounded-lg border">
-                          <h4 className="font-medium text-gray-900 mb-2">{subject}</h4>
-                          <div className="flex flex-wrap gap-2">
+                        <div key={subject} className="p-3.5 rounded-xl border border-[#EADDD0] bg-[#FAF8F5]">
+                          <h4 className="text-xs font-bold text-[#1F1924] mb-1.5">{subject}</h4>
+                          <div className="flex flex-wrap gap-1.5">
                             {tutor.teachingLevels.map((level) => (
-                              <Badge key={level} variant="secondary">{level}</Badge>
+                              <Badge key={level} variant="outline" className="text-[11px] bg-white border-[#EADDD0]">{level}</Badge>
                             ))}
                           </div>
                         </div>
@@ -317,61 +331,66 @@ export default function TutorProfilePage() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-5">
             {/* Contact Card */}
-            <Card className="sticky top-24">
-              <CardHeader>
-                <CardTitle className="text-lg">
-                  Interested in learning from {tutor.name.split(' ')[0]}?
+            <Card className="sticky top-20 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base font-bold text-[#1F1924]">
+                  Book a Class with {tutor.name.split(' ')[0]}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-gray-600">
-                  Contact {tutor.name.split(' ')[0]} to discuss your learning goals and schedule classes.
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Discuss syllabus, weekly schedule, and begin personalized learning.
                 </p>
 
-                <div className="bg-teal-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-600">Tuition Fee</p>
-                  <p className="text-2xl font-bold text-teal-600">
+                <div className="bg-plum-50/70 border border-plum-100 rounded-xl p-3.5">
+                  <p className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold">Tuition Rate</p>
+                  <p className="text-2xl font-extrabold text-plum-950">
                     ₹{tutor.hourlyRate}
-                    <span className="text-base font-normal text-gray-500">/hour</span>
+                    <span className="text-xs font-normal text-slate-500"> / hour</span>
                   </p>
                 </div>
 
                 {contactSent ? (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center text-green-700 text-sm">
-                    <CheckCircle className="h-5 w-5 mx-auto mb-2" />
-                    Your enquiry has been sent to {tutor.name.split(' ')[0]}.
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 text-center text-emerald-800 text-xs font-medium">
+                    <CheckCircle className="h-5 w-5 mx-auto mb-1 text-emerald-600" />
+                    Enquiry sent to {tutor.name.split(' ')[0]}! You will be notified when they reply.
                   </div>
                 ) : (
                   <>
                     {contactError && (
-                      <p className="text-sm text-red-600">{contactError}</p>
+                      <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg p-2.5">{contactError}</p>
                     )}
                     <BookSessionModal tutor={tutor} />
-                    <Button variant="outline" className="w-full" onClick={handleContact} disabled={contacting}>
-                      <Phone className="h-4 w-4 mr-2" />
-                      {contacting ? 'Sending…' : 'Contact Tutor'}
+                    <Button
+                      variant="outline"
+                      className="w-full h-10 rounded-xl border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 text-xs font-semibold"
+                      onClick={handleContact}
+                      disabled={contacting}
+                    >
+                      <Phone className="h-3.5 w-3.5 mr-1.5 text-plum-800" />
+                      {contacting ? 'Sending…' : 'Contact Direct'}
                     </Button>
                   </>
                 )}
 
-                <div className="text-center text-sm text-gray-500">
-                  <span className="flex items-center justify-center gap-1">
-                    <Clock className="h-4 w-4" />
+                <div className="text-center text-[11px] text-slate-500 pt-1">
+                  <span className="inline-flex items-center gap-1">
+                    <Clock className="h-3 w-3 text-plum-700" />
                     Usually responds within {tutor.responseTime}
                   </span>
                 </div>
 
-                <div className="py-4 border-t">
-                  <div className="flex items-center justify-center gap-6 text-sm text-gray-500">
-                    <div className="flex items-center gap-1">
-                      <CheckCircle className="h-4 w-4 text-teal-600" />
+                <div className="pt-3 border-t border-[#F0E6DB]">
+                  <div className="flex items-center justify-around text-xs text-slate-600">
+                    <div className="flex items-center gap-1 font-medium">
+                      <CheckCircle className="h-3.5 w-3.5 text-plum-800" />
                       Verified
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Award className="h-4 w-4 text-teal-600" />
-                      Trusted
+                    <div className="flex items-center gap-1 font-medium">
+                      <Award className="h-3.5 w-3.5 text-plum-800" />
+                      Quality Check
                     </div>
                   </div>
                 </div>
@@ -379,39 +398,39 @@ export default function TutorProfilePage() {
             </Card>
 
             {/* Similar Tutors */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Similar Tutors</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {similarTutors.length === 0 ? (
-                  <p className="text-sm text-gray-500">No similar tutors found.</p>
-                ) : (
-                  similarTutors.map((similar) => (
+            {similarTutors.length > 0 && (
+              <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold text-[#1F1924]">Similar Tutors</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2.5">
+                  {similarTutors.map((similar) => (
                     <Link key={similar.id} href={`/tutor/${similar.id}`} className="block">
-                      <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-plum-50/50 transition-colors">
                         <img
                           src={similar.avatar}
                           alt={similar.name}
-                          className="w-12 h-12 rounded-full object-cover"
+                          className="w-10 h-10 rounded-xl object-cover shrink-0"
                         />
-                        <div className="flex-1">
-                          <p className="font-medium text-gray-900">{similar.name}</p>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <Star className="h-3 w-3 text-yellow-500 fill-yellow-500 mr-1" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-[#1F1924] truncate">{similar.name}</p>
+                          <div className="flex items-center text-[11px] text-slate-500">
+                            <Star className="h-3 w-3 text-amber-500 fill-amber-500 mr-1" />
                             {similar.rating}
                           </div>
                         </div>
-                        <span className="text-sm font-medium text-teal-600">₹{similar.hourlyRate}/hr</span>
+                        <span className="text-xs font-extrabold text-plum-950">₹{similar.hourlyRate}/h</span>
                       </div>
                     </Link>
-                  ))
-                )}
-              </CardContent>
-            </Card>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

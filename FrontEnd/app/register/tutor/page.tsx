@@ -151,40 +151,40 @@ export default function TutorRegistrationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-emerald-50 py-12 px-4">
-      <div className="container mx-auto max-w-3xl">
-        <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-8">
-          <ArrowLeft className="h-4 w-4 mr-2" />
+    <div className="min-h-screen bg-[#FAF8F5] py-8 sm:py-12 px-4 text-[#1F1924]">
+      <div className="container mx-auto max-w-2xl">
+        <Link href="/" className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-plum-900 mb-6 transition-colors">
+          <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
           Back to Home
         </Link>
 
-        <Card className="shadow-xl border-0">
-          <CardHeader className="text-center pb-2">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 text-teal-600 mx-auto mb-4">
-              <BookOpen className="h-8 w-8" />
+        <Card className="shadow-xs border border-[#EADDD0] bg-white rounded-3xl overflow-hidden">
+          <CardHeader className="text-center pb-4 pt-8 px-6 sm:px-10 border-b border-[#F0E6DB] bg-gradient-to-b from-plum-50/50 to-transparent">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-plum-100 text-plum-900 mx-auto mb-3">
+              <BookOpen className="h-6 w-6" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Register as Tutor</h1>
-            <p className="text-gray-600 mt-2">Join our community of expert educators</p>
+            <h1 className="text-2xl font-extrabold tracking-tight text-[#1F1924]">Register as a Tutor</h1>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">Connect with serious students across Kerala and grow your income</p>
           </CardHeader>
 
-          <CardContent className="p-8">
+          <CardContent className="p-6 sm:p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Personal Information */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <User className="h-5 w-5 mr-2 text-teal-600" />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
+                  <User className="h-4 w-4 text-plum-800" />
                   Personal Information
                 </h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="fullName" className="text-xs font-bold text-[#1F1924]">Full Name</Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                      <User className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                       <Input
                         id="fullName"
                         type="text"
-                        placeholder="Enter your full name"
-                        className="pl-10"
+                        placeholder="Prof. Anjali Nair"
+                        className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                         value={formData.fullName}
                         onChange={(e) => setFormData({...formData, fullName: e.target.value})}
                         required
@@ -192,15 +192,15 @@ export default function TutorRegistrationPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="email" className="text-xs font-bold text-[#1F1924]">Email Address</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                       <Input
                         id="email"
                         type="email"
-                        placeholder="Enter your email"
-                        className="pl-10"
+                        placeholder="tutor@example.com"
+                        className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         required
@@ -209,16 +209,16 @@ export default function TutorRegistrationPage() {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6 mt-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
+                <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="phone" className="text-xs font-bold text-[#1F1924]">Phone Number</Label>
                     <div className="relative">
-                      <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                      <Phone className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                       <Input
                         id="phone"
                         type="tel"
                         placeholder="+91 98765 43210"
-                        className="pl-10"
+                        className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
                         required
@@ -226,10 +226,10 @@ export default function TutorRegistrationPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="city">City</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="city" className="text-xs font-bold text-[#1F1924]">City</Label>
                     <Select value={formData.city} onValueChange={(value) => setFormData({...formData, city: value})}>
-                      <SelectTrigger>
+                      <SelectTrigger className="h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
                         <SelectValue placeholder="Select your city" />
                       </SelectTrigger>
                       <SelectContent>
@@ -244,21 +244,21 @@ export default function TutorRegistrationPage() {
 
               {/* Professional Details */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <GraduationCap className="h-5 w-5 mr-2 text-teal-600" />
-                  Professional Details
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
+                  <GraduationCap className="h-4 w-4 text-plum-800" />
+                  Credentials & Rates
                 </h3>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="qualification">Highest Qualification</Label>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="qualification" className="text-xs font-bold text-[#1F1924]">Highest Qualification</Label>
                     <div className="relative">
-                      <GraduationCap className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                      <GraduationCap className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                       <Input
                         id="qualification"
                         type="text"
-                        placeholder="e.g., M.Sc Mathematics, IIT Delhi"
-                        className="pl-10"
+                        placeholder="e.g. M.Sc Physics, NIT Calicut"
+                        className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                         value={formData.qualification}
                         onChange={(e) => setFormData({...formData, qualification: e.target.value})}
                         required
@@ -266,17 +266,17 @@ export default function TutorRegistrationPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="experience">Years of Experience</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="experience" className="text-xs font-bold text-[#1F1924]">Years of Experience</Label>
                     <div className="relative">
-                      <Briefcase className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                      <Briefcase className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                       <Input
                         id="experience"
                         type="number"
                         min="0"
                         max="50"
-                        placeholder="e.g., 5"
-                        className="pl-10"
+                        placeholder="e.g. 6"
+                        className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                         value={formData.experience}
                         onChange={(e) => setFormData({...formData, experience: e.target.value})}
                         required
@@ -285,17 +285,17 @@ export default function TutorRegistrationPage() {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6 mt-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="hourlyRate">Hourly Rate (₹)</Label>
+                <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="hourlyRate" className="text-xs font-bold text-[#1F1924]">Hourly Rate (₹)</Label>
                     <div className="relative">
-                      <IndianRupee className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                      <IndianRupee className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                       <Input
                         id="hourlyRate"
                         type="number"
                         min="0"
-                        placeholder="e.g., 500"
-                        className="pl-10"
+                        placeholder="e.g. 500"
+                        className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                         value={formData.hourlyRate}
                         onChange={(e) => setFormData({...formData, hourlyRate: e.target.value})}
                         required
@@ -303,20 +303,20 @@ export default function TutorRegistrationPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="teachingMode">Teaching Mode</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="teachingMode" className="text-xs font-bold text-[#1F1924]">Teaching Mode</Label>
                     <Select
                       value={formData.teachingMode}
                       onValueChange={(value) => setFormData({...formData, teachingMode: value as 'Online' | 'Offline' | 'Both'})}
                     >
-                      <SelectTrigger>
-                        <Laptop className="h-4 w-4 mr-2 text-gray-400" />
+                      <SelectTrigger className="h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
+                        <Laptop className="h-4 w-4 mr-2 text-slate-400" />
                         <SelectValue placeholder="Select mode" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Online">Online</SelectItem>
                         <SelectItem value="Offline">In-person</SelectItem>
-                        <SelectItem value="Both">Both</SelectItem>
+                        <SelectItem value="Both">Both Online & In-person</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -325,15 +325,15 @@ export default function TutorRegistrationPage() {
 
               {/* Teaching Subjects */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <BookOpen className="h-5 w-5 mr-2 text-teal-600" />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-1.5">
+                  <BookOpen className="h-4 w-4 text-plum-800" />
                   Teaching Subjects
                 </h3>
 
-                <div className="flex gap-2 mb-3">
+                <div className="flex gap-2 mb-2.5">
                   <Select value={newSubject} onValueChange={setNewSubject}>
-                    <SelectTrigger className="flex-1">
-                      <SelectValue placeholder="Select a subject" />
+                    <SelectTrigger className="flex-1 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
+                      <SelectValue placeholder="Select a subject to add" />
                     </SelectTrigger>
                     <SelectContent>
                       {subjects.filter(s => !formData.selectedSubjects.includes(s)).map((subject) => (
@@ -341,19 +341,19 @@ export default function TutorRegistrationPage() {
                       ))}
                     </SelectContent>
                   </Select>
-                  <Button type="button" variant="outline" onClick={handleAddSubject}>
+                  <Button type="button" variant="outline" onClick={handleAddSubject} className="h-10 rounded-xl border-[#EADDD0] px-3">
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {formData.selectedSubjects.map((subject) => (
-                    <Badge key={subject} variant="secondary" className="py-1 px-3">
+                    <Badge key={subject} variant="outline" className="py-1 px-2.5 rounded-lg bg-plum-50 text-plum-950 border-plum-200 text-xs">
                       {subject}
                       <button
                         type="button"
                         onClick={() => handleRemoveSubject(subject)}
-                        className="ml-2 hover:text-red-500"
+                        className="ml-1.5 hover:text-rose-600"
                       >
                         <X className="h-3 w-3" />
                       </button>
@@ -364,17 +364,17 @@ export default function TutorRegistrationPage() {
 
               {/* Teaching Levels */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Teaching Levels</h3>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Teaching Levels</h3>
                 <div className="flex flex-wrap gap-2">
                   {teachingLevels.map((level) => (
                     <button
                       key={level}
                       type="button"
                       onClick={() => handleToggleLevel(level)}
-                      className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
+                      className={`px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
                         formData.selectedLevels.includes(level)
-                          ? 'bg-teal-100 border-teal-300 text-teal-700'
-                          : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
+                          ? 'bg-plum-900 border-plum-900 text-white shadow-xs'
+                          : 'bg-[#FAF8F5] border-[#EADDD0] text-slate-700 hover:border-plum-300'
                       }`}
                     >
                       {level}
@@ -384,28 +384,29 @@ export default function TutorRegistrationPage() {
               </div>
 
               {/* Bio */}
-              <div className="space-y-2">
-                <Label htmlFor="bio">About Yourself</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="bio" className="text-xs font-bold text-[#1F1924]">About Yourself & Methodology</Label>
                 <Textarea
                   id="bio"
-                  placeholder="Tell students about your teaching style, experience, and what makes you unique..."
-                  rows={4}
+                  placeholder="Describe your teaching approach, board proficiencies (CBSE, ICSE), student track record, and scheduling flexibility…"
+                  rows={3}
+                  className="rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm p-3 focus-visible:ring-plum-600"
                   value={formData.bio}
                   onChange={(e) => setFormData({...formData, bio: e.target.value})}
                 />
               </div>
 
               {/* Password */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="password" className="text-xs font-bold text-[#1F1924]">Password</Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                     <Input
                       id="password"
                       type="password"
-                      placeholder="Create a password"
-                      className="pl-10"
+                      placeholder="••••••••"
+                      className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                       value={formData.password}
                       onChange={(e) => setFormData({...formData, password: e.target.value})}
                       required
@@ -413,15 +414,15 @@ export default function TutorRegistrationPage() {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <div className="space-y-1.5">
+                  <Label htmlFor="confirmPassword" className="text-xs font-bold text-[#1F1924]">Confirm Password</Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                     <Input
                       id="confirmPassword"
                       type="password"
-                      placeholder="Confirm your password"
-                      className="pl-10"
+                      placeholder="••••••••"
+                      className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
                       value={formData.confirmPassword}
                       onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                       required
@@ -430,41 +431,45 @@ export default function TutorRegistrationPage() {
                 </div>
               </div>
 
-              <div className="flex items-start space-x-2">
+              <div className="flex items-start space-x-2 pt-1">
                 <Checkbox
                   id="terms"
                   checked={formData.agreeTerms}
                   onCheckedChange={(checked) => setFormData({...formData, agreeTerms: checked as boolean})}
                 />
-                <label htmlFor="terms" className="text-sm text-gray-600 leading-5">
+                <label htmlFor="terms" className="text-xs text-slate-600 leading-snug">
                   I agree to the{' '}
-                  <Link href="#" className="text-teal-600 hover:underline">Terms of Service</Link>
+                  <Link href="/terms" className="text-plum-900 font-semibold underline hover:text-plum-950">Terms of Service</Link>
                   {' '}and{' '}
-                  <Link href="#" className="text-teal-600 hover:underline">Privacy Policy</Link>
+                  <Link href="/privacy" className="text-plum-900 font-semibold underline hover:text-plum-950">Privacy Policy</Link>
                 </label>
               </div>
 
               {error && (
-                <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">{error}</p>
+                <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-3.5 py-2">{error}</p>
               )}
 
-              <Button type="submit" className="w-full py-3 text-lg" disabled={submitting}>
-                {submitting ? 'Submitting…' : 'Submit Application'}
+              <Button
+                type="submit"
+                className="w-full h-11 bg-plum-900 hover:bg-plum-950 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs mt-2"
+                disabled={submitting}
+              >
+                {submitting ? 'Creating Profile…' : 'Submit Tutor Application'}
               </Button>
 
-              <p className="text-center text-gray-600">
-                Already registered?{' '}
-                <Link href="/dashboard/tutor" className="text-teal-600 hover:underline font-medium">
-                  Login here
+              <p className="text-center text-xs text-slate-600 pt-1">
+                Already registered as a tutor?{' '}
+                <Link href="/login" className="text-plum-900 font-bold hover:underline">
+                  Sign in here
                 </Link>
               </p>
             </form>
           </CardContent>
         </Card>
 
-        <p className="text-center mt-6 text-gray-600">
+        <p className="text-center mt-5 text-xs text-slate-600">
           Looking to learn?{' '}
-          <Link href="/register/student" className="text-teal-600 hover:underline font-medium">
+          <Link href="/register/student" className="text-plum-900 font-bold hover:underline">
             Register as a Student
           </Link>
         </p>
