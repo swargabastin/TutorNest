@@ -43,17 +43,17 @@ export default function PaymentPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center p-4 text-[#1F1924]">
-        <Card className="max-w-lg w-full text-center border-[#EADDD0] bg-white rounded-3xl shadow-xs">
+      <div className="min-h-screen bg-[#F6F3EA] flex items-center justify-center p-4 text-[#243238]">
+        <Card className="max-w-lg w-full text-center border-[#E2E5DF] bg-white rounded-3xl shadow-xs">
           <CardContent className="p-8 sm:p-12">
             <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-4 border border-emerald-100">
               <Check className="h-8 w-8" />
             </div>
-            <h2 className="text-2xl font-extrabold text-[#1F1924] mb-2">Payment Successful!</h2>
+            <h2 className="text-2xl font-extrabold text-[#243238] mb-2">Payment Successful!</h2>
             <p className="text-xs sm:text-sm text-slate-600 mb-5">
               {orderSummary.coins.toLocaleString()} coins have been credited to your wallet balance.
             </p>
-            <div className="bg-[#FAF8F5] border border-[#EADDD0] rounded-xl p-3.5 mb-6 text-xs">
+            <div className="bg-[#F6F3EA] border border-[#E2E5DF] rounded-xl p-3.5 mb-6 text-xs">
               <p className="text-slate-500 font-medium mb-0.5">Order Reference</p>
               <p className="font-mono font-bold text-plum-950">TXN-{Date.now()}</p>
             </div>
@@ -64,7 +64,7 @@ export default function PaymentPage() {
                 </Button>
               </Link>
               <Link href="/search">
-                <Button variant="outline" className="w-full sm:w-auto border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 rounded-xl text-xs font-semibold px-5 h-10">
+                <Button variant="outline" className="w-full sm:w-auto border-[#E2E5DF] text-[#243238] hover:bg-plum-50 rounded-xl text-xs font-semibold px-5 h-10">
                   Browse Verified Tutors
                 </Button>
               </Link>
@@ -76,18 +76,18 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1F1924]">
+    <div className="min-h-screen bg-[#F6F3EA] text-[#243238]">
       {/* Header */}
-      <div className="bg-white border-b border-[#EADDD0]">
+      <div className="bg-white border-b border-[#E2E5DF]">
         <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center gap-3">
             <Link href="/wallet">
-              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl border border-[#EADDD0] hover:bg-plum-50 text-slate-700">
+              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl border border-[#E2E5DF] hover:bg-plum-50 text-slate-700">
                 <ArrowLeft className="h-4 w-4" />
               </Button>
             </Link>
             <div>
-              <h1 className="text-xl font-extrabold text-[#1F1924] tracking-tight">Checkout</h1>
+              <h1 className="text-xl font-extrabold text-[#243238] tracking-tight">Checkout</h1>
               <p className="text-xs text-slate-500">Secure Razorpay coin transaction</p>
             </div>
           </div>
@@ -100,9 +100,9 @@ export default function PaymentPage() {
           <div className="lg:col-span-2">
             <form onSubmit={handlePayment} className="space-y-5">
               {/* Payment Method Selection */}
-              <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+              <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-bold text-[#1F1924]">Select Payment Method</CardTitle>
+                  <CardTitle className="text-sm font-bold text-[#243238]">Select Payment Method</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-3 gap-3">
@@ -112,7 +112,7 @@ export default function PaymentPage() {
                       className={`p-3.5 rounded-xl border-2 text-center transition-all ${
                         paymentMethod === 'card'
                           ? 'border-plum-900 bg-plum-50/70 shadow-xs'
-                          : 'border-[#EADDD0] bg-[#FAF8F5] hover:border-plum-200'
+                          : 'border-[#E2E5DF] bg-[#F6F3EA] hover:border-plum-200'
                       }`}
                     >
                       <CreditCard className={`h-6 w-6 mx-auto mb-1.5 ${paymentMethod === 'card' ? 'text-plum-900' : 'text-slate-400'}`} />
@@ -124,7 +124,7 @@ export default function PaymentPage() {
                       className={`p-3.5 rounded-xl border-2 text-center transition-all ${
                         paymentMethod === 'upi'
                           ? 'border-plum-900 bg-plum-50/70 shadow-xs'
-                          : 'border-[#EADDD0] bg-[#FAF8F5] hover:border-plum-200'
+                          : 'border-[#E2E5DF] bg-[#F6F3EA] hover:border-plum-200'
                       }`}
                     >
                       <div className="h-6 w-6 mx-auto mb-1.5 bg-plum-900 text-white rounded-lg flex items-center justify-center font-bold text-[10px]">
@@ -138,7 +138,7 @@ export default function PaymentPage() {
                       className={`p-3.5 rounded-xl border-2 text-center transition-all ${
                         paymentMethod === 'netbanking'
                           ? 'border-plum-900 bg-plum-50/70 shadow-xs'
-                          : 'border-[#EADDD0] bg-[#FAF8F5] hover:border-plum-200'
+                          : 'border-[#E2E5DF] bg-[#F6F3EA] hover:border-plum-200'
                       }`}
                     >
                       <Building2 className={`h-6 w-6 mx-auto mb-1.5 ${paymentMethod === 'netbanking' ? 'text-plum-900' : 'text-slate-400'}`} />
@@ -150,49 +150,49 @@ export default function PaymentPage() {
 
               {/* Card Details */}
               {paymentMethod === 'card' && (
-                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-bold flex items-center gap-1.5 text-[#1F1924]">
+                    <CardTitle className="text-sm font-bold flex items-center gap-1.5 text-[#243238]">
                       <CreditCard className="h-4 w-4 text-plum-800" />
                       Card Details
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-1.5">
-                      <Label htmlFor="cardName" className="text-xs font-bold text-[#1F1924]">Name on Card</Label>
+                      <Label htmlFor="cardName" className="text-xs font-bold text-[#243238]">Name on Card</Label>
                       <Input
                         id="cardName"
                         placeholder="Enter full name"
-                        className="h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                        className="h-10 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm"
                         required
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="cardNumber" className="text-xs font-bold text-[#1F1924]">Card Number</Label>
+                      <Label htmlFor="cardNumber" className="text-xs font-bold text-[#243238]">Card Number</Label>
                       <Input
                         id="cardNumber"
                         placeholder="1234 5678 9012 3456"
-                        className="font-mono h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                        className="font-mono h-10 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm"
                         required
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label htmlFor="expiry" className="text-xs font-bold text-[#1F1924]">Expiry</Label>
+                        <Label htmlFor="expiry" className="text-xs font-bold text-[#243238]">Expiry</Label>
                         <Input
                           id="expiry"
                           placeholder="MM / YY"
-                          className="font-mono h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                          className="font-mono h-10 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm"
                           required
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label htmlFor="cvv" className="text-xs font-bold text-[#1F1924]">CVV</Label>
+                        <Label htmlFor="cvv" className="text-xs font-bold text-[#243238]">CVV</Label>
                         <Input
                           id="cvv"
                           type="password"
                           placeholder="•••"
-                          className="font-mono h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                          className="font-mono h-10 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm"
                           maxLength={4}
                           required
                         />
@@ -204,17 +204,17 @@ export default function PaymentPage() {
 
               {/* UPI */}
               {paymentMethod === 'upi' && (
-                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-bold text-[#1F1924]">UPI Virtual Address</CardTitle>
+                    <CardTitle className="text-sm font-bold text-[#243238]">UPI Virtual Address</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-1.5">
-                      <Label htmlFor="upiId" className="text-xs font-bold text-[#1F1924]">UPI ID / VPA</Label>
+                      <Label htmlFor="upiId" className="text-xs font-bold text-[#243238]">UPI ID / VPA</Label>
                       <Input
                         id="upiId"
                         placeholder="username@okaxis"
-                        className="h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                        className="h-10 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm"
                         required
                       />
                     </div>
@@ -223,7 +223,7 @@ export default function PaymentPage() {
                         <button
                           key={app}
                           type="button"
-                          className="p-2.5 rounded-xl border border-[#EADDD0] bg-[#FAF8F5] hover:bg-plum-50 hover:border-plum-200 text-xs font-semibold text-slate-700 transition-colors"
+                          className="p-2.5 rounded-xl border border-[#E2E5DF] bg-[#F6F3EA] hover:bg-plum-50 hover:border-plum-200 text-xs font-semibold text-slate-700 transition-colors"
                         >
                           {app}
                         </button>
@@ -235,19 +235,19 @@ export default function PaymentPage() {
 
               {/* Net Banking */}
               {paymentMethod === 'netbanking' && (
-                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-bold text-[#1F1924]">Net Banking</CardTitle>
+                    <CardTitle className="text-sm font-bold text-[#243238]">Net Banking</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      <Label className="text-xs font-bold text-[#1F1924]">Select Bank</Label>
+                      <Label className="text-xs font-bold text-[#243238]">Select Bank</Label>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {['SBI', 'HDFC', 'ICICI', 'Axis', 'Federal Bank', 'Canara', 'Kotak', 'Others'].map((bank) => (
                           <button
                             key={bank}
                             type="button"
-                            className="p-2.5 rounded-xl border border-[#EADDD0] bg-[#FAF8F5] text-xs font-semibold hover:bg-plum-50 hover:border-plum-200 transition-colors"
+                            className="p-2.5 rounded-xl border border-[#E2E5DF] bg-[#F6F3EA] text-xs font-semibold hover:bg-plum-50 hover:border-plum-200 transition-colors"
                           >
                             {bank}
                           </button>
@@ -292,24 +292,24 @@ export default function PaymentPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-20 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+            <Card className="sticky top-20 border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-bold text-[#1F1924]">Order Summary</CardTitle>
+                <CardTitle className="text-sm font-bold text-[#243238]">Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3.5">
-                <div className="flex items-center justify-between p-3 rounded-xl bg-[#FAF8F5] border border-[#EADDD0]">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-[#F6F3EA] border border-[#E2E5DF]">
                   <div className="flex items-center gap-2.5">
                     <div className="bg-plum-100 text-plum-900 rounded-lg p-1.5">
                       <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-[#1F1924]">{orderSummary.planName}</p>
+                      <p className="text-xs font-bold text-[#243238]">{orderSummary.planName}</p>
                       <p className="text-[11px] text-slate-500">{orderSummary.coins.toLocaleString()} coins credit</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-2 pt-2 border-t border-[#F0E6DB] text-xs">
+                <div className="space-y-2 pt-2 border-t border-[#E2E5DF] text-xs">
                   <div className="flex justify-between text-slate-600">
                     <span>Base Amount</span>
                     <span>₹{orderSummary.amount}</span>
@@ -318,7 +318,7 @@ export default function PaymentPage() {
                     <span>GST (18%)</span>
                     <span>₹{orderSummary.tax}</span>
                   </div>
-                  <div className="flex justify-between font-extrabold text-sm pt-2 border-t border-[#F0E6DB]">
+                  <div className="flex justify-between font-extrabold text-sm pt-2 border-t border-[#E2E5DF]">
                     <span>Total Payable</span>
                     <span className="text-plum-950">₹{orderSummary.total}</span>
                   </div>

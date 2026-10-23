@@ -27,6 +27,7 @@ import {
 import Link from 'next/link';
 import { adminApi, authApi } from '@/lib/api';
 import { AdminVerificationQueue } from '@/components/admin-verification-queue';
+import { AdminCoinRefundQueue } from '@/components/admin-coin-refund-queue';
 
 interface AdminDashboardStats {
   totalTutors: number; totalStudents: number; pendingApplications: number;
@@ -115,13 +116,13 @@ export default function AdminDashboard() {
 
   if (isUnauthorized) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 sm:p-6 text-center text-[#1F1924]">
-        <Card className="w-full max-w-md shadow-xs border-[#EADDD0] bg-white rounded-3xl overflow-hidden">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 sm:p-6 text-center text-[#243238]">
+        <Card className="w-full max-w-md shadow-xs border-[#E2E5DF] bg-white rounded-3xl overflow-hidden">
           <CardHeader className="text-center pb-2 pt-8">
             <div className="bg-plum-50 text-plum-900 rounded-2xl p-4 mx-auto w-16 h-16 flex items-center justify-center mb-3">
               <Shield className="h-8 w-8" />
             </div>
-            <CardTitle className="text-xl font-extrabold text-[#1F1924]">Admin Portal Authentication</CardTitle>
+            <CardTitle className="text-xl font-extrabold text-[#243238]">Admin Portal Authentication</CardTitle>
             <p className="text-slate-600 text-xs sm:text-sm mt-1 max-w-xs mx-auto">
               Please enter your administrator credentials to access platform governance and approvals.
             </p>
@@ -142,7 +143,7 @@ export default function AdminDashboard() {
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
                     required
-                    className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                    className="pl-9 h-10 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm"
                     placeholder="admin@hometutor.in"
                   />
                 </div>
@@ -156,7 +157,7 @@ export default function AdminDashboard() {
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                     required
-                    className="pl-9 h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                    className="pl-9 h-10 rounded-xl border-[#E2E5DF] bg-[#F6F3EA] text-xs sm:text-sm"
                     placeholder="Admin@123"
                   />
                 </div>
@@ -169,7 +170,7 @@ export default function AdminDashboard() {
                 {loggingIn ? 'Authenticating…' : 'Sign In as Administrator'}
               </Button>
             </form>
-            <div className="mt-4 pt-3 border-t border-[#F0E6DB] text-center">
+            <div className="mt-4 pt-3 border-t border-[#E2E5DF] text-center">
               <Link href="/">
                 <Button variant="ghost" size="sm" className="text-xs text-slate-500 hover:text-plum-900">
                   Return to Home
@@ -183,18 +184,18 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-6 text-[#1F1924]">
+    <div className="space-y-6 text-[#243238]">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-[#1F1924] tracking-tight">Admin Overview</h1>
+          <h1 className="text-xl sm:text-2xl font-extrabold text-[#243238] tracking-tight">Admin Overview</h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Platform growth, verifications, and financial health</p>
         </div>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-[#1C081E] text-white rounded-2xl shadow-xs border-0">
+        <Card className="bg-[#0E3342] text-white rounded-2xl shadow-xs border-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -209,12 +210,12 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-500 text-xs font-medium">Registered Students</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">{loading ? '—' : (stats?.totalStudents ?? 0).toLocaleString()}</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#243238] mt-1">{loading ? '—' : (stats?.totalStudents ?? 0).toLocaleString()}</p>
               </div>
               <div className="bg-plum-50 text-plum-900 rounded-xl p-2.5">
                 <Users className="h-5 w-5" />
@@ -224,12 +225,12 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-500 text-xs font-medium">Requirements Posted</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">{loading ? '—' : (stats?.totalRequirements ?? 0).toLocaleString()}</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#243238] mt-1">{loading ? '—' : (stats?.totalRequirements ?? 0).toLocaleString()}</p>
               </div>
               <div className="bg-plum-50 text-plum-900 rounded-xl p-2.5">
                 <FileText className="h-5 w-5" />
@@ -239,12 +240,12 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-500 text-xs font-medium">Revenue This Month</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#243238] mt-1">
                   <span className="text-sm">₹</span>
                   {loading ? '—' : ((stats?.revenueThisMonth ?? 0) / 1000).toFixed(0)}k
                 </p>
@@ -263,9 +264,9 @@ export default function AdminDashboard() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
-        <Card className="lg:col-span-2 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="lg:col-span-2 border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base font-bold text-[#1F1924]">Revenue Trend (Last 6 Months)</CardTitle>
+            <CardTitle className="text-base font-bold text-[#243238]">Revenue Trend (Last 6 Months)</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -287,17 +288,17 @@ export default function AdminDashboard() {
         </Card>
 
         {/* User Growth */}
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base font-bold text-[#1F1924]">New Registrations</CardTitle>
+            <CardTitle className="text-base font-bold text-[#243238]">New Registrations</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2.5">
             {loading ? (
               <p className="text-slate-500 text-xs py-8 text-center">Loading metrics…</p>
             ) : (
               (stats?.userGrowthChart ?? []).map((point, index) => (
-                <div key={index} className="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF8F5] border border-[#EADDD0]">
-                  <span className="text-xs font-bold text-[#1F1924]">{point.month}</span>
+                <div key={index} className="flex items-center justify-between p-2.5 rounded-xl bg-[#F6F3EA] border border-[#E2E5DF]">
+                  <span className="text-xs font-bold text-[#243238]">{point.month}</span>
                   <div className="flex gap-3 text-xs">
                     <span className="font-semibold text-plum-900">{point.tutors} tutors</span>
                     <span className="font-semibold text-slate-600">{point.students} students</span>
@@ -312,11 +313,14 @@ export default function AdminDashboard() {
       {/* Verification Queue */}
       <AdminVerificationQueue />
 
+      {/* Coin Refund Queue (Phase 2) */}
+      <AdminCoinRefundQueue />
+
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Recent Transactions */}
-        <Card className="lg:col-span-2 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="lg:col-span-2 border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base font-bold text-[#1F1924]">Recent Razorpay Transactions</CardTitle>
+            <CardTitle className="text-base font-bold text-[#243238]">Recent Razorpay Transactions</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -325,19 +329,19 @@ export default function AdminDashboard() {
               <p className="text-slate-500 text-xs py-4 text-center">No transaction records logged.</p>
             ) : (
               <div className="space-y-2">
-                <div className="grid grid-cols-4 text-xs font-bold text-slate-400 pb-2 border-b border-[#F0E6DB]">
+                <div className="grid grid-cols-4 text-xs font-bold text-slate-400 pb-2 border-b border-[#E2E5DF]">
                   <span>User</span>
                   <span>Type</span>
                   <span>Amount</span>
                   <span className="text-right">Date</span>
                 </div>
                 {recentTransactions.map((txn) => (
-                  <div key={txn.id} className="grid grid-cols-4 text-xs items-center py-2 px-2 hover:bg-[#FAF8F5] rounded-xl transition-colors">
-                    <span className="font-bold text-[#1F1924] truncate">{txn.user}</span>
+                  <div key={txn.id} className="grid grid-cols-4 text-xs items-center py-2 px-2 hover:bg-[#F6F3EA] rounded-xl transition-colors">
+                    <span className="font-bold text-[#243238] truncate">{txn.user}</span>
                     <div>
                       <Badge variant="outline" className="text-[10px] bg-plum-50 text-plum-900 border-plum-200">{txn.type}</Badge>
                     </div>
-                    <span className="font-extrabold text-[#1F1924]">₹{txn.amount}</span>
+                    <span className="font-extrabold text-[#243238]">₹{txn.amount}</span>
                     <span className="text-right text-slate-400 text-[11px]">{txn.createdAt ? new Date(txn.createdAt).toLocaleDateString('en-IN') : '—'}</span>
                   </div>
                 ))}
@@ -347,17 +351,17 @@ export default function AdminDashboard() {
         </Card>
 
         {/* Pending Applications */}
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base font-bold text-[#1F1924]">Pending Tutor Applications</CardTitle>
+            <CardTitle className="text-base font-bold text-[#243238]">Pending Tutor Applications</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {loading ? (
               <p className="text-slate-500 text-xs py-4 text-center">Loading applications…</p>
             ) : pendingApplications.length > 0 ? pendingApplications.map((app) => (
-              <div key={app.id} className="p-3 rounded-xl border border-[#EADDD0] bg-[#FAF8F5]">
+              <div key={app.id} className="p-3 rounded-xl border border-[#E2E5DF] bg-[#F6F3EA]">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-bold text-[#1F1924]">{app.name}</span>
+                  <span className="text-xs font-bold text-[#243238]">{app.name}</span>
                   <Badge variant="outline" className="text-[10px] bg-amber-50 text-amber-700 border-amber-200">
                     <Clock className="h-3 w-3 mr-1" /> Pending
                   </Badge>
@@ -376,7 +380,7 @@ export default function AdminDashboard() {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="flex-1 h-8 rounded-lg border-[#EADDD0] text-rose-700 hover:bg-rose-50 text-xs font-semibold"
+                    className="flex-1 h-8 rounded-lg border-[#E2E5DF] text-rose-700 hover:bg-rose-50 text-xs font-semibold"
                     disabled={actioning === app.id}
                     onClick={() => handleDecision(app.id, 'Rejected')}
                   >

@@ -4,54 +4,54 @@
 
 @layer base {
   :root {
-    /* Royal Plum + Soft Ivory Palette */
-    --background: 40 25% 98%;          /* #FAF8F5 Warm Soft Ivory */
-    --foreground: 280 20% 12%;         /* #1F1924 Deep Charcoal */
+    /* Ocean Teal + Seafoam + Warm Ivory Palette */
+    --background: 44 32% 94%;          /* #F6F3EA Warm Ivory */
+    --foreground: 198 22% 18%;         /* #243238 Primary Text */
     --card: 0 0% 100%;                 /* Clean White Surface */
-    --card-foreground: 280 20% 12%;
+    --card-foreground: 198 22% 18%;
     --popover: 0 0% 100%;
-    --popover-foreground: 280 20% 12%;
-    --primary: 295 56% 19%;            /* #4A154B Royal Plum */
-    --primary-foreground: 0 0% 100%;   /* White text on Plum */
-    --secondary: 270 45% 95%;          /* #F4EEFA Soft Muted Lavender Tint */
-    --secondary-foreground: 295 56% 22%;
-    --muted: 40 18% 94%;               /* #F4F0E8 Muted Warm Ivory */
-    --muted-foreground: 270 8% 46%;    /* Muted Slate Text */
-    --accent: 270 40% 93%;             /* Light Lavender Accent */
-    --accent-foreground: 295 56% 19%;
+    --popover-foreground: 198 22% 18%;
+    --primary: 197 64% 24%;            /* #164E63 Primary Ocean Teal */
+    --primary-foreground: 0 0% 100%;   /* White text on Teal */
+    --secondary: 167 36% 93%;          /* Soft Seafoam Tint #E8F5F2 */
+    --secondary-foreground: 197 64% 24%;
+    --muted: 44 20% 90%;               /* #ECE6D8 Muted Warm Ivory */
+    --muted-foreground: 215 16% 47%;   /* #64748B Secondary Slate Text */
+    --accent: 167 36% 56%;             /* #67B7A5 Seafoam Accent */
+    --accent-foreground: 197 64% 16%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 270 12% 90%;             /* Subtle Warm Border #E7E3EB */
-    --input: 270 12% 88%;
-    --ring: 295 56% 26%;               /* Royal Plum Ring */
+    --border: 90 7% 88%;               /* #E2E5DF Subtle Border */
+    --input: 90 7% 88%;
+    --ring: 197 64% 24%;               /* Ocean Teal Ring */
     --radius: 0.75rem;                 /* 12px rounded for modern premium feel */
-    --chart-1: 295 56% 26%;
-    --chart-2: 270 40% 50%;
+    --chart-1: 197 64% 24%;
+    --chart-2: 167 36% 56%;
     --chart-3: 35 85% 55%;
     --chart-4: 173 58% 39%;
     --chart-5: 220 70% 50%;
   }
 
   .dark {
-    --background: 280 25% 8%;          /* Deep Plum Charcoal #170E1A */
-    --foreground: 40 20% 96%;          /* Soft Ivory Text */
-    --card: 280 22% 11%;
-    --card-foreground: 40 20% 96%;
-    --popover: 280 22% 11%;
-    --popover-foreground: 40 20% 96%;
-    --primary: 280 65% 65%;            /* Vibrant Lavender in Dark Mode */
-    --primary-foreground: 280 30% 10%;
-    --secondary: 280 20% 16%;
-    --secondary-foreground: 40 20% 96%;
-    --muted: 280 20% 16%;
-    --muted-foreground: 270 10% 65%;
-    --accent: 280 25% 20%;
-    --accent-foreground: 40 20% 96%;
+    --background: 198 45% 8%;          /* Deep Ocean Charcoal #0A1C24 */
+    --foreground: 44 25% 95%;          /* Warm Ivory Text */
+    --card: 198 35% 12%;
+    --card-foreground: 44 25% 95%;
+    --popover: 198 35% 12%;
+    --popover-foreground: 44 25% 95%;
+    --primary: 167 36% 56%;            /* Vibrant Seafoam in Dark Mode */
+    --primary-foreground: 198 40% 10%;
+    --secondary: 198 25% 16%;
+    --secondary-foreground: 44 25% 95%;
+    --muted: 198 25% 16%;
+    --muted-foreground: 215 15% 65%;
+    --accent: 167 36% 35%;
+    --accent-foreground: 44 25% 95%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 280 20% 18%;
-    --input: 280 20% 20%;
-    --ring: 280 65% 65%;
+    --border: 198 25% 18%;
+    --input: 198 25% 20%;
+    --ring: 167 36% 56%;
   }
 }
 
@@ -109,7 +109,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #FAF8F5;
+  background: #F6F3EA;
   border-radius: 4px;
 }
 

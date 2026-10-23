@@ -71,14 +71,14 @@ export default function DashboardSidebar({ role }: DashboardSidebarProps) {
   const links = role === 'student' ? studentLinks : role === 'tutor' ? tutorLinks : adminLinks;
 
   return (
-    <aside className="hidden md:block w-64 bg-white border-r border-[#EADDD0] min-h-screen shrink-0">
+    <aside className="hidden md:block w-64 bg-white border-r border-[#E2E5DF] min-h-screen shrink-0">
       <div className="sticky top-0">
-        <div className="p-4 border-b border-[#F0E6DB]">
+        <div className="p-4 border-b border-[#E2E5DF]">
           <Link href="/" className="flex items-center space-x-2.5">
             <div className="w-8 h-8 bg-plum-900 rounded-xl flex items-center justify-center shadow-xs">
               <span className="text-white font-bold text-base">T</span>
             </div>
-            <span className="text-lg font-extrabold tracking-tight text-[#1F1924]">TutorNest</span>
+            <span className="text-lg font-extrabold tracking-tight text-[#243238]">TutorNest</span>
           </Link>
         </div>
 
@@ -95,7 +95,7 @@ export default function DashboardSidebar({ role }: DashboardSidebarProps) {
                   'flex items-center space-x-3 px-3 py-2 rounded-xl text-xs font-semibold transition-colors',
                   isActive
                     ? 'bg-plum-900 text-white shadow-xs'
-                    : 'text-slate-600 hover:bg-[#FAF8F5] hover:text-[#1F1924]'
+                    : 'text-slate-600 hover:bg-[#F6F3EA] hover:text-[#243238]'
                 )}
               >
                 <Icon className="h-4 w-4 shrink-0" />

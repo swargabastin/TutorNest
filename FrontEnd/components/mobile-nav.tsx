@@ -34,7 +34,7 @@ export default function MobileNav() {
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#170E1A]/95 backdrop-blur-md border-t border-[#E7E3EB] dark:border-plum-900 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] pb-[env(safe-area-inset-bottom,0.25rem)]"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#0A242F]/95 backdrop-blur-md border-t border-[#E2E5DF] dark:border-plum-900 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] pb-[env(safe-area-inset-bottom,0.25rem)]"
     >
       <div className="grid grid-cols-5 h-14 items-center">
         {navItems.map((item) => {

@@ -77,6 +77,18 @@ public class TutorProfile
     [MaxLength(100)] public string? Locality       { get; set; }
     [MaxLength(10)]  public string? Pincode        { get; set; }
     public int?      TravelRadiusKm                { get; set; }
+
+    // Phase 2: Multi-Level Verification & Video Introduction
+    public bool      IdVerified                    { get; set; } = false;
+    public bool      QualificationVerified         { get; set; } = false;
+    public bool      AddressVerified               { get; set; } = false;
+    public bool      PoliceCheckVerified           { get; set; } = false;
+    [MaxLength(500)] public string? IntroVideoUrl  { get; set; }
+
+    // Phase 3: WhatsApp Lead Notification Preferences
+    public bool      WhatsAppNotificationsEnabled  { get; set; } = false;
+    [MaxLength(20)]  public string? WhatsAppPhoneNumber { get; set; }
+
     public DateTime  CreatedAt                     { get; set; } = DateTime.UtcNow;
     public DateTime  UpdatedAt                     { get; set; } = DateTime.UtcNow;
 
@@ -89,6 +101,7 @@ public class TutorProfile
     public ICollection<Availability>               Availabilities        { get; set; } = [];
     public ICollection<TutorVerificationDocument>  VerificationDocuments { get; set; } = [];
     public ICollection<Booking>                    Bookings              { get; set; } = [];
+    public ICollection<CoinRefundRequest>          CoinRefundRequests    { get; set; } = [];
 }
 
 // ─── StudentProfile ───────────────────────────────────────────────────────────
@@ -351,7 +364,7 @@ public class Availability
 // ─── Verification Documents ───────────────────────────────────────────────────
 
 public enum VerificationDocType   { GovernmentId, EducationCertificate, PoliceVerification, AddressProof }
-public enum VerificationDocStatus { Pending, Approved, Rejected }
+public enum VerificationDocStatus { Pending, Approved, Rejected, ResubmissionRequired }
 
 // ─── TutorVerificationDocument ────────────────────────────────────────────────
 // One row per document a tutor uploads for identity/qualification verification.
@@ -459,5 +472,88 @@ public class ChatMessage
 
     public bool IsRead                   { get; set; } = false;
     public DateTime SentAt               { get; set; } = DateTime.UtcNow;
+}
+
+// ─── Phase 2: Coin Refund Request & Ledger Safeguards ─────────────────────────
+
+public enum CoinRefundReason
+{
+    InvalidContact,
+    DuplicateLead,
+    RequirementWithdrawn,
+    ParentUnresponsive48h,
+    Other
+}
+
+public enum CoinRefundStatus
+{
+    Pending,
+    Approved,
+    Rejected
+}
+
+public class CoinRefundRequest
+{
+    [Key] public Guid Id { get; set; } = Guid.NewGuid();
+
+    [ForeignKey(nameof(TutorProfile))]
+    public Guid TutorProfileId           { get; set; }
+    public TutorProfile TutorProfile     { get; set; } = null!;
+
+    public Guid CoinTransactionId        { get; set; }
+    public Guid? ReferenceId             { get; set; }
+    public int CoinsRequested            { get; set; }
+    public CoinRefundReason Reason       { get; set; }
+
+    [MaxLength(1000)]
+    public string Explanation            { get; set; } = "";
+
+    public CoinRefundStatus Status       { get; set; } = CoinRefundStatus.Pending;
+
+    [MaxLength(500)]
+    public string? AdminNotes            { get; set; }
+
+    public Guid? ReviewedByUserId        { get; set; }
+    public DateTime? ReviewedAt          { get; set; }
+    public DateTime CreatedAt            { get; set; } = DateTime.UtcNow;
+}
+
+// ─── Phase 3: WhatsApp Notification Logging & Tracking ────────────────────────
+
+public enum WhatsAppNotificationStatus
+{
+    Sent,
+    Failed,
+    Simulated,
+    BlockedNoConsent
+}
+
+public class WhatsAppNotificationLog
+{
+    [Key] public Guid Id { get; set; } = Guid.NewGuid();
+
+    [ForeignKey(nameof(TutorProfile))]
+    public Guid TutorProfileId           { get; set; }
+    public TutorProfile TutorProfile     { get; set; } = null!;
+
+    [ForeignKey(nameof(Requirement))]
+    public Guid RequirementId            { get; set; }
+    public TuitionRequirement Requirement { get; set; } = null!;
+
+    [MaxLength(20)]
+    public string RecipientPhone         { get; set; } = "";
+
+    [MaxLength(1000)]
+    public string MessageContent         { get; set; } = "";
+
+    public WhatsAppNotificationStatus Status { get; set; }
+
+    [MaxLength(50)]
+    public string Provider               { get; set; } = "Mock";
+
+    [MaxLength(500)]
+    public string? ProviderResponse      { get; set; }
+
+    public DateTime CreatedAt            { get; set; } = DateTime.UtcNow;
 }
 

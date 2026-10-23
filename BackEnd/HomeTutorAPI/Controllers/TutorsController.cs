@@ -83,6 +83,32 @@ public class TutorsController(
         if (req.TravelRadiusKm  is not null) tutor.TravelRadiusKm  = req.TravelRadiusKm;
         if (req.Boards          is not null) tutor.Boards          = req.Boards.ToArray();
         if (req.OffersFreeDemo  is not null) tutor.OffersFreeDemo  = req.OffersFreeDemo.Value;
+
+        // Phase 2: Video profile introduction
+        if (req.IntroVideoUrl is not null)
+        {
+            var url = req.IntroVideoUrl.Trim();
+            if (string.IsNullOrEmpty(url))
+            {
+                tutor.IntroVideoUrl = null;
+            }
+            else
+            {
+                if (!System.Text.RegularExpressions.Regex.IsMatch(url, @"^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|vimeo\.com|res\.cloudinary\.com)\/", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                {
+                    return BadRequest(new MessageResponse("IntroVideoUrl must be a valid YouTube, Vimeo, or Cloudinary URL.", false));
+                }
+                tutor.IntroVideoUrl = url;
+            }
+        }
+
+        // Phase 3: WhatsApp lead alert preferences
+        if (req.WhatsAppNotificationsEnabled is not null)
+            tutor.WhatsAppNotificationsEnabled = req.WhatsAppNotificationsEnabled.Value;
+
+        if (req.WhatsAppPhoneNumber is not null)
+            tutor.WhatsAppPhoneNumber = req.WhatsAppPhoneNumber.Trim();
+
         tutor.UpdatedAt = DateTime.UtcNow;
 
         // Replace subjects
@@ -299,6 +325,141 @@ public class TutorsController(
             .ToListAsync(ct);
 
         return Ok(new WalletSummaryDto(tutor.CoinBalance, txns.Select(mapper.Map<CoinTransactionDto>).ToList()));
+    }
+
+    // ── POST /api/tutors/me/unlock-lead/{enquiryId} ─────────────────────────────
+    [HttpPost("me/unlock-lead/{enquiryId:guid}")]
+    [Authorize(Roles = "Tutor")]
+    public async Task<IActionResult> UnlockLead(Guid enquiryId, CancellationToken ct)
+    {
+        var userId = GetUserId();
+        var tutor = await tutorRepo.GetByUserIdAsync(userId, ct);
+        if (tutor is null) return NotFound();
+
+        const int leadCostCoins = 25;
+        if (tutor.CoinBalance < leadCostCoins)
+            return BadRequest(new MessageResponse($"Insufficient coin balance ({tutor.CoinBalance}). Unlocking requires {leadCostCoins} coins.", false));
+
+        var enquiry = await db.Enquiries.FirstOrDefaultAsync(e => e.Id == enquiryId && e.TutorProfileId == tutor.Id, ct);
+        if (enquiry is null) return NotFound(new MessageResponse("Enquiry lead not found.", false));
+
+        // Check if already unlocked
+        var alreadyUnlocked = await db.CoinTransactions.AnyAsync(
+            t => t.TutorProfileId == tutor.Id && t.ReferenceId == enquiryId && t.Type == TransactionType.Debit, ct);
+        if (alreadyUnlocked)
+            return BadRequest(new MessageResponse("Lead already unlocked.", false));
+
+        // Debit coins atomically
+        tutor.CoinBalance -= leadCostCoins;
+        var txn = new CoinTransaction
+        {
+            TutorProfileId = tutor.Id,
+            Type           = TransactionType.Debit,
+            Amount         = leadCostCoins,
+            BalanceAfter   = tutor.CoinBalance,
+            Description    = $"Unlocked student enquiry lead ({enquiry.Subject})",
+            ReferenceId    = enquiryId
+        };
+
+        await db.CoinTransactions.AddAsync(txn, ct);
+        await db.SaveChangesAsync(ct);
+
+        return Ok(new MessageResponse($"Lead unlocked successfully. Debited {leadCostCoins} coins."));
+    }
+
+    // ── POST /api/tutors/me/coin-refunds ───────────────────────────────────────
+    [HttpPost("me/coin-refunds")]
+    [Authorize(Roles = "Tutor")]
+    public async Task<IActionResult> RequestCoinRefund(
+        [FromBody] CreateCoinRefundRequest req, CancellationToken ct)
+    {
+        if (req.CoinsRequested <= 0)
+            return BadRequest(new MessageResponse("CoinsRequested must be greater than zero.", false));
+
+        var userId = GetUserId();
+        var tutor  = await tutorRepo.GetByUserIdAsync(userId, ct);
+        if (tutor is null) return NotFound();
+
+        // 1. Verify coin transaction exists, belongs to tutor, and is debit
+        var txn = await db.CoinTransactions
+            .FirstOrDefaultAsync(t => t.Id == req.CoinTransactionId && t.TutorProfileId == tutor.Id, ct);
+        if (txn is null)
+            return NotFound(new MessageResponse("Coin transaction not found or does not belong to your account.", false));
+
+        if (txn.Type != TransactionType.Debit)
+            return BadRequest(new MessageResponse("Refunds can only be requested for debit transactions (spent coins).", false));
+
+        if (req.CoinsRequested > txn.Amount)
+            return BadRequest(new MessageResponse($"Cannot request more coins ({req.CoinsRequested}) than debited ({txn.Amount}).", false));
+
+        // 2. Prevent duplicate active refund requests for the same transaction
+        var existingRequest = await db.CoinRefundRequests
+            .AnyAsync(r => r.CoinTransactionId == req.CoinTransactionId &&
+                           (r.Status == CoinRefundStatus.Pending || r.Status == CoinRefundStatus.Approved), ct);
+        if (existingRequest)
+            return BadRequest(new MessageResponse("A refund request is already pending or approved for this transaction.", false));
+
+        var refund = new CoinRefundRequest
+        {
+            TutorProfileId    = tutor.Id,
+            CoinTransactionId = req.CoinTransactionId,
+            ReferenceId       = req.ReferenceId ?? txn.ReferenceId,
+            CoinsRequested    = req.CoinsRequested,
+            Reason            = req.Reason,
+            Explanation       = req.Explanation.Trim(),
+            Status            = CoinRefundStatus.Pending,
+            CreatedAt         = DateTime.UtcNow
+        };
+
+        await db.CoinRefundRequests.AddAsync(refund, ct);
+        await db.SaveChangesAsync(ct);
+
+        return Ok(mapper.Map<CoinRefundRequestDto>(refund));
+    }
+
+    // ── GET /api/tutors/me/coin-refunds ────────────────────────────────────────
+    [HttpGet("me/coin-refunds")]
+    [Authorize(Roles = "Tutor")]
+    [ProducesResponseType(typeof(List<CoinRefundRequestDto>), 200)]
+    public async Task<IActionResult> GetMyCoinRefunds(CancellationToken ct)
+    {
+        var userId = GetUserId();
+        var tutor  = await tutorRepo.GetByUserIdAsync(userId, ct);
+        if (tutor is null) return NotFound();
+
+        var requests = await db.CoinRefundRequests
+            .Include(r => r.TutorProfile).ThenInclude(t => t.User)
+            .Where(r => r.TutorProfileId == tutor.Id)
+            .OrderByDescending(r => r.CreatedAt)
+            .ToListAsync(ct);
+
+        return Ok(requests.Select(mapper.Map<CoinRefundRequestDto>));
+    }
+
+    // ── GET /api/tutors/me/verification-documents/{id}/file ─────────────────────
+    [HttpGet("me/verification-documents/{id:guid}/file")]
+    [Authorize(Roles = "Tutor")]
+    public async Task<IActionResult> GetMyVerificationDocumentFile(Guid id, CancellationToken ct)
+    {
+        var userId = GetUserId();
+        var tutor = await tutorRepo.GetByUserIdAsync(userId, ct);
+        if (tutor is null) return NotFound();
+
+        var doc = await db.TutorVerificationDocuments.FirstOrDefaultAsync(d => d.Id == id && d.TutorProfileId == tutor.Id, ct);
+        if (doc is null) return NotFound();
+
+        var localPath = Path.Combine("wwwroot", doc.FileUrl.TrimStart('/'));
+        if (!System.IO.File.Exists(localPath)) return NotFound(new MessageResponse("File not found on disk.", false));
+
+        var ext = Path.GetExtension(localPath).ToLower();
+        var contentType = ext switch
+        {
+            ".pdf" => "application/pdf",
+            ".png" => "image/png",
+            ".webp" => "image/webp",
+            _ => "image/jpeg"
+        };
+        return PhysicalFile(Path.GetFullPath(localPath), contentType);
     }
 
     private Guid GetUserId()

@@ -47,8 +47,8 @@ export default function LegalPageLayout({
   }, [sections]);
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1F1924]">
-      <header className="border-b border-[#EADDD0] bg-white">
+    <div className="min-h-screen bg-[#F6F3EA] text-[#243238]">
+      <header className="border-b border-[#E2E5DF] bg-white">
         <div className="mx-auto max-w-5xl px-6 py-8 sm:py-10">
           <Link
             href="/"
@@ -56,7 +56,7 @@ export default function LegalPageLayout({
           >
             ← Back to TutorNest
           </Link>
-          <h1 className="mt-3 text-2xl font-extrabold tracking-tight text-[#1F1924] sm:text-3xl">
+          <h1 className="mt-3 text-2xl font-extrabold tracking-tight text-[#243238] sm:text-3xl">
             {title}
           </h1>
           <p className="mt-1 text-xs text-slate-500">Last updated {lastUpdated}</p>
@@ -69,7 +69,7 @@ export default function LegalPageLayout({
           aria-label="Table of contents"
           className="hidden md:block"
         >
-          <div className="sticky top-20 space-y-1 border-l border-[#EADDD0] pl-4">
+          <div className="sticky top-20 space-y-1 border-l border-[#E2E5DF] pl-4">
             {sections.map((s) => (
               <a
                 key={s.id}
@@ -77,7 +77,7 @@ export default function LegalPageLayout({
                 className={`block py-1 text-xs transition-colors ${
                   activeId === s.id
                     ? "font-bold text-plum-900 border-l-2 border-plum-900 -ml-[17px] pl-[15px]"
-                    : "text-slate-500 hover:text-[#1F1924]"
+                    : "text-slate-500 hover:text-[#243238]"
                 }`}
               >
                 {s.title}
@@ -87,11 +87,11 @@ export default function LegalPageLayout({
         </nav>
 
         <div className="min-w-0 max-w-3xl">
-          <article className="space-y-5 text-slate-700 leading-relaxed text-xs sm:text-sm [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-[#1F1924] [&_h2]:pt-6 [&_h2]:pb-1.5 [&_h2]:border-b [&_h2]:border-[#F0E6DB] [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:text-[#1F1924] [&_h3]:pt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_li]:text-slate-700 [&_a]:text-plum-900 [&_a]:underline hover:[&_a]:text-plum-950 [&_table]:w-full [&_table]:border-collapse [&_table]:my-4 [&_th]:border [&_th]:border-[#EADDD0] [&_th]:bg-[#FAF8F5] [&_th]:p-2.5 [&_th]:text-left [&_th]:font-bold [&_th]:text-xs [&_td]:border [&_td]:border-[#EADDD0] [&_td]:p-2.5 [&_td]:text-xs">
+          <article className="space-y-5 text-slate-700 leading-relaxed text-xs sm:text-sm [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-[#243238] [&_h2]:pt-6 [&_h2]:pb-1.5 [&_h2]:border-b [&_h2]:border-[#E2E5DF] [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:text-[#243238] [&_h3]:pt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_li]:text-slate-700 [&_a]:text-plum-900 [&_a]:underline hover:[&_a]:text-plum-950 [&_table]:w-full [&_table]:border-collapse [&_table]:my-4 [&_th]:border [&_th]:border-[#E2E5DF] [&_th]:bg-[#F6F3EA] [&_th]:p-2.5 [&_th]:text-left [&_th]:font-bold [&_th]:text-xs [&_td]:border [&_td]:border-[#E2E5DF] [&_td]:p-2.5 [&_td]:text-xs">
             {children}
           </article>
 
-          <div className="mt-12 rounded-2xl border border-[#EADDD0] bg-white p-5">
+          <div className="mt-12 rounded-2xl border border-[#E2E5DF] bg-white p-5">
             <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Related policies</p>
             <div className="mt-2.5 flex flex-wrap gap-4 text-xs font-medium">
               <Link href="/terms" className="text-plum-900 hover:underline">

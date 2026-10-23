@@ -63,12 +63,12 @@ export default function TutorDashboard() {
   if (isUnauthorized) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 sm:p-6 text-center">
-        <Card className="w-full max-w-md shadow-xs border-[#EADDD0] bg-white rounded-3xl">
+        <Card className="w-full max-w-md shadow-xs border-[#E2E5DF] bg-white rounded-3xl">
           <CardHeader className="text-center pb-2 pt-8">
             <div className="bg-plum-50 text-plum-900 rounded-2xl p-4 mx-auto w-16 h-16 flex items-center justify-center mb-3">
               <Users className="h-8 w-8" />
             </div>
-            <CardTitle className="text-xl font-extrabold text-[#1F1924]">Tutor Account Required</CardTitle>
+            <CardTitle className="text-xl font-extrabold text-[#243238]">Tutor Account Required</CardTitle>
             <p className="text-slate-600 text-xs sm:text-sm mt-1 max-w-xs mx-auto">
               Sign in with your verified tutor credentials to access leads, coin balance, and your class calendar.
             </p>
@@ -80,7 +80,7 @@ export default function TutorDashboard() {
               </Button>
             </Link>
             <Link href="/register/tutor" className="block">
-              <Button variant="outline" className="w-full border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 rounded-xl h-11 text-xs font-semibold">
+              <Button variant="outline" className="w-full border-[#E2E5DF] text-[#243238] hover:bg-plum-50 rounded-xl h-11 text-xs font-semibold">
                 Apply as a Tutor
               </Button>
             </Link>
@@ -93,18 +93,18 @@ export default function TutorDashboard() {
   const firstName = tutorName.split(' ')[0] || 'there';
 
   return (
-    <div className="space-y-6 text-[#1F1924]">
+    <div className="space-y-6 text-[#243238]">
       {/* Welcome Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-[#1F1924] tracking-tight">Welcome back, {firstName}!</h1>
+          <h1 className="text-xl sm:text-2xl font-extrabold text-[#243238] tracking-tight">Welcome back, {firstName}!</h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
             {stats?.reviewCount ? `${stats.reviewCount} student reviews • ${(stats?.rating ?? 0).toFixed(1)} rating` : "Here is your tutor performance overview"}
           </p>
         </div>
         <div className="flex gap-2.5">
           <Link href="/search">
-            <Button variant="outline" className="border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 rounded-xl text-xs font-semibold h-10 px-4">
+            <Button variant="outline" className="border-[#E2E5DF] text-[#243238] hover:bg-plum-50 rounded-xl text-xs font-semibold h-10 px-4">
               Browse Requirements
             </Button>
           </Link>
@@ -113,7 +113,7 @@ export default function TutorDashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-[#1C081E] text-white rounded-2xl shadow-xs border-0">
+        <Card className="bg-[#0E3342] text-white rounded-2xl shadow-xs border-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -128,12 +128,12 @@ export default function TutorDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-500 text-xs font-medium">Coin Balance</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">{loading ? '—' : stats?.coinBalance ?? 0}</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#243238] mt-1">{loading ? '—' : stats?.coinBalance ?? 0}</p>
               </div>
               <div className="bg-plum-50 text-plum-900 rounded-xl p-2.5">
                 <Calendar className="h-5 w-5" />
@@ -143,12 +143,12 @@ export default function TutorDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-500 text-xs font-medium">Estimated Earnings</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#243238] mt-1">
                   <span className="text-sm">₹</span>
                   {loading ? '—' : ((stats?.earnings ?? 0) / 1000).toFixed(1)}k
                 </p>
@@ -161,13 +161,13 @@ export default function TutorDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-500 text-xs font-medium">Profile Rating</p>
                 <div className="flex items-center mt-1">
-                  <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924]">{loading ? '—' : (stats?.rating ?? 0).toFixed(1)}</p>
+                  <p className="text-2xl sm:text-3xl font-extrabold text-[#243238]">{loading ? '—' : (stats?.rating ?? 0).toFixed(1)}</p>
                   <Star className="h-4 w-4 text-amber-500 fill-amber-500 ml-1.5" />
                 </div>
               </div>
@@ -185,9 +185,9 @@ export default function TutorDashboard() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Recent Leads */}
-        <Card className="lg:col-span-2 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="lg:col-span-2 border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base font-bold text-[#1F1924]">Recent Student Enquiries</CardTitle>
+            <CardTitle className="text-base font-bold text-[#243238]">Recent Student Enquiries</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {loading ? (
@@ -198,7 +198,7 @@ export default function TutorDashboard() {
               leads.slice(0, 5).map((lead) => (
                 <div
                   key={lead.id}
-                  className="flex items-center justify-between p-3.5 rounded-xl border border-[#EADDD0] bg-[#FAF8F5] hover:bg-plum-50/30 transition-all"
+                  className="flex items-center justify-between p-3.5 rounded-xl border border-[#E2E5DF] bg-[#F6F3EA] hover:bg-plum-50/30 transition-all"
                 >
                   <div className="flex items-center gap-3 min-w-0 pr-3">
                     <div className="w-10 h-10 rounded-xl bg-plum-100 text-plum-900 flex items-center justify-center shrink-0">
@@ -206,8 +206,8 @@ export default function TutorDashboard() {
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <h3 className="text-xs sm:text-sm font-bold text-[#1F1924] truncate">{lead.studentName ?? 'Student'}</h3>
-                        <Badge variant="outline" className="text-[10px] bg-white border-[#EADDD0]">{lead.level}</Badge>
+                        <h3 className="text-xs sm:text-sm font-bold text-[#243238] truncate">{lead.studentName ?? 'Student'}</h3>
+                        <Badge variant="outline" className="text-[10px] bg-white border-[#E2E5DF]">{lead.level}</Badge>
                         {!lead.isRead && <Badge className="bg-plum-900 text-white text-[10px] px-1.5 py-0">New</Badge>}
                       </div>
                       <p className="text-xs text-slate-600 truncate">{lead.subject}</p>

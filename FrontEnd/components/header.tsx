@@ -34,7 +34,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[#E7E3EB] bg-white/95 dark:bg-[#170E1A]/95 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-[#E2E5DF] bg-white/95 dark:bg-[#0A242F]/95 backdrop-blur-md">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Brand Logo */}
@@ -43,7 +43,7 @@ export default function Header() {
               <div className="w-10 h-10 bg-gradient-to-br from-plum-800 to-plum-950 rounded-xl flex items-center justify-center shrink-0 shadow-sm shadow-plum-900/20 group-hover:scale-105 transition-transform">
                 <span className="text-ivory-50 font-bold text-xl tracking-tight">T</span>
               </div>
-              <span className="text-xl font-bold text-[#1F1924] dark:text-ivory-50 tracking-tight">
+              <span className="text-xl font-bold text-[#243238] dark:text-ivory-50 tracking-tight">
                 Tutor<span className="text-plum-800 dark:text-lavender-300">Nest</span>
               </span>
             </Link>
@@ -60,7 +60,7 @@ export default function Header() {
                   Find Tutors <ChevronDown className="ml-1 h-4 w-4" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-48 bg-white dark:bg-[#1F1424] border-[#E7E3EB] shadow-lg">
+              <DropdownMenuContent align="start" className="w-48 bg-white dark:bg-[#0F313E] border-[#E2E5DF] shadow-lg">
                 <DropdownMenuItem asChild>
                   <Link href="/search" className="w-full">All Subjects</Link>
                 </DropdownMenuItem>
@@ -116,7 +116,7 @@ export default function Header() {
                       Register <ChevronDown className="h-3.5 w-3.5" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-44 bg-white dark:bg-[#1F1424] border-[#E7E3EB] shadow-lg">
+                  <DropdownMenuContent align="end" className="w-44 bg-white dark:bg-[#0F313E] border-[#E2E5DF] shadow-lg">
                     <DropdownMenuItem asChild>
                       <Link href="/register/student" className="w-full">As Student</Link>
                     </DropdownMenuItem>
@@ -143,7 +143,7 @@ export default function Header() {
 
         {/* Mobile Dropdown Panel */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-[#E7E3EB] bg-white dark:bg-[#170E1A] max-h-[calc(100vh-4.5rem)] overflow-y-auto">
+          <div className="md:hidden py-4 border-t border-[#E2E5DF] bg-white dark:bg-[#0A242F] max-h-[calc(100vh-4.5rem)] overflow-y-auto">
             <div className="flex flex-col space-y-3 text-base">
               <Link href="/" onClick={() => setMobileMenuOpen(false)} className="px-2 py-1.5 text-gray-800 hover:text-plum-800 font-medium">
                 Home

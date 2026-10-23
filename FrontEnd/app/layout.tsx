@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: 'TutorNest - Find Your Perfect Tutor',
   description: 'Connect with verified, experienced tutors across India. Find the perfect tutor for school subjects, competitive exams, and skill development.',
   manifest: '/manifest.json',
-  themeColor: '#4A154B',
+  themeColor: '#164E63',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -48,7 +48,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased min-h-screen bg-ivory-100 text-[#1F1924]`}>
+      <body className={`${inter.className} antialiased min-h-screen bg-[#F6F3EA] text-[#243238]`}>
         <div className="flex flex-col min-h-screen pb-[calc(3.5rem+env(safe-area-inset-bottom,0.5rem))] md:pb-0">
           {children}
         </div>

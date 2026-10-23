@@ -409,6 +409,7 @@ public static class ServiceExtensions
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IImageService, LocalImageService>();
+        services.AddScoped<HomeTutorAPI.Services.WhatsApp.IWhatsAppNotificationService, HomeTutorAPI.Services.WhatsApp.WhatsAppNotificationService>();
         return services;
     }
 }

@@ -51,9 +51,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-ivory-100 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-xl border border-[#E7E3EB] overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[580px]">
-        {/* Left Side: Royal Plum Brand Panel (Desktop) */}
-        <div className="hidden lg:flex lg:col-span-5 bg-gradient-to-br from-plum-950 via-plum-900 to-[#2A082C] text-white p-8 flex-col justify-between relative overflow-hidden">
+      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-xl border border-[#E2E5DF] overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[580px]">
+        {/* Left Side: Ocean Teal Brand Panel (Desktop) */}
+        <div className="hidden lg:flex lg:col-span-5 bg-gradient-to-br from-plum-950 via-plum-900 to-[#0E3342] text-white p-8 flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-lavender-500/10 rounded-full blur-3xl pointer-events-none" />
 
           <div>
@@ -110,7 +110,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mb-6">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#243238] tracking-tight">
                 Sign In
               </h1>
               <p className="text-xs sm:text-sm text-gray-500 mt-1">
@@ -159,7 +159,7 @@ export default function LoginPage() {
                         : 'student@example.com'
                     }
                     required
-                    className="pl-10 h-11 text-sm bg-gray-50/60 border-[#E7E3EB] focus:border-plum-700 rounded-xl"
+                    className="pl-10 h-11 text-sm bg-gray-50/60 border-[#E2E5DF] focus:border-plum-700 rounded-xl"
                   />
                 </div>
               </div>
@@ -179,7 +179,7 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     required
-                    className="pl-10 pr-10 h-11 text-sm bg-gray-50/60 border-[#E7E3EB] focus:border-plum-700 rounded-xl"
+                    className="pl-10 pr-10 h-11 text-sm bg-gray-50/60 border-[#E2E5DF] focus:border-plum-700 rounded-xl"
                   />
                   <button
                     type="button"

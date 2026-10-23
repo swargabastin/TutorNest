@@ -66,12 +66,12 @@ export default function StudentDashboard() {
   if (isUnauthorized) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 sm:p-6 text-center">
-        <Card className="w-full max-w-md shadow-xs border-[#EADDD0] bg-white rounded-3xl">
+        <Card className="w-full max-w-md shadow-xs border-[#E2E5DF] bg-white rounded-3xl">
           <CardHeader className="text-center pb-2 pt-8">
             <div className="bg-plum-50 text-plum-900 rounded-2xl p-4 mx-auto w-16 h-16 flex items-center justify-center mb-3">
               <BookOpen className="h-8 w-8" />
             </div>
-            <CardTitle className="text-xl font-extrabold text-[#1F1924]">Student Account Required</CardTitle>
+            <CardTitle className="text-xl font-extrabold text-[#243238]">Student Account Required</CardTitle>
             <p className="text-slate-600 text-xs sm:text-sm mt-1 max-w-xs mx-auto">
               Sign in with your student account to view requirements, enquiries, and learning schedules.
             </p>
@@ -83,7 +83,7 @@ export default function StudentDashboard() {
               </Button>
             </Link>
             <Link href="/register/student" className="block">
-              <Button variant="outline" className="w-full border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 rounded-xl h-11 text-xs font-semibold">
+              <Button variant="outline" className="w-full border-[#E2E5DF] text-[#243238] hover:bg-plum-50 rounded-xl h-11 text-xs font-semibold">
                 Register as Student
               </Button>
             </Link>
@@ -94,11 +94,11 @@ export default function StudentDashboard() {
   }
 
   return (
-    <div className="space-y-6 text-[#1F1924]">
+    <div className="space-y-6 text-[#243238]">
       {/* Welcome Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-[#1F1924] tracking-tight">Welcome back{studentName ? `, ${studentName}` : ''}!</h1>
+          <h1 className="text-xl sm:text-2xl font-extrabold text-[#243238] tracking-tight">Welcome back{studentName ? `, ${studentName}` : ''}!</h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Here is an overview of your active tuitions and tutor responses</p>
         </div>
         <Link href="/post-requirement">
@@ -110,7 +110,7 @@ export default function StudentDashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-[#1C081E] text-white rounded-2xl shadow-xs border-0">
+        <Card className="bg-[#0E3342] text-white rounded-2xl shadow-xs border-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -127,12 +127,12 @@ export default function StudentDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-500 text-xs font-medium">Enquiries Sent</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">{loading ? '—' : stats?.totalEnquiries ?? 0}</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#243238] mt-1">{loading ? '—' : stats?.totalEnquiries ?? 0}</p>
               </div>
               <div className="bg-plum-50 text-plum-900 rounded-xl p-2.5">
                 <Users className="h-5 w-5" />
@@ -142,31 +142,31 @@ export default function StudentDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-500 text-xs font-medium">Coin Balance</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">{loading ? '—' : (stats?.coinBalance ?? 0).toLocaleString()}</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#243238] mt-1">{loading ? '—' : (stats?.coinBalance ?? 0).toLocaleString()}</p>
               </div>
               <div className="bg-amber-50 text-amber-600 rounded-xl p-2.5">
                 <Star className="h-5 w-5 fill-amber-500 text-amber-500" />
               </div>
             </div>
             <Link href="/wallet">
-              <Button variant="outline" size="sm" className="w-full mt-2.5 text-xs h-8 rounded-lg border-[#EADDD0] text-plum-900 hover:bg-plum-50">
+              <Button variant="outline" size="sm" className="w-full mt-2.5 text-xs h-8 rounded-lg border-[#E2E5DF] text-plum-900 hover:bg-plum-50">
                 Top Up Coins
               </Button>
             </Link>
           </CardContent>
         </Card>
 
-        <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-500 text-xs font-medium">Requirements Posted</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-[#1F1924] mt-1">{loading ? '—' : requirements.length}</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-[#243238] mt-1">{loading ? '—' : requirements.length}</p>
               </div>
               <div className="bg-plum-50 text-plum-900 rounded-xl p-2.5">
                 <Calendar className="h-5 w-5" />
@@ -179,9 +179,9 @@ export default function StudentDashboard() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* My Requirements */}
-        <Card className="lg:col-span-2 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+        <Card className="lg:col-span-2 border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-base font-bold text-[#1F1924]">My Requirements</CardTitle>
+            <CardTitle className="text-base font-bold text-[#243238]">My Requirements</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {loading ? (
@@ -199,11 +199,11 @@ export default function StudentDashboard() {
               requirements.map((req) => (
                 <div
                   key={req.id}
-                  className="flex items-start justify-between p-3.5 rounded-xl border border-[#EADDD0] bg-[#FAF8F5] hover:bg-plum-50/30 transition-colors"
+                  className="flex items-start justify-between p-3.5 rounded-xl border border-[#E2E5DF] bg-[#F6F3EA] hover:bg-plum-50/30 transition-colors"
                 >
                   <div className="flex-1 min-w-0 pr-3">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-xs sm:text-sm font-bold text-[#1F1924] truncate">{req.subject}</h3>
+                      <h3 className="text-xs sm:text-sm font-bold text-[#243238] truncate">{req.subject}</h3>
                       <Badge variant="outline" className={`text-[10px] font-semibold py-0 px-2 rounded-full ${
                         req.status.toLowerCase() === 'active' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-slate-100 text-slate-700'
                       }`}>
@@ -232,7 +232,7 @@ export default function StudentDashboard() {
             )}
             {requirements.length > 0 && (
               <Link href="/post-requirement" className="block pt-2">
-                <Button variant="outline" className="w-full h-10 rounded-xl border-[#EADDD0] text-plum-900 hover:bg-plum-50 text-xs font-semibold">
+                <Button variant="outline" className="w-full h-10 rounded-xl border-[#E2E5DF] text-plum-900 hover:bg-plum-50 text-xs font-semibold">
                   <FileText className="h-4 w-4 mr-1.5" />
                   Post Another Requirement
                 </Button>
@@ -246,9 +246,9 @@ export default function StudentDashboard() {
       </div>
 
       {/* Recommended Tutors */}
-      <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+      <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-base font-bold text-[#1F1924]">Recommended Tutors</CardTitle>
+          <CardTitle className="text-base font-bold text-[#243238]">Recommended Tutors</CardTitle>
           <Link href="/search">
             <Button variant="ghost" size="sm" className="text-xs text-plum-900 hover:text-plum-950 hover:bg-plum-50">
               View All <ArrowRight className="h-3.5 w-3.5 ml-1" />
@@ -261,26 +261,26 @@ export default function StudentDashboard() {
           ) : (
             <div className="grid md:grid-cols-3 gap-3">
               {recentTutors.map((tutor) => (
-                <div key={tutor.id} className="flex items-center gap-3 p-3 rounded-xl border border-[#EADDD0] bg-[#FAF8F5] hover:border-plum-200 transition-all">
+                <div key={tutor.id} className="flex items-center gap-3 p-3 rounded-xl border border-[#E2E5DF] bg-[#F6F3EA] hover:border-plum-200 transition-all">
                   <img
                     src={tutor.avatar}
                     alt={tutor.name}
                     className="w-12 h-12 rounded-xl object-cover shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-xs font-bold text-[#1F1924] truncate">{tutor.name}</h4>
+                    <h4 className="text-xs font-bold text-[#243238] truncate">{tutor.name}</h4>
                     <p className="text-[11px] text-slate-500 truncate">{tutor.subjects.join(', ')}</p>
                     <div className="flex items-center gap-2 mt-0.5">
                       <div className="flex items-center">
                         <Star className="h-3 w-3 text-amber-500 fill-amber-500" />
-                        <span className="text-[11px] font-bold text-[#1F1924] ml-1">{tutor.rating}</span>
+                        <span className="text-[11px] font-bold text-[#243238] ml-1">{tutor.rating}</span>
                       </div>
                       <span className="text-slate-300">•</span>
                       <span className="text-[11px] font-semibold text-plum-950">₹{tutor.hourlyRate}/h</span>
                     </div>
                   </div>
                   <Link href={`/tutor/${tutor.id}`}>
-                    <Button size="sm" variant="outline" className="h-8 rounded-lg border-[#EADDD0] text-xs px-2.5 text-plum-900 hover:bg-plum-50">View</Button>
+                    <Button size="sm" variant="outline" className="h-8 rounded-lg border-[#E2E5DF] text-xs px-2.5 text-plum-900 hover:bg-plum-50">View</Button>
                   </Link>
                 </div>
               ))}

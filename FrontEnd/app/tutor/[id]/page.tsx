@@ -22,7 +22,9 @@ import {
   Phone,
   Mail,
   Globe,
-  Calendar
+  Calendar,
+  ShieldCheck,
+  Play
 } from 'lucide-react';
 import { tutorsApi, studentsApi, authApi } from '@/lib/api';
 import type { TutorDetail } from '@/lib/api';
@@ -30,6 +32,7 @@ import type { Tutor } from '@/lib/types';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { BookSessionModal } from '@/components/book-session-modal';
+import { parseVideoUrl } from '@/lib/video-utils';
 
 export default function TutorProfilePage() {
   const params = useParams();
@@ -88,7 +91,7 @@ export default function TutorProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] flex flex-col">
+      <div className="min-h-screen bg-[#F6F3EA] flex flex-col">
         <Header />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
@@ -103,12 +106,12 @@ export default function TutorProfilePage() {
 
   if (notFound || !tutor) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] flex flex-col">
+      <div className="min-h-screen bg-[#F6F3EA] flex flex-col">
         <Header />
         <div className="flex-1 flex items-center justify-center p-4">
-          <Card className="max-w-md w-full text-center border-[#EADDD0] bg-white rounded-3xl shadow-xs">
+          <Card className="max-w-md w-full text-center border-[#E2E5DF] bg-white rounded-3xl shadow-xs">
             <CardContent className="p-8">
-              <h2 className="text-lg font-bold text-[#1F1924] mb-2">Tutor Not Found</h2>
+              <h2 className="text-lg font-bold text-[#243238] mb-2">Tutor Not Found</h2>
               <p className="text-xs text-slate-500 mb-5">The profile you are looking for does not exist or may have been unlisted.</p>
               <Link href="/search">
                 <Button className="bg-plum-900 hover:bg-plum-950 text-white rounded-xl text-xs font-semibold px-5 h-10">
@@ -124,10 +127,10 @@ export default function TutorProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1F1924] flex flex-col">
+    <div className="min-h-screen bg-[#F6F3EA] text-[#243238] flex flex-col">
       <Header />
 
-      <div className="border-b border-[#EADDD0] bg-white">
+      <div className="border-b border-[#E2E5DF] bg-white">
         <div className="container mx-auto px-4 py-3">
           <Link href="/search" className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-plum-900 transition-colors">
             <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
@@ -141,7 +144,7 @@ export default function TutorProfilePage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Profile Header */}
-            <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs overflow-hidden">
+            <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs overflow-hidden">
               <CardContent className="p-6 sm:p-8">
                 <div className="flex flex-col sm:flex-row gap-5 items-start">
                   <img
@@ -150,16 +153,40 @@ export default function TutorProfilePage() {
                     className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-plum-200 shadow-xs shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <h1 className="text-xl sm:text-2xl font-extrabold text-[#1F1924] tracking-tight">{tutor.name}</h1>
-                      {tutor.verified && (
-                        <Badge className="bg-plum-50 text-plum-900 border border-plum-200 text-[11px] font-bold py-0.5 px-2 rounded-full">
+                    <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                      <h1 className="text-xl sm:text-2xl font-extrabold text-[#243238] tracking-tight mr-1">{tutor.name}</h1>
+                      {tutor.idVerified && (
+                        <Badge className="bg-plum-50 text-plum-900 border border-plum-200 text-[10px] font-bold py-0.5 px-2 rounded-full">
+                          <ShieldCheck className="h-3 w-3 mr-1 text-plum-700" />
+                          Identity Reviewed
+                        </Badge>
+                      )}
+                      {tutor.qualificationVerified && (
+                        <Badge className="bg-plum-50 text-plum-900 border border-plum-200 text-[10px] font-bold py-0.5 px-2 rounded-full">
+                          <Award className="h-3 w-3 mr-1 text-plum-700" />
+                          Qualification Reviewed
+                        </Badge>
+                      )}
+                      {tutor.policeCheckVerified && (
+                        <Badge className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold py-0.5 px-2 rounded-full">
+                          <CheckCircle className="h-3 w-3 mr-1 text-emerald-700" />
+                          Police Check Reviewed
+                        </Badge>
+                      )}
+                      {tutor.addressVerified && (
+                        <Badge className="bg-slate-50 text-slate-800 border border-slate-200 text-[10px] font-bold py-0.5 px-2 rounded-full">
+                          <MapPin className="h-3 w-3 mr-1 text-slate-700" />
+                          Address Reviewed
+                        </Badge>
+                      )}
+                      {!tutor.idVerified && !tutor.qualificationVerified && !tutor.policeCheckVerified && tutor.verified && (
+                        <Badge className="bg-plum-50 text-plum-900 border border-plum-200 text-[10px] font-bold py-0.5 px-2 rounded-full">
                           <CheckCircle className="h-3 w-3 mr-1 text-plum-700" />
                           Verified Tutor
                         </Badge>
                       )}
                       {tutor.offersFreeDemo && (
-                        <Badge className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-bold py-0.5 px-2.5 rounded-full">
+                        <Badge className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold py-0.5 px-2.5 rounded-full">
                           🎉 Free Demo Available
                         </Badge>
                       )}
@@ -184,7 +211,7 @@ export default function TutorProfilePage() {
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs pt-1">
                       <div className="flex items-center gap-1.5">
                         <Star className="h-4 w-4 text-amber-500 fill-amber-500 shrink-0" />
-                        <span className="font-bold text-[#1F1924]">{tutor.rating}</span>
+                        <span className="font-bold text-[#243238]">{tutor.rating}</span>
                         <span className="text-slate-400">({tutor.reviewCount})</span>
                       </div>
                       <div className="flex items-center gap-1 text-slate-600">
@@ -202,8 +229,8 @@ export default function TutorProfilePage() {
                     </div>
                   </div>
 
-                  <div className="sm:text-right w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-0 border-[#F0E6DB]">
-                    <div className="text-2xl sm:text-3xl font-extrabold text-[#1F1924]">
+                  <div className="sm:text-right w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-0 border-[#E2E5DF]">
+                    <div className="text-2xl sm:text-3xl font-extrabold text-[#243238]">
                       ₹{tutor.hourlyRate}
                       <span className="text-xs font-normal text-slate-500">/hr</span>
                     </div>
@@ -214,7 +241,7 @@ export default function TutorProfilePage() {
                         </Badge>
                       )}
                       {tutor.mode.includes('offline') && (
-                        <Badge variant="outline" className="text-[10px] bg-[#FAF8F5] text-slate-700 border-[#EADDD0]">
+                        <Badge variant="outline" className="text-[10px] bg-[#F6F3EA] text-slate-700 border-[#E2E5DF]">
                           <MapPin className="h-3 w-3 mr-1" /> In-person
                         </Badge>
                       )}
@@ -224,9 +251,40 @@ export default function TutorProfilePage() {
               </CardContent>
             </Card>
 
+            {/* Video Introduction (Phase 2) */}
+            {(() => {
+              const video = parseVideoUrl(tutor.introVideoUrl);
+              if (!video.isValid || !video.embedUrl) return null;
+              return (
+                <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs overflow-hidden">
+                  <CardHeader className="p-5 pb-3 bg-[#F6F3EA]/60 border-b border-[#E2E5DF]">
+                    <CardTitle className="text-sm font-bold text-[#243238] flex items-center gap-2">
+                      <Play className="h-4 w-4 text-plum-900 fill-plum-900" />
+                      Tutor Video Introduction
+                    </CardTitle>
+                    <p className="text-xs text-slate-500">
+                      Watch a short introductory message from {tutor.name} explaining their teaching approach and subject expertise.
+                    </p>
+                  </CardHeader>
+                  <CardContent className="p-5">
+                    <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black shadow-inner border border-[#E2E5DF]">
+                      <iframe
+                        src={video.embedUrl}
+                        title={`${tutor.name} - Introduction Video`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full border-0"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })()}
+
             {/* Tabs Content */}
             <Tabs defaultValue="about" className="w-full">
-              <TabsList className="w-full bg-white border border-[#EADDD0] p-1 rounded-xl h-11">
+              <TabsList className="w-full bg-white border border-[#E2E5DF] p-1 rounded-xl h-11">
                 <TabsTrigger value="about" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">About</TabsTrigger>
                 <TabsTrigger value="schedule" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">Schedule</TabsTrigger>
                 <TabsTrigger value="subjects" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">Subjects & Boards</TabsTrigger>
@@ -234,39 +292,39 @@ export default function TutorProfilePage() {
               </TabsList>
 
               <TabsContent value="about" className="mt-4">
-                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                   <CardContent className="p-6 space-y-6">
                     <div>
                       <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-2">About Tutor</h3>
                       <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{tutor.bio}</p>
                     </div>
 
-                    <div className="grid sm:grid-cols-2 gap-4 pt-4 border-t border-[#F0E6DB]">
+                    <div className="grid sm:grid-cols-2 gap-4 pt-4 border-t border-[#E2E5DF]">
                       <div>
-                        <h4 className="text-xs font-bold text-[#1F1924] mb-2">Languages Spoken</h4>
+                        <h4 className="text-xs font-bold text-[#243238] mb-2">Languages Spoken</h4>
                         <div className="flex flex-wrap gap-1.5">
                           {tutor.languages.map((lang) => (
-                            <Badge key={lang} variant="outline" className="text-xs border-[#EADDD0] bg-[#FAF8F5]">{lang}</Badge>
+                            <Badge key={lang} variant="outline" className="text-xs border-[#E2E5DF] bg-[#F6F3EA]">{lang}</Badge>
                           ))}
                         </div>
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-[#1F1924] mb-2">Teaching Levels</h4>
+                        <h4 className="text-xs font-bold text-[#243238] mb-2">Teaching Levels</h4>
                         <div className="flex flex-wrap gap-1.5">
                           {tutor.teachingLevels.map((level) => (
-                            <Badge key={level} variant="outline" className="text-xs border-[#EADDD0] bg-[#FAF8F5]">{level}</Badge>
+                            <Badge key={level} variant="outline" className="text-xs border-[#E2E5DF] bg-[#F6F3EA]">{level}</Badge>
                           ))}
                         </div>
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-[#1F1924] mb-1.5">Response Time</h4>
+                        <h4 className="text-xs font-bold text-[#243238] mb-1.5">Response Time</h4>
                         <div className="flex items-center text-xs text-slate-600">
                           <Clock className="h-4 w-4 mr-1.5 text-plum-700" />
                           Usually within {tutor.responseTime}
                         </div>
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-[#1F1924] mb-1.5">Student Base</h4>
+                        <h4 className="text-xs font-bold text-[#243238] mb-1.5">Student Base</h4>
                         <div className="flex items-center text-xs text-slate-600">
                           <Users className="h-4 w-4 mr-1.5 text-plum-700" />
                           {tutor.studentsTaught}+ students mentored
@@ -279,7 +337,7 @@ export default function TutorProfilePage() {
 
               {/* Weekly Availability Schedule */}
               <TabsContent value="schedule" className="mt-4">
-                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                   <CardContent className="p-6">
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                       <div>
@@ -294,7 +352,7 @@ export default function TutorProfilePage() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-xs text-left border-collapse">
                         <thead>
-                          <tr className="border-b border-[#F0E6DB] text-slate-500">
+                          <tr className="border-b border-[#E2E5DF] text-slate-500">
                             <th className="py-2.5 px-3 font-bold">Day</th>
                             <th className="py-2.5 px-3 font-medium">Morning (6-9 AM)</th>
                             <th className="py-2.5 px-3 font-medium">Afternoon (12-4 PM)</th>
@@ -317,8 +375,8 @@ export default function TutorProfilePage() {
                             };
 
                             return (
-                              <tr key={day} className="hover:bg-[#FAF8F5]/60 transition-colors">
-                                <td className="py-2.5 px-3 font-bold text-[#1F1924]">{day}</td>
+                              <tr key={day} className="hover:bg-[#F6F3EA]/60 transition-colors">
+                                <td className="py-2.5 px-3 font-bold text-[#243238]">{day}</td>
                                 <td className="py-2.5 px-3">
                                   {hasSlot(6, 12) ? (
                                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -366,11 +424,11 @@ export default function TutorProfilePage() {
               </TabsContent>
 
               <TabsContent value="reviews" className="mt-4">
-                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                   <CardContent className="p-6">
-                    <div className="flex items-center gap-6 mb-6 p-4 bg-[#FAF8F5] border border-[#EADDD0] rounded-xl">
+                    <div className="flex items-center gap-6 mb-6 p-4 bg-[#F6F3EA] border border-[#E2E5DF] rounded-xl">
                       <div className="text-center">
-                        <p className="text-3xl font-extrabold text-[#1F1924]">{tutor.rating}</p>
+                        <p className="text-3xl font-extrabold text-[#243238]">{tutor.rating}</p>
                         <div className="flex items-center justify-center mt-1">
                           {[...Array(5)].map((_, i) => (
                             <Star key={i} className={`h-3.5 w-3.5 ${i < Math.floor(tutor.rating) ? 'text-amber-500 fill-amber-500' : 'text-slate-200'}`} />
@@ -385,7 +443,7 @@ export default function TutorProfilePage() {
                     ) : (
                       <div className="space-y-4">
                         {tutor.reviews.map((review) => (
-                          <div key={review.id} className="border-b border-[#F0E6DB] pb-4 last:border-0 last:pb-0">
+                          <div key={review.id} className="border-b border-[#E2E5DF] pb-4 last:border-0 last:pb-0">
                             <div className="flex items-center justify-between mb-1.5">
                               <div className="flex items-center gap-2.5">
                                 <div className="w-8 h-8 rounded-full bg-plum-100 text-plum-900 flex items-center justify-center text-xs font-bold">
@@ -396,7 +454,7 @@ export default function TutorProfilePage() {
                                   )}
                                 </div>
                                 <div>
-                                  <p className="text-xs font-bold text-[#1F1924]">{review.studentName}</p>
+                                  <p className="text-xs font-bold text-[#243238]">{review.studentName}</p>
                                   <p className="text-[10px] text-slate-400">
                                     {new Date(review.createdAt).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
                                   </p>
@@ -418,7 +476,7 @@ export default function TutorProfilePage() {
               </TabsContent>
 
               <TabsContent value="subjects" className="mt-4">
-                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                   <CardContent className="p-6">
                     <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Subjects & Boards</h3>
                     {tutor.boards && tutor.boards.length > 0 && (
@@ -433,11 +491,11 @@ export default function TutorProfilePage() {
                     )}
                     <div className="space-y-3">
                       {tutor.subjects.map((subject) => (
-                        <div key={subject} className="p-3.5 rounded-xl border border-[#EADDD0] bg-[#FAF8F5]">
-                          <h4 className="text-xs font-bold text-[#1F1924] mb-1.5">{subject}</h4>
+                        <div key={subject} className="p-3.5 rounded-xl border border-[#E2E5DF] bg-[#F6F3EA]">
+                          <h4 className="text-xs font-bold text-[#243238] mb-1.5">{subject}</h4>
                           <div className="flex flex-wrap gap-1.5">
                             {tutor.teachingLevels.map((level) => (
-                              <Badge key={level} variant="outline" className="text-[11px] bg-white border-[#EADDD0]">{level}</Badge>
+                              <Badge key={level} variant="outline" className="text-[11px] bg-white border-[#E2E5DF]">{level}</Badge>
                             ))}
                           </div>
                         </div>
@@ -452,9 +510,9 @@ export default function TutorProfilePage() {
           {/* Sidebar */}
           <div className="space-y-5">
             {/* Contact Card */}
-            <Card className="sticky top-20 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+            <Card className="sticky top-20 border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-bold text-[#1F1924]">
+                <CardTitle className="text-base font-bold text-[#243238]">
                   Book a Class with {tutor.name.split(' ')[0]}
                 </CardTitle>
               </CardHeader>
@@ -508,7 +566,7 @@ export default function TutorProfilePage() {
                     )}
                     <Button
                       variant="outline"
-                      className="w-full h-10 rounded-xl border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 text-xs font-semibold"
+                      className="w-full h-10 rounded-xl border-[#E2E5DF] text-[#243238] hover:bg-plum-50 text-xs font-semibold"
                       onClick={handleContact}
                       disabled={contacting}
                     >
@@ -525,7 +583,7 @@ export default function TutorProfilePage() {
                   </span>
                 </div>
 
-                <div className="pt-3 border-t border-[#F0E6DB]">
+                <div className="pt-3 border-t border-[#E2E5DF]">
                   <div className="flex items-center justify-around text-xs text-slate-600">
                     <div className="flex items-center gap-1 font-medium">
                       <CheckCircle className="h-3.5 w-3.5 text-plum-800" />
@@ -542,9 +600,9 @@ export default function TutorProfilePage() {
 
             {/* Similar Tutors */}
             {similarTutors.length > 0 && (
-              <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+              <Card className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-bold text-[#1F1924]">Similar Tutors</CardTitle>
+                  <CardTitle className="text-sm font-bold text-[#243238]">Similar Tutors</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2.5">
                   {similarTutors.map((similar) => (
@@ -556,7 +614,7 @@ export default function TutorProfilePage() {
                           className="w-10 h-10 rounded-xl object-cover shrink-0"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-bold text-[#1F1924] truncate">{similar.name}</p>
+                          <p className="text-xs font-bold text-[#243238] truncate">{similar.name}</p>
                           <div className="flex items-center text-[11px] text-slate-500">
                             <Star className="h-3 w-3 text-amber-500 fill-amber-500 mr-1" />
                             {similar.rating}

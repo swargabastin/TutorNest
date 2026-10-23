@@ -37,11 +37,11 @@ export default function PricingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1F1924] flex flex-col">
+    <div className="min-h-screen bg-[#F6F3EA] text-[#243238] flex flex-col">
       <Header />
 
       {/* Hero */}
-      <section className="py-12 md:py-16 bg-[#1C081E] text-white">
+      <section className="py-12 md:py-16 bg-[#0E3342] text-white">
         <div className="container mx-auto px-4 text-center max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold uppercase tracking-wider mb-4 border border-white/15">
             Transparent Subscription Plans
@@ -59,7 +59,7 @@ export default function PricingPage() {
       <section className="py-10 md:py-14">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-8 md:mb-10">
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#1F1924] mb-2">For Students & Parents</h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#243238] mb-2">For Students & Parents</h2>
             <p className="text-xs md:text-sm text-slate-500 max-w-md mx-auto">
               Connect directly with verified tutors across Kerala.
             </p>
@@ -78,7 +78,7 @@ export default function PricingPage() {
                   className={`relative rounded-2xl border transition-all duration-200 bg-white flex flex-col justify-between ${
                     plan.isPopular
                       ? 'border-plum-900 shadow-md ring-2 ring-plum-900/10'
-                      : 'border-[#EADDD0] shadow-xs'
+                      : 'border-[#E2E5DF] shadow-xs'
                   }`}
                 >
                   {plan.isPopular && (
@@ -96,9 +96,9 @@ export default function PricingPage() {
                         <Coins className="h-5 w-5" />
                       )}
                     </div>
-                    <CardTitle className="text-lg font-bold text-[#1F1924]">{plan.name}</CardTitle>
+                    <CardTitle className="text-lg font-bold text-[#243238]">{plan.name}</CardTitle>
                     <div className="mt-3">
-                      <span className="text-3xl font-extrabold text-[#1F1924]">₹{plan.price}</span>
+                      <span className="text-3xl font-extrabold text-[#243238]">₹{plan.price}</span>
                       <span className="text-xs text-slate-500">/month</span>
                     </div>
                     {plan.coinsPerMonth > 0 && (
@@ -121,7 +121,7 @@ export default function PricingPage() {
                         className={`w-full rounded-xl text-xs font-semibold h-10 ${
                           plan.isPopular
                             ? 'bg-plum-900 hover:bg-plum-950 text-white'
-                            : 'bg-white border border-[#EADDD0] text-plum-950 hover:bg-plum-50'
+                            : 'bg-white border border-[#E2E5DF] text-plum-950 hover:bg-plum-50'
                         }`}
                       >
                         {plan.price === 0 ? 'Get Started Free' : `Choose ${plan.name}`}
@@ -136,10 +136,10 @@ export default function PricingPage() {
       </section>
 
       {/* Tutor Plans */}
-      <section className="py-10 md:py-14 bg-white border-y border-[#EADDD0]">
+      <section className="py-10 md:py-14 bg-white border-y border-[#E2E5DF]">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-8 md:mb-10">
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#1F1924] mb-2">For Tutors</h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#243238] mb-2">For Tutors</h2>
             <p className="text-xs md:text-sm text-slate-500 max-w-md mx-auto">
               Unlock genuine student leads, stand out in search, and grow your teaching income.
             </p>
@@ -158,7 +158,7 @@ export default function PricingPage() {
                   className={`relative rounded-2xl border transition-all duration-200 bg-white flex flex-col justify-between ${
                     plan.isPopular
                       ? 'border-plum-900 shadow-md ring-2 ring-plum-900/10'
-                      : 'border-[#EADDD0] shadow-xs'
+                      : 'border-[#E2E5DF] shadow-xs'
                   }`}
                 >
                   {plan.isPopular && (
@@ -174,9 +174,9 @@ export default function PricingPage() {
                        plan.isPopular ? <Zap className="h-5 w-5" /> :
                        <Crown className="h-5 w-5" />}
                     </div>
-                    <CardTitle className="text-lg font-bold text-[#1F1924]">{plan.name}</CardTitle>
+                    <CardTitle className="text-lg font-bold text-[#243238]">{plan.name}</CardTitle>
                     <div className="mt-3">
-                      <span className="text-3xl font-extrabold text-[#1F1924]">₹{plan.price}</span>
+                      <span className="text-3xl font-extrabold text-[#243238]">₹{plan.price}</span>
                       <span className="text-xs text-slate-500">/month</span>
                     </div>
                   </CardHeader>
@@ -194,7 +194,7 @@ export default function PricingPage() {
                         className={`w-full rounded-xl text-xs font-semibold h-10 ${
                           plan.isPopular
                             ? 'bg-plum-900 hover:bg-plum-950 text-white'
-                            : 'bg-white border border-[#EADDD0] text-plum-950 hover:bg-plum-50'
+                            : 'bg-white border border-[#E2E5DF] text-plum-950 hover:bg-plum-50'
                         }`}
                       >
                         Start as Tutor
@@ -209,10 +209,10 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-10 md:py-14 bg-[#FAF8F5]">
+      <section className="py-10 md:py-14 bg-[#F6F3EA]">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#1F1924] mb-2">Frequently Asked Questions</h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#243238] mb-2">Frequently Asked Questions</h2>
             <p className="text-xs md:text-sm text-slate-500">Everything you need to know about TutorNest subscriptions.</p>
           </div>
 
@@ -223,9 +223,9 @@ export default function PricingPage() {
               { q: 'Is there a free trial?', a: 'The Free tier lets you search all tutors and browse posted student requirements without paying anything.' },
               { q: 'How do I cancel my plan?', a: 'You can cancel anytime with one click in your account settings. You keep all benefits until the end of your billing cycle.' }
             ].map((faq, index) => (
-              <Card key={index} className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+              <Card key={index} className="border-[#E2E5DF] bg-white rounded-2xl shadow-xs">
                 <CardContent className="p-5">
-                  <h3 className="text-sm font-bold text-[#1F1924] mb-1.5">{faq.q}</h3>
+                  <h3 className="text-sm font-bold text-[#243238] mb-1.5">{faq.q}</h3>
                   <p className="text-xs text-slate-600 leading-relaxed">{faq.a}</p>
                 </CardContent>
               </Card>
@@ -243,7 +243,7 @@ export default function PricingPage() {
           </p>
           <div className="flex justify-center gap-3 flex-wrap">
             <Link href="/register/student">
-              <Button className="bg-[#FAF8F5] text-plum-950 hover:bg-white rounded-xl h-10 px-5 text-xs font-bold">
+              <Button className="bg-[#F6F3EA] text-plum-950 hover:bg-white rounded-xl h-10 px-5 text-xs font-bold">
                 Sign Up as Student
               </Button>
             </Link>

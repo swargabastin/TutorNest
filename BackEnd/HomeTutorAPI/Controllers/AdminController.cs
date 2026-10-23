@@ -175,15 +175,24 @@ public class AdminController(
         Guid id, [FromBody] ReviewVerificationDocumentRequest req, CancellationToken ct)
     {
         if (!req.Approve && string.IsNullOrWhiteSpace(req.RejectionReason))
-            return BadRequest(new MessageResponse("RejectionReason is required when rejecting.", false));
+            return BadRequest(new MessageResponse("RejectionReason is required when rejecting or requesting resubmission.", false));
 
         var doc = await db.TutorVerificationDocuments
             .Include(d => d.TutorProfile)
             .FirstOrDefaultAsync(d => d.Id == id, ct);
         if (doc is null) return NotFound(new MessageResponse("Document not found.", false));
 
-        doc.Status           = req.Approve ? VerificationDocStatus.Approved : VerificationDocStatus.Rejected;
-        doc.RejectionReason  = req.Approve ? null : req.RejectionReason;
+        if (req.RequestResubmission)
+        {
+            doc.Status = VerificationDocStatus.ResubmissionRequired;
+            doc.RejectionReason = req.RejectionReason;
+        }
+        else
+        {
+            doc.Status = req.Approve ? VerificationDocStatus.Approved : VerificationDocStatus.Rejected;
+            doc.RejectionReason = req.Approve ? null : req.RejectionReason;
+        }
+
         doc.ReviewedAt       = DateTime.UtcNow;
         doc.ReviewedByUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -192,12 +201,132 @@ public class AdminController(
             d.DocType == VerificationDocType.GovernmentId &&
             (d.Id == doc.Id ? req.Approve : d.Status == VerificationDocStatus.Approved), ct);
 
-        doc.TutorProfile.IsVerified = hasApprovedGovId;
-        doc.TutorProfile.UpdatedAt  = DateTime.UtcNow;
+        var hasApprovedDegree = await db.TutorVerificationDocuments.AnyAsync(d =>
+            d.TutorProfileId == doc.TutorProfileId &&
+            d.DocType == VerificationDocType.EducationCertificate &&
+            (d.Id == doc.Id ? req.Approve : d.Status == VerificationDocStatus.Approved), ct);
+
+        var hasApprovedPolice = await db.TutorVerificationDocuments.AnyAsync(d =>
+            d.TutorProfileId == doc.TutorProfileId &&
+            d.DocType == VerificationDocType.PoliceVerification &&
+            (d.Id == doc.Id ? req.Approve : d.Status == VerificationDocStatus.Approved), ct);
+
+        var hasApprovedAddress = await db.TutorVerificationDocuments.AnyAsync(d =>
+            d.TutorProfileId == doc.TutorProfileId &&
+            d.DocType == VerificationDocType.AddressProof &&
+            (d.Id == doc.Id ? req.Approve : d.Status == VerificationDocStatus.Approved), ct);
+
+        doc.TutorProfile.IsVerified            = hasApprovedGovId;
+        doc.TutorProfile.IdVerified            = hasApprovedGovId;
+        doc.TutorProfile.QualificationVerified = hasApprovedDegree;
+        doc.TutorProfile.PoliceCheckVerified   = hasApprovedPolice;
+        doc.TutorProfile.AddressVerified       = hasApprovedAddress;
+        doc.TutorProfile.UpdatedAt             = DateTime.UtcNow;
 
         await db.SaveChangesAsync(ct);
 
-        return Ok(new MessageResponse($"Document {(req.Approve ? "approved" : "rejected")}."));
+        var actionText = req.RequestResubmission ? "resubmission requested" : (req.Approve ? "approved" : "rejected");
+        return Ok(new MessageResponse($"Document {actionText}."));
+    }
+
+    // ── GET /api/admin/verification-documents/{id}/file ─────────────────────────
+    [HttpGet("verification-documents/{id:guid}/file")]
+    public async Task<IActionResult> GetVerificationDocumentFile(Guid id, CancellationToken ct)
+    {
+        var doc = await db.TutorVerificationDocuments.FirstOrDefaultAsync(d => d.Id == id, ct);
+        if (doc is null) return NotFound(new MessageResponse("Document not found.", false));
+
+        var localPath = Path.Combine("wwwroot", doc.FileUrl.TrimStart('/'));
+        if (!System.IO.File.Exists(localPath)) return NotFound(new MessageResponse("File not found on disk.", false));
+
+        var ext = Path.GetExtension(localPath).ToLower();
+        var contentType = ext switch
+        {
+            ".pdf" => "application/pdf",
+            ".png" => "image/png",
+            ".webp" => "image/webp",
+            _ => "image/jpeg"
+        };
+        return PhysicalFile(Path.GetFullPath(localPath), contentType);
+    }
+
+    // ── GET /api/admin/coin-refunds ────────────────────────────────────────────
+    [HttpGet("coin-refunds")]
+    [ProducesResponseType(typeof(List<CoinRefundRequestDto>), 200)]
+    public async Task<IActionResult> GetCoinRefunds([FromQuery] string? status, CancellationToken ct)
+    {
+        var q = db.CoinRefundRequests
+            .Include(r => r.TutorProfile).ThenInclude(t => t.User)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<CoinRefundStatus>(status, true, out var filterStatus))
+        {
+            q = q.Where(r => r.Status == filterStatus);
+        }
+
+        var refunds = await q.OrderByDescending(r => r.CreatedAt).ToListAsync(ct);
+        return Ok(refunds.Select(mapper.Map<CoinRefundRequestDto>));
+    }
+
+    // ── PUT /api/admin/coin-refunds/{id}/resolve ───────────────────────────────
+    [HttpPut("coin-refunds/{id:guid}/resolve")]
+    public async Task<IActionResult> ResolveCoinRefund(
+        Guid id, [FromBody] ResolveCoinRefundRequest req, CancellationToken ct)
+    {
+        var refund = await db.CoinRefundRequests
+            .Include(r => r.TutorProfile)
+            .FirstOrDefaultAsync(r => r.Id == id, ct);
+
+        if (refund is null) return NotFound(new MessageResponse("Coin refund request not found.", false));
+
+        if (refund.Status != CoinRefundStatus.Pending)
+            return BadRequest(new MessageResponse($"Cannot resolve refund request with status '{refund.Status}'.", false));
+
+        var adminUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        refund.ReviewedAt = DateTime.UtcNow;
+        refund.ReviewedByUserId = adminUserId;
+        refund.AdminNotes = req.AdminNotes;
+
+        if (req.Approve)
+        {
+            refund.Status = CoinRefundStatus.Approved;
+
+            // Atomically credit coins back to tutor's wallet
+            refund.TutorProfile.CoinBalance += refund.CoinsRequested;
+
+            var txn = new CoinTransaction
+            {
+                TutorProfileId = refund.TutorProfileId,
+                Type           = TransactionType.Credit,
+                Amount         = refund.CoinsRequested,
+                BalanceAfter   = refund.TutorProfile.CoinBalance,
+                Description    = $"Refund approved: {refund.Reason} (Req #{refund.Id.ToString()[..8]})",
+                ReferenceId    = refund.Id
+            };
+
+            await db.CoinTransactions.AddAsync(txn, ct);
+        }
+        else
+        {
+            refund.Status = CoinRefundStatus.Rejected;
+        }
+
+        await db.SaveChangesAsync(ct);
+        return Ok(new MessageResponse($"Refund request {(req.Approve ? "approved and coins credited" : "rejected")}."));
+    }
+
+    // ── GET /api/admin/whatsapp-logs ───────────────────────────────────────────
+    [HttpGet("whatsapp-logs")]
+    [ProducesResponseType(typeof(List<WhatsAppNotificationLogDto>), 200)]
+    public async Task<IActionResult> GetWhatsAppLogs(CancellationToken ct)
+    {
+        var logs = await db.WhatsAppNotificationLogs
+            .Include(l => l.TutorProfile).ThenInclude(t => t.User)
+            .OrderByDescending(l => l.CreatedAt)
+            .Take(100)
+            .ToListAsync(ct);
+
+        return Ok(logs.Select(mapper.Map<WhatsAppNotificationLogDto>));
     }
 
     // ── GET /api/admin/users ──────────────────────────────────────────────────

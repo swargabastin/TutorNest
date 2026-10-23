@@ -108,7 +108,12 @@ public record TutorListDto(
     string?  Locality = null,
     string?  Pincode = null,
     string[]? Boards = null,
-    bool     OffersFreeDemo = true
+    bool     OffersFreeDemo = true,
+    bool     IdVerified = false,
+    bool     QualificationVerified = false,
+    bool     AddressVerified = false,
+    bool     PoliceCheckVerified = false,
+    string?  IntroVideoUrl = null
 );
 
 public record TutorDetailDto(
@@ -138,7 +143,14 @@ public record TutorDetailDto(
     string?    Pincode = null,
     int?       TravelRadiusKm = null,
     string[]?  Boards = null,
-    bool       OffersFreeDemo = true
+    bool       OffersFreeDemo = true,
+    bool       IdVerified = false,
+    bool       QualificationVerified = false,
+    bool       AddressVerified = false,
+    bool       PoliceCheckVerified = false,
+    string?    IntroVideoUrl = null,
+    bool       WhatsAppNotificationsEnabled = false,
+    string?    WhatsAppPhoneNumber = null
 );
 
 public record UpdateTutorProfileRequest(
@@ -155,7 +167,10 @@ public record UpdateTutorProfileRequest(
     string? Pincode = null,
     int? TravelRadiusKm = null,
     List<string>? Boards = null,
-    bool? OffersFreeDemo = null
+    bool? OffersFreeDemo = null,
+    string? IntroVideoUrl = null,
+    bool? WhatsAppNotificationsEnabled = null,
+    string? WhatsAppPhoneNumber = null
 );
 
 public record TutorDashboardStatsDto(
@@ -460,13 +475,67 @@ public record TutorVerificationDocumentDto(
 
 public record ReviewVerificationDocumentRequest(
     bool    Approve,
-    string? RejectionReason);
+    string? RejectionReason = null,
+    bool    RequestResubmission = false);
 
 public record TutorVerificationSummaryDto(
     bool IsVerified,
     int  DocumentsSubmitted,
     int  DocumentsApproved,
     int  DocumentsPending);
+
+// ════════════════════════════════════════════════════════════════════════════
+// PHASE 2: COIN REFUND REQUESTS
+// ════════════════════════════════════════════════════════════════════════════
+
+public record CreateCoinRefundRequest(
+    Guid             CoinTransactionId,
+    Guid?            ReferenceId,
+    int              CoinsRequested,
+    CoinRefundReason Reason,
+    string           Explanation
+);
+
+public record CoinRefundRequestDto(
+    Guid             Id,
+    Guid             TutorProfileId,
+    string           TutorName,
+    Guid             CoinTransactionId,
+    Guid?            ReferenceId,
+    int              CoinsRequested,
+    string           Reason,
+    string           Explanation,
+    string           Status,
+    string?          AdminNotes,
+    DateTime?        ReviewedAt,
+    DateTime         CreatedAt
+);
+
+public record ResolveCoinRefundRequest(
+    bool    Approve,
+    string? AdminNotes = null
+);
+
+// ════════════════════════════════════════════════════════════════════════════
+// PHASE 3: WHATSAPP NOTIFICATIONS
+// ════════════════════════════════════════════════════════════════════════════
+
+public record WhatsAppNotificationLogDto(
+    Guid     Id,
+    Guid     TutorProfileId,
+    string   TutorName,
+    Guid     RequirementId,
+    string   RecipientPhone,
+    string   MessageContent,
+    string   Status,
+    string   Provider,
+    DateTime CreatedAt
+);
+
+public record UpdateWhatsAppPreferencesRequest(
+    bool    Enabled,
+    string? PhoneNumber = null
+);
 
 // ════════════════════════════════════════════════════════════════════════════
 // BOOKINGS & CLASS SCHEDULING
