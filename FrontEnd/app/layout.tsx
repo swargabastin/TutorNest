@@ -7,6 +7,7 @@ import MobileNav from '@/components/mobile-nav';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://tutor-nest-delta.vercel.app'),
   title: 'TutorNest - Find Your Perfect Tutor',
   description: 'Connect with verified, experienced tutors across India. Find the perfect tutor for school subjects, competitive exams, and skill development.',
   manifest: '/manifest.json',
@@ -48,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased min-h-screen bg-ivory-100 text-[#1F1924]`}>
-        <div className="flex flex-col min-h-screen pb-14 md:pb-0">
+        <div className="flex flex-col min-h-screen pb-[calc(3.5rem+env(safe-area-inset-bottom,0.5rem))] md:pb-0">
           {children}
         </div>
         <MobileNav />

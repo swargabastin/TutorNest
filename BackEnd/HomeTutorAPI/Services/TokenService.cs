@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using HomeTutorAPI.Extensions;
 using HomeTutorAPI.Models;
 using Microsoft.IdentityModel.Tokens;
 
@@ -17,7 +18,8 @@ public class TokenService(IConfiguration cfg) : ITokenService
 {
     public string GenerateAccessToken(User user)
     {
-        var key   = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(cfg["Jwt:SecretKey"]!));
+        var secret = cfg["Jwt:SecretKey"] ?? throw new InvalidOperationException("Jwt:SecretKey is required.");
+        var key   = new SymmetricSecurityKey(ServiceExtensions.GetJwtKeyBytes(secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]

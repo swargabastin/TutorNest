@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 using HomeTutorAPI.Data;
 using HomeTutorAPI.Helpers;
@@ -291,12 +292,22 @@ public static class ServiceExtensions
         return services;
     }
 
+    // ── JWT Key Resolver ──────────────────────────────────────────────────────
+    public static byte[] GetJwtKeyBytes(string secretKey)
+    {
+        var rawBytes = Encoding.UTF8.GetBytes(secretKey);
+        // HS256 requires >= 256 bits (32 bytes). If an operator sets a shorter secret in environment configs,
+        // deterministically hash it to 256 bits to prevent IDX10720 cryptographic exceptions.
+        return rawBytes.Length >= 32 ? rawBytes : SHA256.HashData(rawBytes);
+    }
+
     // ── JWT Auth ──────────────────────────────────────────────────────────────
     public static IServiceCollection AddJwtAuthentication(
         this IServiceCollection services, IConfiguration cfg)
     {
-        var key = Encoding.UTF8.GetBytes(cfg["Jwt:SecretKey"]
-            ?? throw new InvalidOperationException("Jwt:SecretKey is required."));
+        var secret = cfg["Jwt:SecretKey"]
+            ?? throw new InvalidOperationException("Jwt:SecretKey is required.");
+        var key = GetJwtKeyBytes(secret);
 
         services
             .AddAuthentication(opt =>
