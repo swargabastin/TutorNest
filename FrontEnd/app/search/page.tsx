@@ -36,14 +36,21 @@ export default function SearchPage() {
   const [teachingLevels, setTeachingLevels] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
 
+  const availableBoards = lookupsApi.getCurriculums();
+  const commonLocalities = lookupsApi.getCommonLocalities();
+
   const [filters, setFilters] = useState({
     search: searchParams.get('subject') || '',
     city: searchParams.get('city') || '',
+    locality: searchParams.get('locality') || '',
+    pincode: searchParams.get('pincode') || '',
     subject: searchParams.get('subject') || '',
     level: '',
+    boards: [] as string[],
+    freeDemoOnly: false,
     mode: [] as string[],
     minRate: 0,
-    maxRate: 2000,
+    maxRate: 5000,
     minRating: 0,
     verified: false,
     sortBy: 'rating'
@@ -71,8 +78,12 @@ export default function SearchPage() {
       const res = await tutorsApi.search({
         search: filters.search || undefined,
         city: filters.city || undefined,
+        locality: filters.locality || undefined,
+        pincode: filters.pincode ? filters.pincode.trim() : undefined,
         subject: filters.subject || undefined,
         level: filters.level || undefined,
+        boards: filters.boards.length > 0 ? filters.boards : undefined,
+        freeDemoOnly: filters.freeDemoOnly ? true : undefined,
         mode: filters.mode.length > 0 ? filters.mode : undefined,
         minRate: filters.minRate,
         maxRate: filters.maxRate,
@@ -97,15 +108,27 @@ export default function SearchPage() {
     setFilters({
       search: '',
       city: '',
+      locality: '',
+      pincode: '',
       subject: '',
       level: '',
+      boards: [],
+      freeDemoOnly: false,
       mode: [],
       minRate: 0,
-      maxRate: 2000,
+      maxRate: 5000,
       minRating: 0,
       verified: false,
       sortBy: 'rating'
     });
+  };
+
+  const toggleBoard = (board: string) => {
+    if (filters.boards.includes(board)) {
+      setFilters({ ...filters, boards: filters.boards.filter(b => b !== board) });
+    } else {
+      setFilters({ ...filters, boards: [...filters.boards, board] });
+    }
   };
 
   const toggleMode = (mode: string) => {
@@ -171,6 +194,37 @@ export default function SearchPage() {
               </Button>
             </div>
           </div>
+
+          {/* Quick Curriculum / Board Filter Chips */}
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pt-2.5 pb-0.5">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0 mr-1">Curriculum:</span>
+            <button
+              onClick={() => setFilters({ ...filters, boards: [] })}
+              className={`px-3 py-1 rounded-full text-xs font-semibold shrink-0 transition-colors ${
+                filters.boards.length === 0
+                  ? 'bg-plum-900 text-white'
+                  : 'bg-[#FAF8F5] text-slate-600 hover:bg-[#F2ECE4] border border-[#EADDD0]'
+              }`}
+            >
+              All Boards
+            </button>
+            {availableBoards.map((b) => {
+              const active = filters.boards.includes(b);
+              return (
+                <button
+                  key={b}
+                  onClick={() => toggleBoard(b)}
+                  className={`px-3 py-1 rounded-full text-xs font-semibold shrink-0 transition-colors ${
+                    active
+                      ? 'bg-plum-900 text-white shadow-xs'
+                      : 'bg-[#FAF8F5] text-slate-600 hover:bg-[#F2ECE4] border border-[#EADDD0]'
+                  }`}
+                >
+                  {b}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -188,6 +242,61 @@ export default function SearchPage() {
                   >
                     Clear all
                   </button>
+                </div>
+
+                {/* Free Demo Toggle */}
+                <div className="mb-6 p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl">
+                  <label className="flex items-center cursor-pointer">
+                    <Checkbox
+                      checked={filters.freeDemoOnly}
+                      onCheckedChange={(checked) => setFilters({ ...filters, freeDemoOnly: checked as boolean })}
+                    />
+                    <span className="ml-2.5 text-xs font-bold text-emerald-900">
+                      🎉 Free Demo Available Only
+                    </span>
+                  </label>
+                </div>
+
+                {/* Locality Search */}
+                <div className="mb-6">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Locality / Area</h4>
+                  <Input
+                    type="text"
+                    placeholder="e.g. Kakkanad, Kaloor, Edappally"
+                    value={filters.locality}
+                    onChange={(e) => setFilters({ ...filters, locality: e.target.value })}
+                    className="h-10 rounded-xl border-[#EADDD0] text-xs bg-[#FAF8F5]"
+                  />
+                  {/* Quick locality chips */}
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {commonLocalities.slice(0, 5).map((loc) => (
+                      <button
+                        key={loc}
+                        type="button"
+                        onClick={() => setFilters({ ...filters, locality: filters.locality === loc ? '' : loc })}
+                        className={`text-[10px] px-2 py-0.5 rounded-md font-medium border ${
+                          filters.locality === loc
+                            ? 'bg-plum-900 text-white border-plum-900'
+                            : 'bg-white text-slate-600 border-[#EADDD0] hover:bg-slate-50'
+                        }`}
+                      >
+                        {loc}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Pincode Search */}
+                <div className="mb-6">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Pincode</h4>
+                  <Input
+                    type="text"
+                    maxLength={6}
+                    placeholder="e.g. 682030"
+                    value={filters.pincode}
+                    onChange={(e) => setFilters({ ...filters, pincode: e.target.value.replace(/\D/g, '') })}
+                    className="h-10 rounded-xl border-[#EADDD0] text-xs bg-[#FAF8F5]"
+                  />
                 </div>
 
                 {/* Price Range */}
@@ -295,6 +404,37 @@ export default function SearchPage() {
             {showFilters && (
               <Card className="lg:hidden mb-4 border-[#EADDD0] bg-white rounded-2xl shadow-xs">
                 <CardContent className="p-4 space-y-4">
+                  <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl">
+                    <label className="flex items-center cursor-pointer">
+                      <Checkbox
+                        checked={filters.freeDemoOnly}
+                        onCheckedChange={(checked) => setFilters({ ...filters, freeDemoOnly: checked as boolean })}
+                      />
+                      <span className="ml-2 text-xs font-bold text-emerald-900">
+                        🎉 Free Demo Available Only
+                      </span>
+                    </label>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Locality & Pincode</h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Input
+                        type="text"
+                        placeholder="Locality (e.g. Kakkanad)"
+                        value={filters.locality}
+                        onChange={(e) => setFilters({ ...filters, locality: e.target.value })}
+                        className="h-10 rounded-xl border-[#EADDD0] text-xs"
+                      />
+                      <Input
+                        type="text"
+                        maxLength={6}
+                        placeholder="Pincode"
+                        value={filters.pincode}
+                        onChange={(e) => setFilters({ ...filters, pincode: e.target.value.replace(/\D/g, '') })}
+                        className="h-10 rounded-xl border-[#EADDD0] text-xs"
+                      />
+                    </div>
+                  </div>
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Price Range (₹)</h4>
                     <div className="flex gap-2">

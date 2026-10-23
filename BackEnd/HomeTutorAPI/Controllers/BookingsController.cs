@@ -55,11 +55,15 @@ public class BookingsController(
         if (hasConflict)
             return BadRequest(new MessageResponse("Tutor already has a confirmed session at this time.", false));
 
+        if (req.IsTrial && !tutor.OffersFreeDemo)
+            return BadRequest(new MessageResponse("This tutor does not currently offer free demo sessions.", false));
+
         var booking = new Booking
         {
             StudentProfileId = student.Id,
             TutorProfileId   = tutor.Id,
             Subject          = req.Subject,
+            GradeLevel       = req.GradeLevel,
             Mode             = mode,
             Status           = BookingStatus.Pending,
             StartTime        = DateTime.SpecifyKind(req.StartTime, DateTimeKind.Utc),

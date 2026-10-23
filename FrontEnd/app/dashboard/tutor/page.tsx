@@ -25,6 +25,7 @@ import { tutorsApi, authApi } from '@/lib/api';
 import type { Enquiry } from '@/lib/api';
 import { TutorVerificationWidget } from '@/components/tutor-verification-widget';
 import { LiveScheduleCard } from '@/components/live-schedule-card';
+import { TutorAvailabilityEditor } from '@/components/tutor-availability-editor';
 
 interface TutorStats {
   profileViews: number; studentLeads: number; classesThisWeek: number;
@@ -225,6 +226,9 @@ export default function TutorDashboard() {
         {/* Today's Schedule */}
         <LiveScheduleCard userRole="Tutor" />
       </div>
+
+      {/* Sprint 1: Tutor Availability Schedule & Tutoring Preferences Editor */}
+      <TutorAvailabilityEditor />
     </div>
   );
 }

@@ -34,7 +34,11 @@ public class MappingProfile : Profile
                 t.Languages,
                 t.TeachingLevels,
                 t.ResponseTime,
-                t.StudentsTaught));
+                t.StudentsTaught,
+                t.Locality,
+                t.Pincode,
+                t.Boards,
+                t.OffersFreeDemo));
 
         // TutorProfile → TutorDetailDto
         CreateMap<TutorProfile, TutorDetailDto>()
@@ -60,7 +64,12 @@ public class MappingProfile : Profile
                 t.User.Phone,
                 t.User.Email,
                 t.Reviews.Select(r => ctx.Mapper.Map<ReviewDto>(r)).ToList(),
-                t.Availabilities.Select(a => ctx.Mapper.Map<AvailabilityDto>(a)).ToList()));
+                t.Availabilities.Select(a => ctx.Mapper.Map<AvailabilityDto>(a)).ToList(),
+                t.Locality,
+                t.Pincode,
+                t.TravelRadiusKm,
+                t.Boards,
+                t.OffersFreeDemo));
 
         // Review → ReviewDto
         CreateMap<Review, ReviewDto>()
@@ -85,7 +94,8 @@ public class MappingProfile : Profile
             .ConstructUsing(r => new RequirementDto(
                 r.Id, r.Subject, r.Level, r.City,
                 r.Mode.ToString(), r.Budget, r.FrequencyPerWeek,
-                r.Description, r.Status.ToString(), r.ResponseCount, r.CreatedAt));
+                r.Description, r.Status.ToString(), r.ResponseCount, r.CreatedAt,
+                r.Board, r.Locality, r.Pincode));
 
         // Enquiry → EnquiryDto
         // NOTE: whichever controller queries this (Students vs Tutors) only
@@ -154,6 +164,7 @@ public class MappingProfile : Profile
                 b.LocationAddress,
                 b.StudentNotes,
                 b.CancellationReason,
-                b.CreatedAt));
+                b.CreatedAt,
+                b.GradeLevel));
     }
 }

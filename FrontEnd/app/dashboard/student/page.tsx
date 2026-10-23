@@ -21,7 +21,7 @@ import type { Tutor } from '@/lib/types';
 import { LiveScheduleCard } from '@/components/live-schedule-card';
 
 interface Requirement {
-  id: string; subject: string; level: string; city?: string;
+  id: string; subject: string; level: string; city?: string; board?: string; locality?: string; pincode?: string;
   status: string; responseCount: number; description?: string; createdAt: string;
 }
 interface StudentStats {
@@ -210,7 +210,17 @@ export default function StudentDashboard() {
                         {req.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 mb-1">{req.level}{req.city ? ` • ${req.city}` : ''}</p>
+                    <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-600 mb-1">
+                      <span>{req.level}</span>
+                      {req.board && (
+                        <span className="bg-plum-50 text-plum-900 px-1.5 py-0.2 text-[10px] rounded border border-plum-150 font-medium">
+                          {req.board}
+                        </span>
+                      )}
+                      {(req.locality || req.city) && (
+                        <span>• {[req.locality, req.city, req.pincode].filter(Boolean).join(', ')}</span>
+                      )}
+                    </div>
                     {req.description && <p className="text-xs text-slate-500 line-clamp-1">{req.description}</p>}
                   </div>
                   <div className="text-right shrink-0">

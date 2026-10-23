@@ -158,8 +158,28 @@ export default function TutorProfilePage() {
                           Verified Tutor
                         </Badge>
                       )}
+                      {tutor.offersFreeDemo && (
+                        <Badge className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-bold py-0.5 px-2.5 rounded-full">
+                          🎉 Free Demo Available
+                        </Badge>
+                      )}
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-600 mb-3">{tutor.qualification}</p>
+                    <p className="text-xs sm:text-sm text-slate-600 mb-2">{tutor.qualification}</p>
+
+                    {/* Boards & Locality Chips */}
+                    <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                      {tutor.boards && tutor.boards.length > 0 && tutor.boards.map((b) => (
+                        <Badge key={b} variant="secondary" className="bg-lavender-100 text-plum-950 text-[10px] font-semibold py-0 px-2">
+                          {b}
+                        </Badge>
+                      ))}
+                      {tutor.locality && (
+                        <span className="text-[11px] text-slate-600 font-medium">
+                          Area: <span className="font-semibold text-plum-900">{tutor.locality}</span>
+                          {tutor.travelRadiusKm ? ` (travels up to ${tutor.travelRadiusKm} km)` : ''}
+                        </span>
+                      )}
+                    </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs pt-1">
                       <div className="flex items-center gap-1.5">
@@ -173,7 +193,7 @@ export default function TutorProfilePage() {
                       </div>
                       <div className="flex items-center gap-1 text-slate-600">
                         <MapPin className="h-3.5 w-3.5 text-plum-700 shrink-0" />
-                        <span>{tutor.location}</span>
+                        <span>{tutor.locality ? `${tutor.locality}, ${tutor.location}` : tutor.location}</span>
                       </div>
                       <div className="flex items-center gap-1 text-slate-600">
                         <Users className="h-3.5 w-3.5 text-plum-700 shrink-0" />
@@ -208,8 +228,9 @@ export default function TutorProfilePage() {
             <Tabs defaultValue="about" className="w-full">
               <TabsList className="w-full bg-white border border-[#EADDD0] p-1 rounded-xl h-11">
                 <TabsTrigger value="about" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">About</TabsTrigger>
+                <TabsTrigger value="schedule" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">Schedule</TabsTrigger>
+                <TabsTrigger value="subjects" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">Subjects & Boards</TabsTrigger>
                 <TabsTrigger value="reviews" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">Reviews ({tutor.reviewCount})</TabsTrigger>
-                <TabsTrigger value="subjects" className="flex-1 rounded-lg text-xs font-semibold data-[state=active]:bg-plum-900 data-[state=active]:text-white">Subjects</TabsTrigger>
               </TabsList>
 
               <TabsContent value="about" className="mt-4">
@@ -251,6 +272,94 @@ export default function TutorProfilePage() {
                           {tutor.studentsTaught}+ students mentored
                         </div>
                       </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Weekly Availability Schedule */}
+              <TabsContent value="schedule" className="mt-4">
+                <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
+                  <CardContent className="p-6">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                      <div>
+                        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">Weekly Availability Schedule</h3>
+                        <p className="text-xs text-slate-500 mt-0.5">Stated weekly schedule. Specific demo or class times confirmed by tutor.</p>
+                      </div>
+                      <Badge variant="outline" className="bg-plum-50 text-plum-900 border-plum-200 text-xs font-medium">
+                        IST Timezone
+                      </Badge>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs text-left border-collapse">
+                        <thead>
+                          <tr className="border-b border-[#F0E6DB] text-slate-500">
+                            <th className="py-2.5 px-3 font-bold">Day</th>
+                            <th className="py-2.5 px-3 font-medium">Morning (6-9 AM)</th>
+                            <th className="py-2.5 px-3 font-medium">Afternoon (12-4 PM)</th>
+                            <th className="py-2.5 px-3 font-medium">Evening (4-8 PM)</th>
+                            <th className="py-2.5 px-3 font-medium">Night (8-10 PM)</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#F5EFE8]">
+                          {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => {
+                            const daySlots = tutor.availabilities?.filter((a) => a.day.toLowerCase() === day.toLowerCase()) ?? [];
+                            const hasSlot = (startHour: number, endHour: number) => {
+                              if (!tutor.availabilities || tutor.availabilities.length === 0) {
+                                if (day === 'Saturday' || day === 'Sunday') return startHour >= 8 && endHour <= 18;
+                                return startHour >= 16 && endHour <= 20;
+                              }
+                              return daySlots.some((s) => {
+                                const h = parseInt(s.startTime.split(':')[0], 10);
+                                return h >= startHour && h < endHour;
+                              });
+                            };
+
+                            return (
+                              <tr key={day} className="hover:bg-[#FAF8F5]/60 transition-colors">
+                                <td className="py-2.5 px-3 font-bold text-[#1F1924]">{day}</td>
+                                <td className="py-2.5 px-3">
+                                  {hasSlot(6, 12) ? (
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                      Available
+                                    </span>
+                                  ) : (
+                                    <span className="text-slate-300">—</span>
+                                  )}
+                                </td>
+                                <td className="py-2.5 px-3">
+                                  {hasSlot(12, 16) ? (
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                      Available
+                                    </span>
+                                  ) : (
+                                    <span className="text-slate-300">—</span>
+                                  )}
+                                </td>
+                                <td className="py-2.5 px-3">
+                                  {hasSlot(16, 20) ? (
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-plum-100 text-plum-900 border border-plum-200">
+                                      Open (Prime)
+                                    </span>
+                                  ) : (
+                                    <span className="text-slate-300">—</span>
+                                  )}
+                                </td>
+                                <td className="py-2.5 px-3">
+                                  {hasSlot(20, 23) ? (
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                      Available
+                                    </span>
+                                  ) : (
+                                    <span className="text-slate-300">—</span>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
                     </div>
                   </CardContent>
                 </Card>
@@ -312,6 +421,16 @@ export default function TutorProfilePage() {
                 <Card className="border-[#EADDD0] bg-white rounded-2xl shadow-xs">
                   <CardContent className="p-6">
                     <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Subjects & Boards</h3>
+                    {tutor.boards && tutor.boards.length > 0 && (
+                      <div className="mb-4 p-3.5 rounded-xl border border-plum-100 bg-plum-50/50">
+                        <h4 className="text-xs font-bold text-plum-950 mb-1.5">Curricula & Boards Covered</h4>
+                        <div className="flex flex-wrap gap-1.5">
+                          {tutor.boards.map((b) => (
+                            <Badge key={b} className="text-xs bg-plum-900 text-white font-medium">{b}</Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                     <div className="space-y-3">
                       {tutor.subjects.map((subject) => (
                         <div key={subject} className="p-3.5 rounded-xl border border-[#EADDD0] bg-[#FAF8F5]">
@@ -362,7 +481,31 @@ export default function TutorProfilePage() {
                     {contactError && (
                       <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg p-2.5">{contactError}</p>
                     )}
-                    <BookSessionModal tutor={tutor} />
+                    {tutor.offersFreeDemo ? (
+                      <>
+                        <BookSessionModal
+                          tutor={tutor}
+                          defaultTrial={true}
+                          trigger={
+                            <Button className="w-full bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl h-11 text-xs font-bold shadow-xs">
+                              🎉 Book Free Demo (45 Min)
+                            </Button>
+                          }
+                        />
+                        <BookSessionModal
+                          tutor={tutor}
+                          defaultTrial={false}
+                          trigger={
+                            <Button variant="outline" className="w-full h-10 rounded-xl border-plum-900 text-plum-900 hover:bg-plum-50 text-xs font-bold">
+                              <Calendar className="h-4 w-4 mr-1.5" />
+                              Book Regular Class
+                            </Button>
+                          }
+                        />
+                      </>
+                    ) : (
+                      <BookSessionModal tutor={tutor} />
+                    )}
                     <Button
                       variant="outline"
                       className="w-full h-10 rounded-xl border-[#EADDD0] text-[#1F1924] hover:bg-plum-50 text-xs font-semibold"

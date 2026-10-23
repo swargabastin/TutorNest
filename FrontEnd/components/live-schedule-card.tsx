@@ -102,7 +102,7 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
                     {getStatusBadge(booking.status)}
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-slate-600">
+                  <div className="flex items-center gap-3 text-xs text-slate-600 flex-wrap">
                     <span className="flex items-center gap-1">
                       <Clock className="h-3 w-3 text-slate-400" />
                       {startDate.toLocaleDateString('en-IN')} at {startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -112,9 +112,29 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
                       {booking.mode}
                     </span>
                     {booking.isTrial && (
-                      <Badge variant="outline" className="text-[10px] bg-plum-50 text-plum-900 border-plum-200">Trial</Badge>
+                      <Badge variant="outline" className="text-[10px] bg-emerald-50 text-emerald-800 border-emerald-300 font-bold">
+                        🎉 FREE DEMO
+                      </Badge>
+                    )}
+                    {booking.gradeLevel && (
+                      <span className="text-[11px] bg-white text-plum-900 px-1.5 py-0.5 rounded border border-[#EADDD0] font-medium">
+                        {booking.gradeLevel}
+                      </span>
                     )}
                   </div>
+
+                  {booking.locationAddress && booking.mode !== 'Online' && (
+                    <div className="text-[11px] text-slate-600 flex items-start gap-1">
+                      <MapPin className="h-3 w-3 text-slate-400 shrink-0 mt-0.5" />
+                      <span>{booking.locationAddress}</span>
+                    </div>
+                  )}
+
+                  {booking.studentNotes && (
+                    <div className="text-[11px] text-slate-600 bg-white/70 p-1.5 rounded-lg border border-[#EADDD0] italic">
+                      “{booking.studentNotes}”
+                    </div>
+                  )}
 
                   {booking.meetingLink && (
                     <div className="pt-1">
@@ -126,6 +146,37 @@ export function LiveScheduleCard({ userRole }: ScheduleCardProps) {
                       >
                         Join Class Online <ExternalLink className="h-3 w-3" />
                       </a>
+                    </div>
+                  )}
+
+                  {/* Actions for Student on Pending bookings */}
+                  {userRole === 'Student' && isPending && (
+                    <div className="pt-2 border-t border-[#F0E6DB] flex items-center justify-between">
+                      <span className="text-[11px] text-slate-500">Awaiting tutor confirmation</span>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-xs h-7 border-[#EADDD0] text-rose-700 hover:bg-rose-50 rounded-lg px-2"
+                        disabled={actioningId === booking.id}
+                        onClick={() => handleUpdateStatus(booking.id, 'Cancelled')}
+                      >
+                        <XCircle className="h-3 w-3 mr-1" /> Cancel Request
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Actions for Tutor on Confirmed bookings */}
+                  {userRole === 'Tutor' && isConfirmed && (
+                    <div className="pt-2 border-t border-[#F0E6DB] flex items-center justify-end">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-xs h-7 border-[#EADDD0] text-slate-700 hover:bg-slate-100 rounded-lg px-2"
+                        disabled={actioningId === booking.id}
+                        onClick={() => handleUpdateStatus(booking.id, 'Completed')}
+                      >
+                        <CheckCircle className="h-3 w-3 mr-1 text-emerald-600" /> Mark Completed
+                      </Button>
                     </div>
                   )}
 

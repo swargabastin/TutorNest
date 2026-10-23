@@ -88,6 +88,11 @@ interface TutorDtoRaw {
   teachingLevels: string[];
   responseTime?: string | null;
   studentsTaught: number;
+  locality?: string | null;
+  pincode?: string | null;
+  travelRadiusKm?: number | null;
+  boards?: string[];
+  offersFreeDemo?: boolean;
   phone?: string | null;
   email?: string | null;
   reviews?: {
@@ -97,6 +102,12 @@ interface TutorDtoRaw {
     rating: number;
     reviewText?: string | null;
     createdAt: string;
+  }[];
+  availabilities?: {
+    id: number;
+    day: string;
+    startTime: string;
+    endTime: string;
   }[];
 }
 
@@ -109,11 +120,19 @@ export interface TutorReview {
   createdAt: string;
 }
 
+export interface TutorAvailability {
+  id: number;
+  day: string;
+  startTime: string;
+  endTime: string;
+}
+
 /** Extra fields only present on the detail (single-tutor) endpoint. */
 export interface TutorDetail extends Tutor {
   phone?: string;
   email?: string;
   reviews: TutorReview[];
+  availabilities?: TutorAvailability[];
 }
 
 function mapMode(backendMode: string): ('online' | 'offline' | 'both')[] {
@@ -185,6 +204,11 @@ function mapTutor(dto: TutorDtoRaw): Tutor {
     teachingLevels: dto.teachingLevels ?? [],
     responseTime: dto.responseTime ?? '',
     studentsTaught: dto.studentsTaught,
+    locality: dto.locality ?? undefined,
+    pincode: dto.pincode ?? undefined,
+    travelRadiusKm: dto.travelRadiusKm ?? undefined,
+    boards: dto.boards ?? [],
+    offersFreeDemo: dto.offersFreeDemo ?? true,
   };
 }
 
@@ -201,6 +225,12 @@ function mapTutorDetail(dto: TutorDtoRaw): TutorDetail {
       rating: r.rating,
       reviewText: r.reviewText ?? '',
       createdAt: r.createdAt,
+    })),
+    availabilities: (dto.availabilities ?? []).map((a) => ({
+      id: a.id,
+      day: a.day,
+      startTime: typeof a.startTime === 'string' ? a.startTime : String(a.startTime),
+      endTime: typeof a.endTime === 'string' ? a.endTime : String(a.endTime),
     })),
   };
 }
@@ -268,6 +298,12 @@ export const lookupsApi = {
 
   getTeachingLevels: () =>
     api.get('/lookups/teaching-levels').then(r => r.data as string[]),
+
+  getCurriculums: () =>
+    ['CBSE', 'ICSE', 'Kerala State Syllabus', 'ISC', 'IGCSE', 'IB'],
+
+  getCommonLocalities: () =>
+    ['Kakkanad', 'Edappally', 'Kaloor', 'Palarivattom', 'Kadavanthra', 'Aluva', 'Thrippunithura', 'Panampilly Nagar', 'Fort Kochi', 'Vytilla', 'MG Road', 'Kowdiar', 'Pattom', 'Sasthamangalam', 'Kazhakoottam'],
 };
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -311,6 +347,7 @@ export const tutorsApi = {
     search?: string; city?: string; subject?: string; level?: string;
     mode?: string[]; minRate?: number; maxRate?: number; minRating?: number;
     verifiedOnly?: boolean; sortBy?: string; page?: number; pageSize?: number;
+    locality?: string; pincode?: string; boards?: string[]; freeDemoOnly?: boolean;
   }): Promise<{ items: Tutor[]; totalCount: number; page: number; pageSize: number; totalPages: number }> => {
     const { data } = await api.get('/tutors/search', { params });
     return { ...data, items: (data.items as TutorDtoRaw[]).map(mapTutor) };
@@ -321,15 +358,17 @@ export const tutorsApi = {
     return mapTutorDetail(data as TutorDtoRaw);
   },
 
-  getMyProfile: async (): Promise<Tutor> => {
+  getMyProfile: async (): Promise<TutorDetail> => {
     const { data } = await api.get('/tutors/me');
-    return mapTutor(data as TutorDtoRaw);
+    return mapTutorDetail(data as TutorDtoRaw);
   },
 
   updateProfile: (body: {
     qualification?: string; experienceYears?: number; bio?: string;
     teachingMode?: string; hourlyRate?: number; subjectIds?: number[];
     teachingLevels?: string[]; languages?: string[]; responseTime?: string;
+    locality?: string; pincode?: string; travelRadiusKm?: number;
+    boards?: string[]; offersFreeDemo?: boolean;
   }) => api.put('/tutors/me', body).then(r => r.data),
 
   uploadProfileImage: (file: File) => {
@@ -373,6 +412,7 @@ export const studentsApi = {
   postRequirement: (body: {
     subject: string; level: string; city?: string;
     mode: string; budget?: string; frequencyPerWeek?: number; description?: string;
+    board?: string; locality?: string; pincode?: string;
   }) => api.post('/students/me/requirements', body).then(r => r.data),
 
   getRequirements: () => api.get('/students/me/requirements').then(r => r.data),
@@ -479,6 +519,7 @@ export interface Booking {
   locationAddress?: string;
   studentNotes?: string;
   cancellationReason?: string;
+  gradeLevel?: string;
   createdAt: string;
 }
 
@@ -492,6 +533,7 @@ export const bookingsApi = {
     isTrial?: boolean;
     studentNotes?: string;
     locationAddress?: string;
+    gradeLevel?: string;
   }): Promise<Booking> => api.post('/bookings', body).then(r => r.data),
 
   getMyBookings: (status?: string): Promise<Booking[]> =>

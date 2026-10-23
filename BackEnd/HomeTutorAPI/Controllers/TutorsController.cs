@@ -28,7 +28,8 @@ public class TutorsController(
         var (items, total) = await tutorRepo.SearchAsync(
             req.Search, req.City, req.Subject, req.Level,
             req.Mode, req.MinRate, req.MaxRate, req.MinRating,
-            req.VerifiedOnly, req.SortBy, req.Page, req.PageSize, ct);
+            req.VerifiedOnly, req.SortBy, req.Page, req.PageSize,
+            req.Locality, req.Pincode, req.Boards, req.FreeDemoOnly, ct);
 
         return Ok(new PagedResult<TutorListDto>(
             items.Select(mapper.Map<TutorListDto>).ToList(),
@@ -77,6 +78,11 @@ public class TutorsController(
         if (req.TeachingLevels  is not null) tutor.TeachingLevels  = req.TeachingLevels.ToArray();
         if (req.Languages       is not null) tutor.Languages       = req.Languages.ToArray();
         if (req.ResponseTime    is not null) tutor.ResponseTime    = req.ResponseTime;
+        if (req.Locality        is not null) tutor.Locality        = req.Locality;
+        if (req.Pincode         is not null) tutor.Pincode         = req.Pincode;
+        if (req.TravelRadiusKm  is not null) tutor.TravelRadiusKm  = req.TravelRadiusKm;
+        if (req.Boards          is not null) tutor.Boards          = req.Boards.ToArray();
+        if (req.OffersFreeDemo  is not null) tutor.OffersFreeDemo  = req.OffersFreeDemo.Value;
         tutor.UpdatedAt = DateTime.UtcNow;
 
         // Replace subjects

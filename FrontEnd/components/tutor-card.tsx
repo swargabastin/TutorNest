@@ -41,6 +41,11 @@ export default function TutorCard({ tutor }: TutorCardProps) {
                       Verified
                     </Badge>
                   )}
+                  {tutor.offersFreeDemo && (
+                    <Badge variant="outline" className="bg-emerald-50 text-emerald-800 border-emerald-200 font-semibold text-[11px] px-2 py-0.5">
+                      Free Demo
+                    </Badge>
+                  )}
                 </h3>
                 <p className="text-sm text-gray-500 mt-0.5">{tutor.qualification}</p>
               </div>
@@ -64,7 +69,7 @@ export default function TutorCard({ tutor }: TutorCardProps) {
               </div>
               <div className="flex items-center">
                 <MapPin className="h-3.5 w-3.5 text-gray-400 mr-1" />
-                <span>{tutor.location}</span>
+                <span>{tutor.locality ? `${tutor.locality}, ${tutor.location}` : tutor.location}</span>
               </div>
             </div>
 
@@ -72,6 +77,11 @@ export default function TutorCard({ tutor }: TutorCardProps) {
               {tutor.subjects.map((subject) => (
                 <Badge key={subject} variant="outline" className="border-plum-200/80 bg-plum-50/50 text-plum-900 text-xs py-0.5 font-normal">
                   {subject}
+                </Badge>
+              ))}
+              {tutor.boards?.map((board) => (
+                <Badge key={board} variant="secondary" className="bg-lavender-100 text-plum-950 font-medium text-[11px] py-0.5 px-2">
+                  {board}
                 </Badge>
               ))}
             </div>

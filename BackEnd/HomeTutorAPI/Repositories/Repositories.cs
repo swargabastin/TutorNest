@@ -77,7 +77,10 @@ public class TutorRepository(AppDbContext db) : Repository<TutorProfile>(db), IT
     public async Task<(List<TutorProfile> Items, int TotalCount)> SearchAsync(
         string? search, string? city, string? subject, string? level,
         string[]? mode, decimal minRate, decimal maxRate, decimal minRating,
-        bool verifiedOnly, string sortBy, int page, int pageSize, CancellationToken ct = default)
+        bool verifiedOnly, string sortBy, int page, int pageSize,
+        string? locality = null, string? pincode = null, string[]? boards = null,
+        bool? freeDemoOnly = null,
+        CancellationToken ct = default)
     {
         var q = _set
             .Include(t => t.User)
@@ -91,6 +94,31 @@ public class TutorRepository(AppDbContext db) : Repository<TutorProfile>(db), IT
 
         if (!string.IsNullOrWhiteSpace(city))
             q = q.Where(t => t.User.City == city);
+
+        if (!string.IsNullOrWhiteSpace(locality))
+        {
+            var loc = locality.Trim();
+            q = q.Where(t => (t.Locality != null && t.Locality.Contains(loc)) ||
+                             (t.User.City != null && t.User.City.Contains(loc)) ||
+                             t.TeachingMode == TeachingMode.Online ||
+                             t.TeachingMode == TeachingMode.Both);
+        }
+
+        if (!string.IsNullOrWhiteSpace(pincode))
+        {
+            var pin = pincode.Trim();
+            q = q.Where(t => t.Pincode == pin);
+        }
+
+        if (boards is { Length: > 0 })
+        {
+            q = q.Where(t => t.Boards.Any(b => boards.Contains(b)));
+        }
+
+        if (freeDemoOnly == true)
+        {
+            q = q.Where(t => t.OffersFreeDemo);
+        }
 
         if (!string.IsNullOrWhiteSpace(subject))
             q = q.Where(t => t.TutorSubjects.Any(ts => ts.Subject.Name == subject));

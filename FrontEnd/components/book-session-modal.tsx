@@ -13,15 +13,18 @@ import { bookingsApi, TutorDetail, authApi } from '@/lib/api';
 interface BookSessionModalProps {
   tutor: TutorDetail;
   trigger?: React.ReactNode;
+  defaultTrial?: boolean;
 }
 
-export function BookSessionModal({ tutor, trigger }: BookSessionModalProps) {
+export function BookSessionModal({ tutor, trigger, defaultTrial = false }: BookSessionModalProps) {
   const [open, setOpen] = useState(false);
   const [subject, setSubject] = useState(tutor.subjects[0] || 'General');
+  const [gradeLevel, setGradeLevel] = useState(tutor.teachingLevels[0] || 'Class 10');
   const [mode, setMode] = useState<string>('Online');
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('10:00');
-  const [isTrial, setIsTrial] = useState(false);
+  const [time, setTime] = useState('17:00');
+  const [isTrial, setIsTrial] = useState(defaultTrial || tutor.offersFreeDemo !== false);
+  const [locationAddress, setLocationAddress] = useState('');
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -39,20 +42,32 @@ export function BookSessionModal({ tutor, trigger }: BookSessionModalProps) {
       return;
     }
 
+    const start = new Date(`${date}T${time}:00`);
+    if (isNaN(start.getTime()) || start <= new Date()) {
+      setError('Session date and time must be in the future.');
+      return;
+    }
+
+    if (mode === 'Offline' && !locationAddress.trim()) {
+      setError('Please provide your home locality or street address for home tutoring.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
     try {
-      const start = new Date(`${date}T${time}:00Z`);
-      const end = new Date(start.getTime() + 60 * 60 * 1000); // 1 hour session
+      const end = new Date(start.getTime() + 45 * 60 * 1000); // 45-min demo / class
 
       await bookingsApi.create({
         tutorProfileId: tutor.id,
         subject,
+        gradeLevel,
         mode,
         startTime: start.toISOString(),
         endTime: end.toISOString(),
         isTrial,
+        locationAddress: mode === 'Offline' ? locationAddress.trim() : undefined,
         studentNotes: notes,
       });
 
@@ -78,7 +93,7 @@ export function BookSessionModal({ tutor, trigger }: BookSessionModalProps) {
         <DialogHeader>
           <DialogTitle className="text-lg font-extrabold flex items-center gap-2 text-[#1F1924]">
             <Calendar className="h-5 w-5 text-plum-800" />
-            Book a Class with {tutor.name}
+            {isTrial ? `Book Free Demo with ${tutor.name}` : `Book a Class with ${tutor.name}`}
           </DialogTitle>
         </DialogHeader>
 
@@ -88,9 +103,13 @@ export function BookSessionModal({ tutor, trigger }: BookSessionModalProps) {
               <CheckCircle className="h-6 w-6" />
             </div>
             <div>
-              <h3 className="font-bold text-base text-[#1F1924]">Session Request Sent!</h3>
+              <h3 className="font-bold text-base text-[#1F1924]">
+                {isTrial ? 'Free Demo Requested!' : 'Session Request Sent!'}
+              </h3>
               <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
-                Your class booking request has been sent to {tutor.name}. You will be notified once they confirm.
+                {isTrial
+                  ? `Your free demo request has been sent to ${tutor.name}. No coins were deducted. You will be notified once the tutor confirms.`
+                  : `Your class booking request has been sent to ${tutor.name}. You will be notified once they confirm.`}
               </p>
             </div>
             <Button className="w-full bg-plum-900 hover:bg-plum-950 text-white rounded-xl h-10 text-xs font-semibold" onClick={() => setOpen(false)}>
@@ -98,7 +117,7 @@ export function BookSessionModal({ tutor, trigger }: BookSessionModalProps) {
             </Button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+          <form onSubmit={handleSubmit} className="space-y-3 pt-2">
             {error && (
               <div className="p-2.5 text-xs bg-rose-50 text-rose-700 border border-rose-200 rounded-xl flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 shrink-0" />
@@ -106,61 +125,77 @@ export function BookSessionModal({ tutor, trigger }: BookSessionModalProps) {
               </div>
             )}
 
-            <div className="space-y-1">
-              <Label htmlFor="subject" className="text-xs font-bold text-[#1F1924]">Subject</Label>
-              <Select value={subject} onValueChange={setSubject}>
-                <SelectTrigger id="subject" className="h-10 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs">
-                  <SelectValue placeholder="Select Subject" />
-                </SelectTrigger>
-                <SelectContent>
-                  {tutor.subjects.map((sub) => (
-                    <SelectItem key={sub} value={sub}>{sub}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <Label htmlFor="date" className="text-xs">Date</Label>
-                <Input
-                  id="date"
-                  type="date"
-                  value={date}
-                  min={new Date().toISOString().split('T')[0]}
-                  onChange={(e) => setDate(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="space-y-1">
-                <Label htmlFor="time" className="text-xs">Start Time</Label>
-                <Input
-                  id="time"
-                  type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <Label htmlFor="mode" className="text-xs">Class Mode</Label>
-                <Select value={mode} onValueChange={setMode}>
-                  <SelectTrigger id="mode">
-                    <SelectValue placeholder="Mode" />
+                <Label htmlFor="subject" className="text-xs font-bold text-[#1F1924]">Subject</Label>
+                <Select value={subject} onValueChange={setSubject}>
+                  <SelectTrigger id="subject" className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs">
+                    <SelectValue placeholder="Select Subject" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Online">Online Video Class</SelectItem>
-                    <SelectItem value="Offline">In-Person / Home</SelectItem>
+                    {tutor.subjects.map((sub) => (
+                      <SelectItem key={sub} value={sub}>{sub}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-1">
-                <Label className="text-xs">Session Type</Label>
+                <Label htmlFor="gradeLevel" className="text-xs font-bold text-[#1F1924]">Student Level</Label>
+                <Input
+                  id="gradeLevel"
+                  placeholder="e.g. Class 10 / CBSE"
+                  value={gradeLevel}
+                  onChange={(e) => setGradeLevel(e.target.value)}
+                  className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label htmlFor="date" className="text-xs font-medium">Preferred Date</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={date}
+                  min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="time" className="text-xs font-medium">Preferred Time</Label>
+                <Input
+                  id="time"
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label htmlFor="mode" className="text-xs font-medium">Class Mode</Label>
+                <Select value={mode} onValueChange={setMode}>
+                  <SelectTrigger id="mode" className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs">
+                    <SelectValue placeholder="Mode" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Online">Online Video Class</SelectItem>
+                    <SelectItem value="Offline">In-Person / Home Tuition</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1">
+                <Label className="text-xs font-medium">Session Type</Label>
                 <div className="flex items-center gap-2 pt-2">
                   <input
                     type="checkbox"
@@ -170,17 +205,33 @@ export function BookSessionModal({ tutor, trigger }: BookSessionModalProps) {
                     className="rounded border-[#EADDD0] text-plum-900 focus:ring-plum-600 accent-plum-900"
                   />
                   <Label htmlFor="isTrial" className="text-xs font-medium cursor-pointer">
-                    Request Free Trial (1 hr)
+                    Free Demo (45 min)
                   </Label>
                 </div>
               </div>
             </div>
 
+            {mode === 'Offline' && (
+              <div className="space-y-1">
+                <Label htmlFor="address" className="text-xs font-bold text-[#1F1924]">
+                  Locality & Home Address <span className="text-rose-500">*</span>
+                </Label>
+                <Input
+                  id="address"
+                  placeholder="e.g. Kakkanad, Near Infopark Gate 1"
+                  value={locationAddress}
+                  onChange={(e) => setLocationAddress(e.target.value)}
+                  className="h-9 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs"
+                  required={mode === 'Offline'}
+                />
+              </div>
+            )}
+
             <div className="space-y-1">
-              <Label htmlFor="notes" className="text-xs font-bold text-[#1F1924]">Learning Goals or Topics (Optional)</Label>
+              <Label htmlFor="notes" className="text-xs font-bold text-[#1F1924]">Topics or Goals (Optional)</Label>
               <Textarea
                 id="notes"
-                placeholder="What topics or exams would you like help with?"
+                placeholder="What topics, chapters or exams would you like help with?"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
@@ -188,15 +239,15 @@ export function BookSessionModal({ tutor, trigger }: BookSessionModalProps) {
               />
             </div>
 
-            <div className="p-3 bg-[#FAF8F5] rounded-xl border border-[#EADDD0] text-xs text-slate-600 flex justify-between items-center">
+            <div className="p-2.5 bg-[#FAF8F5] rounded-xl border border-[#EADDD0] text-xs text-slate-600 flex justify-between items-center">
               <span>Estimated Tuition Fee:</span>
               <span className="font-extrabold text-[#1F1924]">
-                {isTrial ? 'FREE (Trial)' : `₹${tutor.hourlyRate} / hour`}
+                {isTrial ? '₹0 (100% Free Demo)' : `₹${tutor.hourlyRate} / hour`}
               </span>
             </div>
 
             <Button type="submit" disabled={loading} className="w-full bg-plum-900 hover:bg-plum-950 text-white rounded-xl h-10 text-xs font-bold">
-              {loading ? 'Submitting Request…' : 'Confirm Class Booking'}
+              {loading ? 'Submitting Request…' : (isTrial ? 'Confirm Free Demo Request' : 'Confirm Class Booking')}
             </Button>
           </form>
         )}

@@ -16,6 +16,11 @@ export interface Tutor {
   teachingLevels: string[];
   responseTime: string;
   studentsTaught: number;
+  locality?: string;
+  pincode?: string;
+  travelRadiusKm?: number;
+  boards?: string[];
+  offersFreeDemo?: boolean;
 }
 
 export interface Student {
@@ -35,7 +40,10 @@ export interface TuitionRequirement {
   id: string;
   subject: string;
   level: string;
+  board?: string;
   location: string;
+  locality?: string;
+  pincode?: string;
   mode: 'online' | 'offline' | 'both';
   budget: string;
   description: string;

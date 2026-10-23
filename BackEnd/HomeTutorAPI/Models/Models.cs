@@ -72,6 +72,11 @@ public class TutorProfile
     public decimal   EarningsBalance               { get; set; } = 0;
     public string[]  Languages                     { get; set; } = [];
     public string[]  TeachingLevels                { get; set; } = [];
+    public string[]  Boards                        { get; set; } = [];
+    public bool      OffersFreeDemo                { get; set; } = true;
+    [MaxLength(100)] public string? Locality       { get; set; }
+    [MaxLength(10)]  public string? Pincode        { get; set; }
+    public int?      TravelRadiusKm                { get; set; }
     public DateTime  CreatedAt                     { get; set; } = DateTime.UtcNow;
     public DateTime  UpdatedAt                     { get; set; } = DateTime.UtcNow;
 
@@ -272,7 +277,10 @@ public class TuitionRequirement
 
     [Required, MaxLength(100)] public string Subject  { get; set; } = "";
     [MaxLength(50)]            public string Level    { get; set; } = "";
+    [MaxLength(50)]            public string? Board   { get; set; }
     [MaxLength(100)]           public string? City    { get; set; }
+    [MaxLength(100)]           public string? Locality { get; set; }
+    [MaxLength(10)]            public string? Pincode { get; set; }
     public RequirementMode Mode                       { get; set; }
     [MaxLength(50)]            public string? Budget  { get; set; }
     public int?   FrequencyPerWeek                    { get; set; }
@@ -383,6 +391,9 @@ public class Booking
 
     [Required, MaxLength(100)]
     public string Subject                { get; set; } = "";
+
+    [MaxLength(50)]
+    public string? GradeLevel            { get; set; }
 
     public TeachingMode Mode             { get; set; } = TeachingMode.Online;
     public BookingStatus Status          { get; set; } = BookingStatus.Pending;

@@ -44,6 +44,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             e.Property(t => t.TeachingMode).HasConversion<string>();
             e.Property(t => t.Languages).HasColumnType("text[]");
             e.Property(t => t.TeachingLevels).HasColumnType("text[]");
+            e.Property(t => t.Boards).HasColumnType("text[]");
             e.Property(t => t.HourlyRate).HasPrecision(10, 2);
             e.Property(t => t.EarningsBalance).HasPrecision(12, 2);
             e.Property(t => t.RatingAvg).HasPrecision(3, 2);

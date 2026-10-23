@@ -116,6 +116,11 @@ CREATE TABLE IF NOT EXISTS tutor_profiles (
     "EarningsBalance" NUMERIC(12,2)   NOT NULL DEFAULT 0,
     "Languages"       TEXT[]          NOT NULL DEFAULT '{}',
     "TeachingLevels"  TEXT[]          NOT NULL DEFAULT '{}',
+    "Boards"          TEXT[]          NOT NULL DEFAULT '{}',
+    "OffersFreeDemo"  BOOLEAN         NOT NULL DEFAULT TRUE,
+    "Locality"        VARCHAR(100),
+    "Pincode"         VARCHAR(10),
+    "TravelRadiusKm"  INTEGER,
     "CreatedAt"       TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
     "UpdatedAt"       TIMESTAMPTZ     NOT NULL DEFAULT NOW()
 );
@@ -186,7 +191,10 @@ CREATE TABLE IF NOT EXISTS tuition_requirements (
     "StudentProfileId" UUID          NOT NULL REFERENCES student_profiles("Id") ON DELETE CASCADE,
     "Subject"          VARCHAR(100)  NOT NULL,
     "Level"            VARCHAR(50)   NOT NULL,
+    "Board"            VARCHAR(50),
     "City"             VARCHAR(100),
+    "Locality"         VARCHAR(100),
+    "Pincode"          VARCHAR(10),
     "Mode"             TEXT          NOT NULL,
     "Budget"           VARCHAR(50),
     "FrequencyPerWeek" INTEGER,
@@ -268,6 +276,7 @@ CREATE TABLE IF NOT EXISTS "Bookings" (
     "StudentProfileId"   UUID          NOT NULL REFERENCES "StudentProfiles"("Id") ON DELETE CASCADE,
     "TutorProfileId"     UUID          NOT NULL REFERENCES "TutorProfiles"("Id") ON DELETE CASCADE,
     "Subject"            VARCHAR(100)  NOT NULL,
+    "GradeLevel"         VARCHAR(50),
     "Mode"               TEXT          NOT NULL, -- Online | Offline | Both
     "Status"             TEXT          NOT NULL DEFAULT 'Pending', -- Pending | Confirmed | Cancelled | Completed | Rescheduled
     "StartTime"          TIMESTAMPTZ   NOT NULL,

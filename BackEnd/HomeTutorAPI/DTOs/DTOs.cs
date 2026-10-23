@@ -104,7 +104,11 @@ public record TutorListDto(
     string[] Languages,
     string[] TeachingLevels,
     string?  ResponseTime,
-    int      StudentsTaught
+    int      StudentsTaught,
+    string?  Locality = null,
+    string?  Pincode = null,
+    string[]? Boards = null,
+    bool     OffersFreeDemo = true
 );
 
 public record TutorDetailDto(
@@ -129,7 +133,12 @@ public record TutorDetailDto(
     string?    Phone,
     string?    Email,
     List<ReviewDto>        Reviews,
-    List<AvailabilityDto>  Availabilities
+    List<AvailabilityDto>  Availabilities,
+    string?    Locality = null,
+    string?    Pincode = null,
+    int?       TravelRadiusKm = null,
+    string[]?  Boards = null,
+    bool       OffersFreeDemo = true
 );
 
 public record UpdateTutorProfileRequest(
@@ -141,7 +150,12 @@ public record UpdateTutorProfileRequest(
     List<int>? SubjectIds,
     List<string>? TeachingLevels,
     List<string>? Languages,
-    string? ResponseTime
+    string? ResponseTime,
+    string? Locality = null,
+    string? Pincode = null,
+    int? TravelRadiusKm = null,
+    List<string>? Boards = null,
+    bool? OffersFreeDemo = null
 );
 
 public record TutorDashboardStatsDto(
@@ -189,7 +203,10 @@ public record PostRequirementRequest(
     [Required] string Mode,       // "Online" | "Offline" | "Both"
     string? Budget,
     int? FrequencyPerWeek,
-    string? Description
+    string? Description,
+    string? Board = null,
+    string? Locality = null,
+    string? Pincode = null
 );
 
 public record RequirementDto(
@@ -203,7 +220,10 @@ public record RequirementDto(
     string?  Description,
     string   Status,
     int      ResponseCount,
-    DateTime CreatedAt
+    DateTime CreatedAt,
+    string?  Board = null,
+    string?  Locality = null,
+    string?  Pincode = null
 );
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -276,18 +296,22 @@ public record AvailabilityDto(
 // ════════════════════════════════════════════════════════════════════════════
 
 public record TutorSearchRequest(
-    string?  Search,
-    string?  City,
-    string?  Subject,
-    string?  Level,
+    string?   Search,
+    string?   City,
+    string?   Subject,
+    string?   Level,
     string[]? Mode,
-    decimal  MinRate = 0,
-    decimal  MaxRate = 5000,
-    decimal  MinRating = 0,
-    bool     VerifiedOnly = false,
-    string   SortBy = "rating",    // rating | experience | price-low | price-high
-    int      Page = 1,
-    int      PageSize = 12
+    decimal   MinRate = 0,
+    decimal   MaxRate = 5000,
+    decimal   MinRating = 0,
+    bool      VerifiedOnly = false,
+    string    SortBy = "rating",    // rating | experience | price-low | price-high
+    int       Page = 1,
+    int       PageSize = 12,
+    string?   Locality = null,
+    string?   Pincode = null,
+    string[]? Boards = null,
+    bool?     FreeDemoOnly = null
 );
 
 public record PagedResult<T>(
@@ -456,7 +480,8 @@ public record CreateBookingRequest(
     DateTime EndTime,
     bool     IsTrial = false,
     string?  StudentNotes = null,
-    string?  LocationAddress = null
+    string?  LocationAddress = null,
+    string?  GradeLevel = null
 );
 
 public record BookingDto(
@@ -479,7 +504,8 @@ public record BookingDto(
     string?  LocationAddress,
     string?  StudentNotes,
     string?  CancellationReason,
-    DateTime CreatedAt
+    DateTime CreatedAt,
+    string?  GradeLevel = null
 );
 
 public record UpdateBookingStatusRequest(

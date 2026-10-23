@@ -21,6 +21,8 @@ public interface ITutorRepository : IRepository<TutorProfile>
         string? search, string? city, string? subject, string? level,
         string[]? mode, decimal minRate, decimal maxRate, decimal minRating,
         bool verifiedOnly, string sortBy, int page, int pageSize,
+        string? locality = null, string? pincode = null, string[]? boards = null,
+        bool? freeDemoOnly = null,
         CancellationToken ct = default);
     Task<TutorProfile?> GetWithDetailsAsync(Guid tutorProfileId, CancellationToken ct = default);
     Task RecalculateRatingAsync(Guid tutorProfileId, CancellationToken ct = default);

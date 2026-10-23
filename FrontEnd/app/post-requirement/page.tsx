@@ -33,7 +33,10 @@ export default function PostRequirementPage() {
   const [formData, setFormData] = useState({
     subject: '',
     level: '',
+    board: '',
     city: '',
+    locality: '',
+    pincode: '',
     mode: '',
     budget: '',
     frequency: '',
@@ -78,7 +81,10 @@ export default function PostRequirementPage() {
       await studentsApi.postRequirement({
         subject: formData.subject,
         level: formData.level,
+        board: formData.board || undefined,
         city: formData.city || undefined,
+        locality: formData.locality || undefined,
+        pincode: formData.pincode ? formData.pincode.trim() : undefined,
         mode: formData.mode,
         budget: formData.budget || undefined,
         frequencyPerWeek: frequencyToNumber(formData.frequency),
@@ -152,7 +158,7 @@ export default function PostRequirementPage() {
                   Subject & Level
                 </h3>
 
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-3 gap-4">
                   <div className="space-y-1.5">
                     <Label htmlFor="subject" className="text-xs font-bold text-[#1F1924]">Subject *</Label>
                     <Select
@@ -184,6 +190,23 @@ export default function PostRequirementPage() {
                       <SelectContent>
                         {teachingLevels.map((level) => (
                           <SelectItem key={level} value={level}>{level}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="board" className="text-xs font-bold text-[#1F1924]">Curriculum / Board</Label>
+                    <Select
+                      value={formData.board}
+                      onValueChange={(value) => setFormData({...formData, board: value})}
+                    >
+                      <SelectTrigger className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm">
+                        <SelectValue placeholder="Select board" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {['CBSE', 'ICSE', 'Kerala State Syllabus', 'ISC', 'IGCSE', 'IB'].map((board) => (
+                          <SelectItem key={board} value={board}>{board}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -225,6 +248,33 @@ export default function PostRequirementPage() {
                         <SelectItem value="both">Both Online & In-person</SelectItem>
                       </SelectContent>
                     </Select>
+                  </div>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="locality" className="text-xs font-bold text-[#1F1924]">Locality / Area</Label>
+                    <Input
+                      id="locality"
+                      type="text"
+                      placeholder="e.g. Kakkanad, Kaloor, Edappally"
+                      className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                      value={formData.locality}
+                      onChange={(e) => setFormData({...formData, locality: e.target.value})}
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="pincode" className="text-xs font-bold text-[#1F1924]">Pincode</Label>
+                    <Input
+                      id="pincode"
+                      type="text"
+                      maxLength={6}
+                      placeholder="e.g. 682030"
+                      className="h-11 rounded-xl border-[#EADDD0] bg-[#FAF8F5] text-xs sm:text-sm"
+                      value={formData.pincode}
+                      onChange={(e) => setFormData({...formData, pincode: e.target.value.replace(/\D/g, '')})}
+                    />
                   </div>
                 </div>
               </div>
