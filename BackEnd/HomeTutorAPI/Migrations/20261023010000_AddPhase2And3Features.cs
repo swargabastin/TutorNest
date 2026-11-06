@@ -1,162 +1,165 @@
 // HAND-AUTHORED MIGRATION (NO 'dotnet ef migrations add' AVAILABLE IN THIS ENVIRONMENT)
-// Schema verified against Neon PostgreSQL catalog and Models.cs.
+// Schema aligned with AppDbContext and Models.cs (PascalCase convention).
 using System;
+using HomeTutorAPI.Data;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace HomeTutorAPI.Migrations
 {
+    [DbContext(typeof(AppDbContext))]
     [Migration("20261023010000_AddPhase2And3Features")]
     public partial class AddPhase2And3Features : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // ── Phase 2: Multi-Level Verification & Video Profile on tutor_profiles
+            // ── Phase 2: Multi-Level Verification & Video Profile on TutorProfiles
             migrationBuilder.AddColumn<bool>(
-                name: "id_verified",
-                table: "tutor_profiles",
+                name: "IdVerified",
+                table: "TutorProfiles",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "qualification_verified",
-                table: "tutor_profiles",
+                name: "QualificationVerified",
+                table: "TutorProfiles",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "address_verified",
-                table: "tutor_profiles",
+                name: "AddressVerified",
+                table: "TutorProfiles",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "police_check_verified",
-                table: "tutor_profiles",
+                name: "PoliceCheckVerified",
+                table: "TutorProfiles",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<string>(
-                name: "intro_video_url",
-                table: "tutor_profiles",
+                name: "IntroVideoUrl",
+                table: "TutorProfiles",
                 type: "character varying(500)",
                 maxLength: 500,
                 nullable: true);
 
-            // ── Phase 3: WhatsApp Notification Preferences on tutor_profiles
+            // ── Phase 3: WhatsApp Notification Preferences on TutorProfiles
             migrationBuilder.AddColumn<bool>(
-                name: "whats_app_notifications_enabled",
-                table: "tutor_profiles",
+                name: "WhatsAppNotificationsEnabled",
+                table: "TutorProfiles",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<string>(
-                name: "whats_app_phone_number",
-                table: "tutor_profiles",
+                name: "WhatsAppPhoneNumber",
+                table: "TutorProfiles",
                 type: "character varying(20)",
                 maxLength: 20,
                 nullable: true);
 
             // ── Phase 2: Coin Refund Requests Table
             migrationBuilder.CreateTable(
-                name: "coin_refund_requests",
+                name: "CoinRefundRequests",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    tutor_profile_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    coin_transaction_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    reference_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    coins_requested = table.Column<int>(type: "integer", nullable: false),
-                    reason = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    explanation = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "Pending"),
-                    admin_notes = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    reviewed_by_user_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    reviewed_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TutorProfileId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CoinTransactionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReferenceId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CoinsRequested = table.Column<int>(type: "integer", nullable: false),
+                    Reason = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Explanation = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "Pending"),
+                    AdminNotes = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    ReviewedByUserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ReviewedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_coin_refund_requests", x => x.id);
+                    table.PrimaryKey("PK_CoinRefundRequests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_coin_refund_requests_tutor_profiles_tutor_profile_id",
-                        column: x => x.tutor_profile_id,
-                        principalTable: "tutor_profiles",
-                        principalColumn: "id",
+                        name: "FK_CoinRefundRequests_TutorProfiles_TutorProfileId",
+                        column: x => x.TutorProfileId,
+                        principalTable: "TutorProfiles",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_coin_refund_requests_tutor_profile_id",
-                table: "coin_refund_requests",
-                column: "tutor_profile_id");
+                name: "IX_CoinRefundRequests_TutorProfileId",
+                table: "CoinRefundRequests",
+                column: "TutorProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_coin_refund_requests_status",
-                table: "coin_refund_requests",
-                column: "status");
+                name: "IX_CoinRefundRequests_Status",
+                table: "CoinRefundRequests",
+                column: "Status");
 
             // ── Phase 3: WhatsApp Notification Logs Table
             migrationBuilder.CreateTable(
-                name: "whatsapp_notification_logs",
+                name: "WhatsAppNotificationLogs",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    tutor_profile_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    requirement_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    recipient_phone = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    message_content = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    status = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    provider = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false, defaultValue: "Mock"),
-                    provider_response = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TutorProfileId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RequirementId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RecipientPhone = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    MessageContent = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    Status = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Provider = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false, defaultValue: "Mock"),
+                    ProviderResponse = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_whatsapp_notification_logs", x => x.id);
+                    table.PrimaryKey("PK_WhatsAppNotificationLogs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_whatsapp_notification_logs_tutor_profiles_tutor_profile_id",
-                        column: x => x.tutor_profile_id,
-                        principalTable: "tutor_profiles",
-                        principalColumn: "id",
+                        name: "FK_WhatsAppNotificationLogs_TutorProfiles_TutorProfileId",
+                        column: x => x.TutorProfileId,
+                        principalTable: "TutorProfiles",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_whatsapp_notification_logs_tuition_requirements_requirement_id",
-                        column: x => x.requirement_id,
-                        principalTable: "tuition_requirements",
-                        principalColumn: "id",
+                        name: "FK_WhatsAppNotificationLogs_TuitionRequirements_RequirementId",
+                        column: x => x.RequirementId,
+                        principalTable: "TuitionRequirements",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_whatsapp_notification_logs_tutor_profile_id",
-                table: "whatsapp_notification_logs",
-                column: "tutor_profile_id");
+                name: "IX_WhatsAppNotificationLogs_TutorProfileId",
+                table: "WhatsAppNotificationLogs",
+                column: "TutorProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_whatsapp_notification_logs_requirement_id",
-                table: "whatsapp_notification_logs",
-                column: "requirement_id");
+                name: "IX_WhatsAppNotificationLogs_RequirementId",
+                table: "WhatsAppNotificationLogs",
+                column: "RequirementId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(name: "whatsapp_notification_logs");
-            migrationBuilder.DropTable(name: "coin_refund_requests");
+            migrationBuilder.DropTable(name: "WhatsAppNotificationLogs");
+            migrationBuilder.DropTable(name: "CoinRefundRequests");
 
-            migrationBuilder.DropColumn(name: "whats_app_phone_number", table: "tutor_profiles");
-            migrationBuilder.DropColumn(name: "whats_app_notifications_enabled", table: "tutor_profiles");
-            migrationBuilder.DropColumn(name: "intro_video_url", table: "tutor_profiles");
-            migrationBuilder.DropColumn(name: "police_check_verified", table: "tutor_profiles");
-            migrationBuilder.DropColumn(name: "address_verified", table: "tutor_profiles");
-            migrationBuilder.DropColumn(name: "qualification_verified", table: "tutor_profiles");
-            migrationBuilder.DropColumn(name: "id_verified", table: "tutor_profiles");
+            migrationBuilder.DropColumn(name: "WhatsAppPhoneNumber", table: "TutorProfiles");
+            migrationBuilder.DropColumn(name: "WhatsAppNotificationsEnabled", table: "TutorProfiles");
+            migrationBuilder.DropColumn(name: "IntroVideoUrl", table: "TutorProfiles");
+            migrationBuilder.DropColumn(name: "PoliceCheckVerified", table: "TutorProfiles");
+            migrationBuilder.DropColumn(name: "AddressVerified", table: "TutorProfiles");
+            migrationBuilder.DropColumn(name: "QualificationVerified", table: "TutorProfiles");
+            migrationBuilder.DropColumn(name: "IdVerified", table: "TutorProfiles");
         }
     }
 }
