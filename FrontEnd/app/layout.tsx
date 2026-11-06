@@ -48,8 +48,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased min-h-screen bg-[#F6F3EA] text-[#243238]`}>
-        <div className="flex flex-col min-h-screen pb-[calc(3.5rem+env(safe-area-inset-bottom,0.5rem))] md:pb-0">
+      <body className={`${inter.className} antialiased bg-[#F6F3EA] text-[#243238]`}>
+        <div className="flex flex-col min-h-[calc(100dvh-3.5rem)] md:min-h-screen pb-14 md:pb-0">
           {children}
         </div>
         <MobileNav />

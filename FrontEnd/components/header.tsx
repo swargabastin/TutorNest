@@ -36,14 +36,14 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[#E2E5DF] bg-white/95 dark:bg-[#0A242F]/95 backdrop-blur-md">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-12 sm:h-16 items-center justify-between">
           {/* Brand Logo */}
           <div className="flex items-center shrink-0">
             <Link href="/" className="flex items-center space-x-2.5 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-plum-800 to-plum-950 rounded-xl flex items-center justify-center shrink-0 shadow-sm shadow-plum-900/20 group-hover:scale-105 transition-transform">
-                <span className="text-ivory-50 font-bold text-xl tracking-tight">T</span>
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-plum-800 to-plum-950 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 shadow-sm shadow-plum-900/20 group-hover:scale-105 transition-transform">
+                <span className="text-ivory-50 font-bold text-base sm:text-xl tracking-tight">T</span>
               </div>
-              <span className="text-xl font-bold text-[#243238] dark:text-ivory-50 tracking-tight">
+              <span className="text-base sm:text-xl font-bold text-[#243238] dark:text-ivory-50 tracking-tight">
                 Tutor<span className="text-plum-800 dark:text-lavender-300">Nest</span>
               </span>
             </Link>

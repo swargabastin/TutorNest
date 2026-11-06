@@ -9,8 +9,10 @@ export default function MainLayout({
   return (
     <>
       <Header />
-      <main>{children}</main>
-      <Footer />
+      <main className="flex-1">{children}</main>
+      <div className="hidden md:block">
+        <Footer />
+      </div>
     </>
   );
 }
