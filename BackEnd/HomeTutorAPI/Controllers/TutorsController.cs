@@ -25,16 +25,29 @@ public class TutorsController(
     [ProducesResponseType(typeof(PagedResult<TutorListDto>), 200)]
     public async Task<IActionResult> Search([FromQuery] TutorSearchRequest req, CancellationToken ct)
     {
-        var (items, total) = await tutorRepo.SearchAsync(
-            req.Search, req.City, req.Subject, req.Level,
-            req.Mode, req.MinRate, req.MaxRate, req.MinRating,
-            req.VerifiedOnly, req.SortBy, req.Page, req.PageSize,
-            req.Locality, req.Pincode, req.Boards, req.FreeDemoOnly, ct);
+        try
+        {
+            var (items, total) = await tutorRepo.SearchAsync(
+                req.Search, req.City, req.Subject, req.Level,
+                req.Mode, req.MinRate, req.MaxRate, req.MinRating,
+                req.VerifiedOnly, req.SortBy, req.Page, req.PageSize,
+                req.Locality, req.Pincode, req.Boards, req.FreeDemoOnly, ct);
 
-        return Ok(new PagedResult<TutorListDto>(
-            items.Select(mapper.Map<TutorListDto>).ToList(),
-            total, req.Page, req.PageSize,
-            (int)Math.Ceiling(total / (double)req.PageSize)));
+            return Ok(new PagedResult<TutorListDto>(
+                items.Select(mapper.Map<TutorListDto>).ToList(),
+                total, req.Page, req.PageSize,
+                (int)Math.Ceiling(total / (double)req.PageSize)));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new
+            {
+                success = false,
+                message = ex.Message,
+                inner = ex.InnerException?.Message,
+                trace = ex.StackTrace
+            });
+        }
     }
 
     // ── GET /api/tutors/{id} ──────────────────────────────────────────────────

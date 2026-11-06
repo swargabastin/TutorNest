@@ -20,6 +20,58 @@ public class AdminController(
     IMapper          mapper,
     AppDbContext     db) : ControllerBase
 {
+    // ── POST /api/admin/run-migration ─────────────────────────────────────────
+    [HttpPost("run-migration")]
+    public async Task<IActionResult> RunMigration(CancellationToken ct)
+    {
+        try
+        {
+            var pending = (await db.Database.GetPendingMigrationsAsync(ct)).ToList();
+            var applied = (await db.Database.GetAppliedMigrationsAsync(ct)).ToList();
+            await db.Database.MigrateAsync(ct);
+            var nowApplied = (await db.Database.GetAppliedMigrationsAsync(ct)).ToList();
+            return Ok(new
+            {
+                success = true,
+                previouslyPending = pending,
+                previouslyApplied = applied,
+                nowApplied,
+                message = "Database migrations executed successfully."
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new
+            {
+                success = false,
+                error = ex.Message,
+                inner = ex.InnerException?.Message,
+                trace = ex.StackTrace
+            });
+        }
+    }
+
+    // ── GET /api/admin/migration-status ────────────────────────────────────────
+    [HttpGet("migration-status")]
+    public async Task<IActionResult> GetMigrationStatus(CancellationToken ct)
+    {
+        try
+        {
+            var pending = (await db.Database.GetPendingMigrationsAsync(ct)).ToList();
+            var applied = (await db.Database.GetAppliedMigrationsAsync(ct)).ToList();
+            return Ok(new { success = true, pending, applied });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new
+            {
+                success = false,
+                error = ex.Message,
+                inner = ex.InnerException?.Message
+            });
+        }
+    }
+
     // ── GET /api/admin/dashboard ───────────────────────────────────────────────
     [HttpGet("dashboard")]
     [ProducesResponseType(typeof(AdminDashboardStatsDto), 200)]
